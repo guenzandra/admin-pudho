@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="">
+<div class="sadsadas">
 
 </div>
 
