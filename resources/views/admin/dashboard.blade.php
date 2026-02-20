@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <!---total illegal squatters card--->
+      <!---Total illegal squatters card--->
       <div class="bg-white p-4 rounded-lg shadow">
         <div class="flex items-center">
           <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
