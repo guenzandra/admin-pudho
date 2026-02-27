@@ -6,23 +6,24 @@
 
 <div class="">
   <!---side-profile-->
-<div class="">
+  <div class="">
   <!---image-profile-->
-  <div class="">
-    <img >
-</div>
+    <div class="">
+      <img >
+    </div>
 
-<!---username--->
-<div class="">
-</div>
+      <!---username--->
+      <div class="">
 
-<!--position/role--->
-<div class="">
-</div>
+      </div>
 
-  <!--date created the account--->
-  <div class="">
-</div>
+        <!--position/role--->
+        <div class="">
+        </div>
+
+          <!--date created the account--->
+          <div class="">
+          </div>
 
 </div>
 
@@ -30,28 +31,28 @@
 <div class="">
 
 <!---dark mode/theme--->
-<div class="">
-</div>
+  <div class="">
+  </div>
 
 <!---personal data--->
-  <div class="">
+    <div class="">
     <button class="">Edit</button>
 
     <!----edit data--->
-    <div class="">
+      <div class="">
       <!-- full name, birthdate, contact number, email, other social media link-->
-</div>
-</div>
+      </div>
+    </div>
 
 <!--security--->
-<div class="">
-  <button class="">Edit</button>
+    <div class="">
+    <button class="">Edit</button>
 
-  <!---password, username, confirmpassword, new password, otp--->
-  <div class="">
+      <!---password, username, confirmpassword, new password, otp--->
+      <div class="">
 
-</div>
-</div>
+      </div>
+    </div>
 
 
 </div>

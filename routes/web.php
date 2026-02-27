@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,14 +30,14 @@ Route::get('/residents', function () {
 
 // Route for CMS Dropdown Page
    //route for announcement page
-Route::get('/announcement', function () {
-    return view('admin.cms-dropdown.announcement');
-})->name('announcement');
+Route::get('/allpost', function () {
+    return view('admin.cms-dropdown.allpost');
+})->name('allpost');
 
     //articles
-Route::get('/articles', function () {
-    return view('admin.cms-dropdown.articles');
-})->name('articles');
+Route::get('/addpost', function () {
+    return view('admin.cms-dropdown.addpost');
+})->name('addpost');
 
     //media
 Route::get('/media', function () {
@@ -43,9 +45,9 @@ Route::get('/media', function () {
 })->name('media');
 
    //news
-Route::get('/news', function () {
-    return view('admin.cms-dropdown.news');
-})->name('news');
+Route::get('/categories', function () {
+    return view('admin.cms-dropdown.categories');
+})->name('categories');
 
 
 //route for check-missing-files page
@@ -144,3 +146,35 @@ Route::get('welcome', function () {
     // Logic for logging out the user
     return redirect('/'); // Redirect to home page after logout
 })->name('welcome');
+
+
+
+
+
+
+//All Posts button route
+//sa button to para sa add post sa all post page
+Route::get('/admin/cms-dropdown/addpost', function () {
+    return view('admin.cms-dropdown.addpost');
+})->name('cms-dropdown.addpost');
+
+
+// Usermanagement routes
+// Add these routes inside your admin group
+Route::prefix('admin')->name('admin.')->group(function () {
+    // User Management Routes
+    Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');
+    Route::patch('/users/{id}/status', [App\Http\Controllers\Admin\UserController::class, 'updateStatus'])->name('users.status');
+    Route::delete('/users/{id}/archive', [App\Http\Controllers\Admin\UserController::class, 'archive'])->name('users.archive');
+    
+    // Username generation
+    Route::post('/generate-username', [App\Http\Controllers\Admin\UserController::class, 'generateUsername'])->name('users.generate-username');
+    
+    // Archive routes
+    Route::get('/archived-users', [App\Http\Controllers\Admin\UserController::class, 'getArchived'])->name('users.archived');
+    Route::post('/archived-users/{id}/restore', [App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
+    Route::delete('/archived-users/{id}', [App\Http\Controllers\Admin\UserController::class, 'permanentDelete'])->name('users.permanent-delete');
+    Route::delete('/recycle-bin/empty', [App\Http\Controllers\Admin\UserController::class, 'emptyRecycleBin'])->name('users.empty-recycle-bin');
+});
