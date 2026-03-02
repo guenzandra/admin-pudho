@@ -1,8 +1,10 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,17 +46,13 @@ Route::get('/media', function () {
     return view('admin.cms-dropdown.media');
 })->name('media');
 
-   //news
-Route::get('/categories', function () {
-    return view('admin.cms-dropdown.categories');
-})->name('categories');
-
+   //news - FIX THIS ROUTE
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 
 //route for check-missing-files page
 Route::get('/cmissingfiles', function () {
     return view('admin.cmissingfiles');
 })->name('cmissingfiles');
-
 
 //route for antisquatting-dropdown page
         //reports
@@ -147,17 +145,16 @@ Route::get('welcome', function () {
     return redirect('/'); // Redirect to home page after logout
 })->name('welcome');
 
-
-
-
-
-
 //All Posts button route
 //sa button to para sa add post sa all post page
 Route::get('/admin/cms-dropdown/addpost', function () {
     return view('admin.cms-dropdown.addpost');
 })->name('cms-dropdown.addpost');
 
+
+
+
+///------ Basta ito yung ano na yon, masakit na utak ko BRO! -----/////
 
 // Usermanagement routes
 // Add these routes inside your admin group
@@ -178,3 +175,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('/archived-users/{id}', [App\Http\Controllers\Admin\UserController::class, 'permanentDelete'])->name('users.permanent-delete');
     Route::delete('/recycle-bin/empty', [App\Http\Controllers\Admin\UserController::class, 'emptyRecycleBin'])->name('users.empty-recycle-bin');
 });
+
+
+///-----Post Drop-down to mga kakinemehan don, ito yung dating CMS----///
+
+// Categories routes
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::post('/categories/bulk-delete', [CategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
+Route::get('/categories/dropdown', [CategoryController::class, 'getForDropdown'])->name('categories.dropdown');
+
+// AddPost routes
+Route::get('/addpost', [PostController::class, 'create'])->name('addpost');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::post('/posts/upload-media', [PostController::class, 'uploadMedia'])->name('posts.upload-media');

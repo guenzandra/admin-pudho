@@ -1,3 +1,4 @@
+<!--/**2026_02_26_071841_create_posts_table**/-->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -12,19 +13,35 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-    $table->id();
+            $table->id();
 
-    $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-    $table->foreignId('category_id')->constrained('categories');
+            // Reference users table with custom primary key 'user_id'
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')
+                  ->references('user_id')
+                  ->on('users')
+                  ->onDelete('cascade');
 
-    $table->text('description')->nullable();
-    $table->longText('content')->nullable();
-    $table->string('media_path')->nullable();
+            // Reference categories table (uses default 'id' primary key)
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')
+                  ->references('id')
+                  ->on('categories')
+                  ->onDelete('set null');
 
-    $table->enum('status', ['publish','draft','deleted'])->default('draft');
+            $table->text('description')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('media_path')->nullable();
 
-    $table->timestamps();
-});
+            $table->enum('status', ['publish', 'draft', 'deleted'])->default('draft');
+
+            $table->timestamps();
+            
+            // Add indexes for better performance
+            $table->index('user_id');
+            $table->index('category_id');
+            $table->index('status');
+        });
     }
 
     /**

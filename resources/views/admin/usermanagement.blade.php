@@ -44,15 +44,14 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <i class="bi bi-circle text-gray-400 text-xs"></i>
-                <label class="text-gray-600 text-sm">Status:</label>
-                <select id="statusFilter" class="px-3 py-1.5 border border-gray-200 rounded-md text-sm outline-none focus:border-red-500 bg-white" onchange="filterTable()">
-                    <option value="all">All Status</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="suspended">Suspended</option>
-                </select>
-            </div>
+    <i class="bi bi-circle text-gray-400 text-xs"></i>
+    <label class="text-gray-600 text-sm">Status:</label>
+    <select id="statusFilter" class="px-3 py-1.5 border border-gray-200 rounded-md text-sm outline-none focus:border-red-500 bg-white" onchange="filterTable()">
+        <option value="all">All Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Deactivated</option>
+    </select>
+</div>
 
             <span class="ml-auto text-gray-500 text-xs bg-gray-200 px-3 py-1.5 rounded-full" id="resultCount">
                 <i class="bi bi-people me-1"></i> Loading...
@@ -64,6 +63,7 @@
             <table class="w-full border-collapse bg-white text-sm" id="userTable">
                 <thead>
                     <tr class="bg-gray-50">
+                        <th class="text-left px-4 py-3 text-gray-600 font-semibold text-xs uppercase tracking-wider border-b border-red-600">Profile</th>
                         <th class="text-left px-4 py-3 text-gray-600 font-semibold text-xs uppercase tracking-wider border-b border-red-600">Name</th>
                         <th class="text-left px-4 py-3 text-gray-600 font-semibold text-xs uppercase tracking-wider border-b border-red-600">Position</th>
                         <th class="text-left px-4 py-3 text-gray-600 font-semibold text-xs uppercase tracking-wider border-b border-red-600">Username</th>
@@ -93,6 +93,9 @@
     </div>
 </div>
 
+<!-- Custom Toast Container -->
+<div class="fixed top-5 right-5 z-[1100] space-y-2" id="toastContainer"></div>
+
 <!-- Add User Modal -->
 <div class="modal fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[1000] items-center justify-center hidden" id="addUserModal">
     <div class="bg-white rounded-xl w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
@@ -111,7 +114,7 @@
             <div class="mb-8">
                 <div class="flex flex-col items-center mb-6">
                     <div class="relative">
-                        <div class="w-24 h-24 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-gray-400 text-3xl mb-3" id="profilePreview">
+                        <div class="w-24 h-24 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-gray-400 text-3xl mb-3 overflow-hidden" id="profilePreview">
                             <i class="bi bi-camera"></i>
                         </div>
                         <label for="profileImage" class="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors border border-gray-300">
@@ -129,21 +132,23 @@
                 </h4>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
+                    <div class="form-group">
                         <label class="block text-gray-600 text-xs font-medium mb-1.5">
                             First Name <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="first_name" name="first_name" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all" placeholder="Enter first name" required>
+                        <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-first_name"></div>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label class="block text-gray-600 text-xs font-medium mb-1.5">Middle Name</label>
                         <input type="text" id="middle_name" name="middle_name" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all" placeholder="Enter middle name">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label class="block text-gray-600 text-xs font-medium mb-1.5">
                             Last Name <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="last_name" name="last_name" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all" placeholder="Enter last name" required>
+                        <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-last_name"></div>
                     </div>
                 </div>
 
@@ -153,7 +158,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
+                    <div class="form-group">
                         <label class="block text-gray-600 text-xs font-medium mb-1.5">
                             Gender <span class="text-red-500">*</span>
                         </label>
@@ -164,27 +169,32 @@
                             <option value="other">Other</option>
                             <option value="prefer_not_to_say">Prefer not to say</option>
                         </select>
+                        <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-gender"></div>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label class="block text-gray-600 text-xs font-medium mb-1.5">
                             Birthdate <span class="text-red-500">*</span>
                         </label>
-                        <input type="date" id="birthdate" name="birthdate" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" required>
+                        <input type="date" id="birthdate" name="birthdate" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" required max="<?php echo date('Y-m-d', strtotime('-18 years')); ?>">
+                        <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-birthdate"></div>
                     </div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 form-group">
                     <label class="block text-gray-600 text-xs font-medium mb-1.5">
                         <i class="bi bi-telephone me-1 text-gray-400"></i>Contact Number <span class="text-red-500">*</span>
                     </label>
-                    <input type="tel" id="contact" name="contact_no" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" placeholder="Enter contact number" required>
+                    <input type="tel" id="contact" name="contact_no" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" placeholder="09123456789" required maxlength="11" pattern="[0-9]{11}" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-contact_no"></div>
+                    <small class="text-gray-400 text-xs mt-1 block">Enter 11-digit mobile number (e.g., 09123456789)</small>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 form-group">
                     <label class="block text-gray-600 text-xs font-medium mb-1.5">
                         <i class="bi bi-envelope me-1 text-gray-400"></i>Email Address <span class="text-red-500">*</span>
                     </label>
                     <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" placeholder="Enter email address" required>
+                    <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-email"></div>
                 </div>
             </div>
 
@@ -193,7 +203,7 @@
                     <i class="bi bi-lock me-2 text-gray-400"></i>Account Information
                 </h4>
 
-                <div class="mb-4">
+                <div class="mb-4 form-group">
                     <label class="block text-gray-600 text-xs font-medium mb-1.5">
                         <i class="bi bi-briefcase me-1 text-gray-400"></i>Position <span class="text-red-500">*</span>
                     </label>
@@ -205,33 +215,36 @@
                         <option value="Staff">Staff</option>
                         <option value="Editor">Editor</option>
                     </select>
+                    <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-position"></div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 form-group">
                     <label class="block text-gray-600 text-xs font-medium mb-1.5">
-                        <i class="bi bi-person-circle me-1 text-gray-400"></i>Username
+                        <i class="bi bi-person-circle me-1 text-gray-400"></i>Username <span class="text-red-500">*</span>
                     </label>
                     <div class="flex gap-2">
-                        <input type="text" id="username" name="username" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-600" placeholder="Click generate to create username" readonly>
+                        <input type="text" id="username" name="username" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" placeholder="Click generate to create username" readonly required>
                         <button type="button" class="px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-600 hover:border-red-600 hover:text-white transition-all whitespace-nowrap" onclick="generateUsername()">
                             <i class="bi bi-arrow-repeat me-2"></i>Generate
                         </button>
                     </div>
+                    <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-username"></div>
                     <small class="block mt-1 text-gray-400 text-xs">
-                        <i class="bi bi-info-circle me-1"></i>Based on first and last name (e.g., jdoe123)
+                        <i class="bi bi-info-circle me-1"></i>Based on first and last name
                     </small>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 form-group">
                     <label class="block text-gray-600 text-xs font-medium mb-1.5">
-                        <i class="bi bi-key me-1 text-gray-400"></i>Password
+                        <i class="bi bi-key me-1 text-gray-400"></i>Password <span class="text-red-500">*</span>
                     </label>
                     <div class="flex gap-2">
-                        <input type="text" id="password" name="password" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-600" placeholder="Click generate to create password" readonly>
+                        <input type="text" id="password" name="password" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none" placeholder="Click generate to create password" readonly required>
                         <button type="button" class="px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-600 hover:border-red-600 hover:text-white transition-all whitespace-nowrap" onclick="generatePassword()">
                             <i class="bi bi-arrow-repeat me-2"></i>Generate
                         </button>
                     </div>
+                    <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-password"></div>
                     <small class="block mt-1 text-gray-400 text-xs">
                         <i class="bi bi-info-circle me-1"></i>8-12 characters with letters and numbers
                     </small>
@@ -243,8 +256,17 @@
             <button type="button" class="px-5 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" onclick="closeAddUserModal()">
                 <i class="bi bi-x me-2"></i>Cancel
             </button>
-            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 hover:shadow-md transition-all" onclick="saveUser()">
-                <i class="bi bi-save me-2"></i>Save User
+            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 hover:shadow-md transition-all relative" onclick="saveUser()" id="saveUserBtn">
+                <span class="inline-flex items-center">
+                    <i class="bi bi-save me-2"></i>
+                    <span class="btn-text">Save User</span>
+                    <span class="loading-spinner hidden ml-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </span>
             </button>
         </div>
     </div>
@@ -335,8 +357,17 @@
             <button type="button" class="px-5 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" onclick="closeDeleteModal()">
                 <i class="bi bi-x me-2"></i>Cancel
             </button>
-            <button type="button" class="px-5 py-2 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 transition-all" onclick="moveToArchive()">
-                <i class="bi bi-archive me-2"></i>Move to Recycle Bin
+            <button type="button" class="px-5 py-2 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 transition-all" onclick="moveToArchive()" id="moveToArchiveBtn">
+                <span class="inline-flex items-center">
+                    <i class="bi bi-archive me-2"></i>
+                    <span class="btn-text">Move to Recycle Bin</span>
+                    <span class="loading-spinner hidden ml-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </span>
             </button>
         </div>
     </div>
@@ -367,8 +398,17 @@
             <button type="button" class="px-5 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" onclick="closeRestoreModal()">
                 <i class="bi bi-x me-2"></i>Cancel
             </button>
-            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all" onclick="restoreUser()">
-                <i class="bi bi-arrow-return-left me-2"></i>Restore User
+            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all" onclick="restoreUser()" id="restoreUserBtn">
+                <span class="inline-flex items-center">
+                    <i class="bi bi-arrow-return-left me-2"></i>
+                    <span class="btn-text">Restore User</span>
+                    <span class="loading-spinner hidden ml-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </span>
             </button>
         </div>
     </div>
@@ -399,8 +439,17 @@
             <button type="button" class="px-5 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" onclick="closePermanentDeleteModal()">
                 <i class="bi bi-x me-2"></i>Cancel
             </button>
-            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all" onclick="permanentDelete()">
-                <i class="bi bi-trash me-2"></i>Permanently Delete
+            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all" onclick="permanentDelete()" id="permanentDeleteBtn">
+                <span class="inline-flex items-center">
+                    <i class="bi bi-trash me-2"></i>
+                    <span class="btn-text">Permanently Delete</span>
+                    <span class="loading-spinner hidden ml-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </span>
             </button>
         </div>
     </div>
@@ -419,8 +468,9 @@
         </div>
 
         <div class="p-6 bg-gradient-to-r from-red-600 to-red-700 text-white flex items-center gap-4">
-            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold border-2 border-white" id="avatarInitials">
-                JD
+            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold border-2 border-white overflow-hidden" id="viewProfileImage">
+                <img src="" alt="Profile" class="w-full h-full object-cover hidden" id="viewProfileImg">
+                <span class="initials" id="avatarInitials">JD</span>
             </div>
             <div>
                 <h2 class="text-xl font-bold" id="viewFullName">John A. Doe</h2>
@@ -428,8 +478,8 @@
                     <i class="bi bi-briefcase me-1"></i>Administrator
                 </span>
             </div>
-            <span class="ml-auto px-3 py-1 bg-white bg-opacity-20 rounded-full text-xs font-medium" id="viewStatusBadge">
-                <i class="bi bi-circle-fill me-1 text-green-300"></i>Active
+            <span class="ml-auto px-3 py-1 bg-white bg-opacity-20 rounded-full text-xs font-medium flex items-center gap-1" id="viewStatusBadge">
+                <i class="bi bi-circle-fill text-green-300"></i> Active
             </span>
         </div>
 
@@ -511,39 +561,31 @@
                 <i class="bi bi-person me-1"></i>Update status for: <strong id="statusUserName" class="text-red-600"></strong>
             </p>
             <input type="hidden" id="statusUserId">
+            <input type="hidden" id="currentStatus">
 
             <div class="flex flex-col gap-2">
-                <label class="status-card cursor-pointer border border-gray-200 rounded-lg overflow-hidden hover:border-red-500 transition-all">
+                <label class="status-card cursor-pointer border rounded-lg overflow-hidden hover:border-red-500 transition-all p-3 flex items-center gap-3" data-status="active">
                     <input type="radio" name="userStatus" value="active" class="hidden">
-                    <div class="status-card-content p-3 flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-green-500 shadow-sm"></span>
-                        <span class="font-medium text-gray-700 text-sm w-16">
-                            <i class="bi bi-check-circle-fill me-1 text-green-500"></i>Active
-                        </span>
-                        <span class="text-gray-400 text-xs">User can access the system</span>
-                    </div>
+                    <span class="w-2 h-2 rounded-full bg-green-500 shadow-sm"></span>
+                    <span class="font-medium text-gray-700 text-sm w-24">
+                        <i class="bi bi-check-circle-fill me-1 text-green-500"></i>Active
+                    </span>
+                    <span class="text-gray-400 text-xs flex-1">User can access the system</span>
+                    <span class="selected-indicator ml-auto text-red-600 hidden">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </span>
                 </label>
 
-                <label class="status-card cursor-pointer border border-gray-200 rounded-lg overflow-hidden hover:border-red-500 transition-all">
+                <label class="status-card cursor-pointer border rounded-lg overflow-hidden hover:border-red-500 transition-all p-3 flex items-center gap-3" data-status="inactive">
                     <input type="radio" name="userStatus" value="inactive" class="hidden">
-                    <div class="status-card-content p-3 flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-gray-400 shadow-sm"></span>
-                        <span class="font-medium text-gray-700 text-sm w-16">
-                            <i class="bi bi-pause-circle-fill me-1 text-gray-400"></i>Inactive
-                        </span>
-                        <span class="text-gray-400 text-xs">User cannot login</span>
-                    </div>
-                </label>
-
-                <label class="status-card cursor-pointer border border-gray-200 rounded-lg overflow-hidden hover:border-red-500 transition-all">
-                    <input type="radio" name="userStatus" value="suspended" class="hidden">
-                    <div class="status-card-content p-3 flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-orange-500 shadow-sm"></span>
-                        <span class="font-medium text-gray-700 text-sm w-16">
-                            <i class="bi bi-exclamation-triangle-fill me-1 text-orange-500"></i>Suspended
-                        </span>
-                        <span class="text-gray-400 text-xs">Temporarily restricted</span>
-                    </div>
+                    <span class="w-2 h-2 rounded-full bg-gray-400 shadow-sm"></span>
+                    <span class="font-medium text-gray-700 text-sm w-24">
+                        <i class="bi bi-pause-circle-fill me-1 text-gray-400"></i>Deactivated
+                    </span>
+                    <span class="text-gray-400 text-xs flex-1">User cannot login</span>
+                    <span class="selected-indicator ml-auto text-red-600 hidden">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </span>
                 </label>
             </div>
         </div>
@@ -552,20 +594,19 @@
             <button type="button" class="px-5 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" onclick="closeEditStatusModal()">
                 <i class="bi bi-x me-2"></i>Cancel
             </button>
-            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all" onclick="updateStatus()">
-                <i class="bi bi-save me-2"></i>Update Status
+            <button type="button" class="px-5 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-all" onclick="updateStatus()" id="updateStatusBtn">
+                <span class="inline-flex items-center">
+                    <i class="bi bi-save me-2"></i>
+                    <span class="btn-text">Update Status</span>
+                    <span class="loading-spinner hidden ml-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </span>
             </button>
         </div>
-    </div>
-</div>
-
-<!-- Success Toast -->
-<div class="toast fixed bottom-8 right-8 bg-white rounded-lg shadow-lg px-5 py-3 transform translate-y-24 opacity-0 transition-all duration-300 z-[1001]" id="successToast">
-    <div class="flex items-center gap-3">
-        <div class="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">
-            <i class="bi bi-check"></i>
-        </div>
-        <span class="text-gray-700 text-sm font-medium" id="toastMessage">User added successfully</span>
     </div>
 </div>
 
@@ -579,25 +620,26 @@
         display: block;
     }
 
-    .status-card input[type="radio"]:checked+div {
-        @apply bg-blue-50 border-l-4 border-red-600;
+    .status-card.selected {
+        border-color: #ef4444;
+        background-color: #fef2f2;
+    }
+
+    .status-card.selected .selected-indicator {
+        display: block !important;
     }
 
     .status-badge {
-        @apply px-2 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
-    }
+    @apply px-2 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
+}
 
-    .status-active {
-        @apply bg-green-100 text-green-700;
-    }
+.status-active {
+    @apply bg-green-100 text-green-700;
+}
 
-    .status-inactive {
-        @apply bg-red-100 text-red-700;
-    }
-
-    .status-suspended {
-        @apply bg-orange-100 text-orange-700;
-    }
+.status-inactive {
+    @apply bg-gray-100 text-gray-700; /* Changed from red to gray for Deactivated */
+}
 
     @keyframes slideDown {
         from {
@@ -659,6 +701,67 @@
     .modal {
         z-index: 1000;
     }
+
+    /* Toast animations */
+    .toast-item {
+        animation: slideInRight 0.3s ease forwards;
+    }
+
+    .toast-item.hide {
+        animation: slideOutRight 0.3s ease forwards;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    /* Form validation styles */
+    .form-group.error input,
+    .form-group.error select {
+        border-color: #ef4444;
+    }
+
+    .error-message {
+        color: #ef4444;
+    }
+
+    /* Loading spinner animation */
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+
+    /* Button loading state */
+    button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 </style>
 
 <!-- Bootstrap Icons -->
@@ -697,6 +800,50 @@
         document.getElementById('searchInput').addEventListener('keyup', debounce(filterTable, 500));
         document.getElementById('positionFilter').addEventListener('change', filterTable);
         document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+        // Add status card click handlers
+        document.querySelectorAll('.status-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.status-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // Set max birthdate to 18 years ago
+        const birthdateInput = document.getElementById('birthdate');
+        if (birthdateInput) {
+            const maxDate = new Date();
+            maxDate.setFullYear(maxDate.getFullYear() - 18);
+            birthdateInput.max = maxDate.toISOString().split('T')[0];
+        }
+
+        // Add real-time validation for email and phone
+        document.getElementById('email').addEventListener('input', validateEmailField);
+        document.getElementById('contact').addEventListener('input', validatePhoneField);
+        
+        // Add real-time validation for other fields
+        document.getElementById('first_name').addEventListener('input', function() {
+            clearFieldError('first_name');
+        });
+        document.getElementById('last_name').addEventListener('input', function() {
+            clearFieldError('last_name');
+        });
+        document.getElementById('gender').addEventListener('change', function() {
+            clearFieldError('gender');
+        });
+        document.getElementById('birthdate').addEventListener('change', function() {
+            clearFieldError('birthdate');
+        });
+        document.getElementById('position').addEventListener('change', function() {
+            clearFieldError('position');
+        });
+        document.getElementById('username').addEventListener('input', function() {
+            clearFieldError('username');
+        });
+        document.getElementById('password').addEventListener('input', function() {
+            clearFieldError('password');
+        });
     });
 
     // Debounce function to limit API calls
@@ -710,6 +857,139 @@
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    // Clear individual field error
+    function clearFieldError(field) {
+        const errorEl = document.getElementById(`error-${field}`);
+        const inputEl = document.querySelector(`[name="${field}"]`);
+        
+        if (errorEl) {
+            errorEl.classList.add('hidden');
+            errorEl.textContent = '';
+        }
+        
+        if (inputEl) {
+            inputEl.closest('.form-group')?.classList.remove('error');
+        }
+    }
+
+    // Validate email field in real-time
+    function validateEmailField() {
+        const email = document.getElementById('email').value;
+        const errorEl = document.getElementById('error-email');
+        const inputEl = document.getElementById('email');
+        const formGroup = inputEl.closest('.form-group');
+        
+        if (!email) {
+            errorEl.textContent = 'Email is required';
+            errorEl.classList.remove('hidden');
+            formGroup.classList.add('error');
+            return false;
+        } else if (!email.includes('@')) {
+            errorEl.textContent = 'Email must contain @ symbol';
+            errorEl.classList.remove('hidden');
+            formGroup.classList.add('error');
+            return false;
+        } else {
+            errorEl.classList.add('hidden');
+            formGroup.classList.remove('error');
+            return true;
+        }
+    }
+
+    // Validate phone field in real-time
+    function validatePhoneField() {
+        const phone = document.getElementById('contact').value;
+        const errorEl = document.getElementById('error-contact_no');
+        const inputEl = document.getElementById('contact');
+        const formGroup = inputEl.closest('.form-group');
+        
+        // Remove non-numeric characters
+        const numericPhone = phone.replace(/[^0-9]/g, '');
+        
+        if (!phone) {
+            errorEl.textContent = 'Contact number is required';
+            errorEl.classList.remove('hidden');
+            formGroup.classList.add('error');
+            return false;
+        } else if (numericPhone.length !== 11) {
+            errorEl.textContent = 'Contact number must be exactly 11 digits';
+            errorEl.classList.remove('hidden');
+            formGroup.classList.add('error');
+            return false;
+        } else if (!/^[0-9]+$/.test(phone)) {
+            errorEl.textContent = 'Contact number must contain only numbers';
+            errorEl.classList.remove('hidden');
+            formGroup.classList.add('error');
+            return false;
+        } else {
+            errorEl.classList.add('hidden');
+            formGroup.classList.remove('error');
+            return true;
+        }
+    }
+
+    // Toast notification system
+    function showToast(message, type = 'success', duration = 3000) {
+        const toastContainer = document.getElementById('toastContainer');
+        const toastId = 'toast-' + Date.now();
+        
+        const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+        const icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle';
+        
+        const toastHTML = `
+            <div id="${toastId}" class="toast-item flex items-center gap-3 ${bgColor} text-white px-4 py-3 rounded-lg shadow-lg mb-2 min-w-[300px]">
+                <i class="bi ${icon} text-lg"></i>
+                <span class="flex-1 text-sm">${message}</span>
+                <button onclick="closeToast('${toastId}')" class="text-white hover:text-gray-200">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        `;
+        
+        toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+        
+        setTimeout(() => {
+            closeToast(toastId);
+        }, duration);
+    }
+
+    function closeToast(toastId) {
+        const toast = document.getElementById(toastId);
+        if (toast) {
+            toast.classList.add('hide');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }
+    }
+
+    // Show validation errors
+    function showValidationErrors(errors) {
+        // Clear all previous errors
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.add('hidden');
+            el.textContent = '';
+        });
+        document.querySelectorAll('.form-group').forEach(el => {
+            el.classList.remove('error');
+        });
+
+        // Show new errors
+        for (let field in errors) {
+            const errorEl = document.getElementById(`error-${field}`);
+            const inputEl = document.querySelector(`[name="${field}"]`);
+            
+            if (errorEl) {
+                errorEl.textContent = errors[field][0];
+                errorEl.classList.remove('hidden');
+                
+                if (inputEl) {
+                    inputEl.closest('.form-group')?.classList.add('error');
+                }
+            }
+        }
     }
 
     // Load users from API
@@ -764,70 +1044,88 @@
     }
 
     // Render table
-    function renderTable(users) {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = '';
+function renderTable(users) {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
 
-        users.forEach(user => {
-            const statusClass = user.is_active ? 'active' : 'inactive';
-            const statusText = user.is_active ? 'Active' : 'Inactive';
-            const statusColor = user.is_active ? 'green' : 'red';
-            
-            const row = document.createElement('tr');
-            row.className = 'hover:bg-gray-50 transition-colors';
-            row.innerHTML = `
-                <td class="px-4 py-3">
-                    <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-semibold text-xs">
-                            ${user.initials || 'U'}
-                        </div>
-                        <span class="text-sm">${user.full_name || user.first_name + ' ' + user.last_name}</span>
-                    </div>
-                </td>
-                <td class="px-4 py-3 text-sm">
-                    <span class="flex items-center gap-1">
-                        <i class="bi bi-briefcase text-gray-400 text-xs"></i>
-                        ${user.position || 'N/A'}
-                    </span>
-                </td>
-                <td class="px-4 py-3 text-sm">
-                    <span class="flex items-center gap-1">
-                        <i class="bi bi-person-circle text-gray-400 text-xs"></i>
-                        ${user.username || 'N/A'}
-                    </span>
-                </td>
-                <td class="px-4 py-3 text-sm">
-                    <span class="flex items-center gap-1">
-                        <i class="bi bi-envelope text-gray-400 text-xs"></i>
-                        ${user.email}
-                    </span>
-                </td>
-                <td class="px-4 py-3">
-                    <span class="status-badge status-${statusClass}">
-                        <i class="bi bi-circle-fill text-${statusColor}-400 text-xs me-1"></i>
-                        ${statusText}
-                    </span>
-                </td>
-                <td class="px-4 py-3 relative" style="overflow: visible;">
-                    <button class="actions-btn w-8 h-8 bg-gray-100 rounded-lg text-gray-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center" onclick="toggleActionsMenu(this, ${user.user_id})">
-                        <i class="bi bi-three-dots"></i>
+    users.forEach(user => {
+        // Determine status display based on is_active
+        let statusClass = '';
+        let statusText = '';
+        let statusColor = '';
+        
+        if (user.is_active) {
+            statusClass = 'active';
+            statusText = 'Active';
+            statusColor = 'green';
+        } else {
+            statusClass = 'inactive';
+            statusText = 'Deactivated'; // Changed from 'Inactive' to 'Deactivated'
+            statusColor = 'gray';
+        }
+        
+        // Check if user has profile image
+        const profileImage = user.profile_img ? 
+            `<img src="/storage/${user.profile_img}" class="w-7 h-7 rounded-full object-cover" alt="Profile">` : 
+            `<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-semibold text-xs">${user.initials || 'U'}</div>`;
+        
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50 transition-colors';
+        row.innerHTML = `
+            <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                    ${profileImage}
+                </div>
+            </td>
+            <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">${user.full_name || user.first_name + ' ' + user.last_name}</span>
+                </div>
+            </td>
+            <td class="px-4 py-3 text-sm">
+                <span class="flex items-center gap-1">
+                    <i class="bi bi-briefcase text-gray-400 text-xs"></i>
+                    ${user.position || 'N/A'}
+                </span>
+            </td>
+            <td class="px-4 py-3 text-sm">
+                <span class="flex items-center gap-1">
+                    <i class="bi bi-person-circle text-gray-400 text-xs"></i>
+                    ${user.username || 'N/A'}
+                </span>
+            </td>
+            <td class="px-4 py-3 text-sm">
+                <span class="flex items-center gap-1">
+                    <i class="bi bi-envelope text-gray-400 text-xs"></i>
+                    ${user.email}
+                </span>
+            </td>
+            <td class="px-4 py-3">
+                <span class="status-badge status-${statusClass}">
+                    <i class="bi bi-circle-fill text-${statusColor}-400 text-xs me-1"></i>
+                    ${statusText}
+                </span>
+            </td>
+            <td class="px-4 py-3 relative" style="overflow: visible;">
+                <button class="actions-btn w-8 h-8 bg-gray-100 rounded-lg text-gray-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center" onclick="toggleActionsMenu(this, ${user.user_id})">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+                <div class="actions-menu hidden absolute right-0 bg-white rounded-lg shadow-lg z-50 min-w-[180px] mt-1 border border-gray-200 overflow-hidden" id="menu-${user.user_id}" style="top: 100%; right: 0; margin-top: 4px;">
+                    <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="viewUser(${user.user_id})">
+                        <i class="bi bi-eye text-blue-500 w-4"></i> View Details
                     </button>
-                    <div class="actions-menu hidden absolute right-0 bg-white rounded-lg shadow-lg z-50 min-w-[180px] mt-1 border border-gray-200 overflow-hidden" id="menu-${user.user_id}" style="top: 100%; right: 0; margin-top: 4px;">
-                        <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="viewUser(${user.user_id})">
-                            <i class="bi bi-eye text-blue-500 w-4"></i> View Details
-                        </button>
-                        <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="editUserStatus('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id})">
-                            <i class="bi bi-pencil-square text-green-500 w-4"></i> Edit Status
-                        </button>
-                        <button class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 border-t border-gray-200" onclick="openDeleteModal('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id})">
-                            <i class="bi bi-trash text-red-500 w-4"></i> Delete Account
-                        </button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
+                    <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="editUserStatus('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id}, '${user.is_active ? 'active' : 'inactive'}')">
+                        <i class="bi bi-pencil-square text-green-500 w-4"></i> Edit Status
+                    </button>
+                    <button class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 border-t border-gray-200" onclick="openDeleteModal('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id})">
+                        <i class="bi bi-trash text-red-500 w-4"></i> Delete Account
+                    </button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
 
     // Filter table
     function filterTable() {
@@ -889,6 +1187,15 @@
         addUserModal.classList.add('show');
         document.getElementById('addUserForm').reset();
         document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
+        
+        // Clear all validation errors
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.add('hidden');
+            el.textContent = '';
+        });
+        document.querySelectorAll('.form-group').forEach(el => {
+            el.classList.remove('error');
+        });
     };
 
     function closeAddUserModal() {
@@ -899,6 +1206,20 @@
     function previewProfileImage(event) {
         const file = event.target.files[0];
         if (file) {
+            // Check file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('Image size should be less than 2MB', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                showToast('Please upload an image file', 'error');
+                event.target.value = '';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 const preview = document.getElementById('profilePreview');
@@ -909,11 +1230,15 @@
     }
 
     // Generate Username
-function generateUsername() {
-    const firstName = document.getElementById('first_name').value;
-    const lastName = document.getElementById('last_name').value;
+    function generateUsername() {
+        const firstName = document.getElementById('first_name').value;
+        const lastName = document.getElementById('last_name').value;
 
-    if (firstName && lastName) {
+        if (!firstName || !lastName) {
+            showToast('Please enter first name and last name first', 'error');
+            return;
+        }
+
         // Show loading state
         const generateBtn = event.target;
         const originalText = generateBtn.innerHTML;
@@ -941,9 +1266,10 @@ function generateUsername() {
         .then(data => {
             if (data.success) {
                 document.getElementById('username').value = data.username;
+                clearFieldError('username');
                 showToast('Username generated successfully');
             } else {
-                alert(data.message || 'Error generating username');
+                showToast(data.message || 'Error generating username', 'error');
             }
         })
         .catch(error => {
@@ -954,10 +1280,7 @@ function generateUsername() {
             generateBtn.innerHTML = originalText;
             generateBtn.disabled = false;
         });
-    } else {
-        alert('Please enter first name and last name first');
     }
-}
 
     // Generate Password
     function generatePassword() {
@@ -967,75 +1290,164 @@ function generateUsername() {
             password += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         document.getElementById('password').value = password;
+        clearFieldError('password');
         showToast('Password generated successfully');
     }
 
     // Save User
-    // Save User
-function saveUser() {
-    const form = document.getElementById('addUserForm');
-    const formData = new FormData(form);
-
-    // Check required fields
-    const firstName = document.getElementById('first_name').value;
-    const lastName = document.getElementById('last_name').value;
-    const email = document.getElementById('email').value;
-    const contact = document.getElementById('contact').value;
-    const gender = document.getElementById('gender').value;
-    const birthdate = document.getElementById('birthdate').value;
-    const position = document.getElementById('position').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    if (!firstName || !lastName || !email || !contact || !gender || !birthdate || !position || !username || !password) {
-        alert('Please fill all required fields');
-        return;
-    }
-
-    // Show loading state
-    const saveBtn = event.target;
-    const originalText = saveBtn.innerHTML;
-    saveBtn.innerHTML = '<i class="bi bi-hourglass me-2"></i>Saving...';
-    saveBtn.disabled = true;
-
-    fetch('/admin/users', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json'
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showToast('User added successfully');
-            closeAddUserModal();
-            loadUsers(currentPage);
-            loadArchiveStats();
-            
-            // Reset form
-            document.getElementById('addUserForm').reset();
-            document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
-        } else {
-            if (data.errors) {
-                // Display validation errors
-                const errorMessages = Object.values(data.errors).flat().join('\n');
-                alert('Validation errors:\n' + errorMessages);
-            } else {
-                alert(data.message || 'Error creating user');
+    function saveUser() {
+        const form = document.getElementById('addUserForm');
+        const formData = new FormData(form);
+        
+        // Validate all fields
+        let hasError = false;
+        
+        // Check first name
+        const firstName = document.getElementById('first_name').value;
+        if (!firstName) {
+            document.getElementById('error-first_name').textContent = 'First name is required';
+            document.getElementById('error-first_name').classList.remove('hidden');
+            document.getElementById('first_name').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Check last name
+        const lastName = document.getElementById('last_name').value;
+        if (!lastName) {
+            document.getElementById('error-last_name').textContent = 'Last name is required';
+            document.getElementById('error-last_name').classList.remove('hidden');
+            document.getElementById('last_name').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Check gender
+        const gender = document.getElementById('gender').value;
+        if (!gender) {
+            document.getElementById('error-gender').textContent = 'Gender is required';
+            document.getElementById('error-gender').classList.remove('hidden');
+            document.getElementById('gender').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Check birthdate
+        const birthdate = document.getElementById('birthdate').value;
+        if (!birthdate) {
+            document.getElementById('error-birthdate').textContent = 'Birthdate is required';
+            document.getElementById('error-birthdate').classList.remove('hidden');
+            document.getElementById('birthdate').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Check position
+        const position = document.getElementById('position').value;
+        if (!position) {
+            document.getElementById('error-position').textContent = 'Position is required';
+            document.getElementById('error-position').classList.remove('hidden');
+            document.getElementById('position').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Check username
+        const username = document.getElementById('username').value;
+        if (!username) {
+            document.getElementById('error-username').textContent = 'Username is required';
+            document.getElementById('error-username').classList.remove('hidden');
+            document.getElementById('username').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Check password
+        const password = document.getElementById('password').value;
+        if (!password) {
+            document.getElementById('error-password').textContent = 'Password is required';
+            document.getElementById('error-password').classList.remove('hidden');
+            document.getElementById('password').closest('.form-group').classList.add('error');
+            hasError = true;
+        } else if (password.length < 8) {
+            document.getElementById('error-password').textContent = 'Password must be at least 8 characters';
+            document.getElementById('error-password').classList.remove('hidden');
+            document.getElementById('password').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        // Validate email
+        const emailValid = validateEmailField();
+        if (!emailValid) hasError = true;
+        
+        // Validate phone
+        const phoneValid = validatePhoneField();
+        if (!phoneValid) hasError = true;
+        
+        // Validate age (must be 18+)
+        if (birthdate) {
+            const birthDate = new Date(birthdate);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                document.getElementById('error-birthdate').textContent = 'User must be at least 18 years old';
+                document.getElementById('error-birthdate').classList.remove('hidden');
+                document.getElementById('birthdate').closest('.form-group').classList.add('error');
+                hasError = true;
             }
         }
-    })
-    .catch(error => {
-        console.error('Error saving user:', error);
-        showToast('Error saving user', 'error');
-    })
-    .finally(() => {
-        saveBtn.innerHTML = originalText;
-        saveBtn.disabled = false;
-    });
-}
+        
+        if (hasError) {
+            showToast('Please fix the errors in the form', 'error');
+            return;
+        }
+
+        // Show loading state
+        const saveBtn = document.getElementById('saveUserBtn');
+        const btnText = saveBtn.querySelector('.btn-text');
+        const spinner = saveBtn.querySelector('.loading-spinner');
+        const originalText = btnText.textContent;
+        
+        btnText.textContent = 'Saving...';
+        spinner.classList.remove('hidden');
+        saveBtn.disabled = true;
+
+        fetch('/admin/users', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('User added successfully');
+                closeAddUserModal();
+                loadUsers(currentPage);
+                loadArchiveStats();
+                
+                // Reset form
+                document.getElementById('addUserForm').reset();
+                document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
+            } else {
+                if (data.errors) {
+                    showValidationErrors(data.errors);
+                    showToast('Please check the form for errors', 'error');
+                } else {
+                    showToast(data.message || 'Error creating user', 'error');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error saving user:', error);
+            showToast('Error saving user', 'error');
+        })
+        .finally(() => {
+            btnText.textContent = originalText;
+            spinner.classList.add('hidden');
+            saveBtn.disabled = false;
+        });
+    }
 
     // Delete Modal
     const deleteModal = document.getElementById('deleteModal');
@@ -1054,6 +1466,16 @@ function saveUser() {
     function moveToArchive() {
         const userId = document.getElementById('deleteUserId').value;
         
+        // Show loading state
+        const moveBtn = document.getElementById('moveToArchiveBtn');
+        const btnText = moveBtn.querySelector('.btn-text');
+        const spinner = moveBtn.querySelector('.loading-spinner');
+        const originalText = btnText.textContent;
+        
+        btnText.textContent = 'Moving...';
+        spinner.classList.remove('hidden');
+        moveBtn.disabled = true;
+        
         fetch(`/admin/users/${userId}/archive`, {
             method: 'DELETE',
             headers: {
@@ -1069,12 +1491,17 @@ function saveUser() {
                 loadUsers(currentPage);
                 loadArchiveStats();
             } else {
-                alert(data.message || 'Error archiving user');
+                showToast(data.message || 'Error archiving user', 'error');
             }
         })
         .catch(error => {
             console.error('Error archiving user:', error);
             showToast('Error archiving user', 'error');
+        })
+        .finally(() => {
+            btnText.textContent = originalText;
+            spinner.classList.add('hidden');
+            moveBtn.disabled = false;
         });
     }
 
@@ -1162,6 +1589,16 @@ function saveUser() {
     function restoreUser() {
         const archiveId = document.getElementById('restoreArchiveId').value;
         
+        // Show loading state
+        const restoreBtn = document.getElementById('restoreUserBtn');
+        const btnText = restoreBtn.querySelector('.btn-text');
+        const spinner = restoreBtn.querySelector('.loading-spinner');
+        const originalText = btnText.textContent;
+        
+        btnText.textContent = 'Restoring...';
+        spinner.classList.remove('hidden');
+        restoreBtn.disabled = true;
+        
         fetch(`/admin/archived-users/${archiveId}/restore`, {
             method: 'POST',
             headers: {
@@ -1178,12 +1615,17 @@ function saveUser() {
                 loadUsers(currentPage);
                 loadArchiveStats();
             } else {
-                alert(data.message || 'Error restoring user');
+                showToast(data.message || 'Error restoring user', 'error');
             }
         })
         .catch(error => {
             console.error('Error restoring user:', error);
             showToast('Error restoring user', 'error');
+        })
+        .finally(() => {
+            btnText.textContent = originalText;
+            spinner.classList.add('hidden');
+            restoreBtn.disabled = false;
         });
     }
 
@@ -1204,6 +1646,16 @@ function saveUser() {
     function permanentDelete() {
         const archiveId = document.getElementById('permanentDeleteArchiveId').value;
         
+        // Show loading state
+        const deleteBtn = document.getElementById('permanentDeleteBtn');
+        const btnText = deleteBtn.querySelector('.btn-text');
+        const spinner = deleteBtn.querySelector('.loading-spinner');
+        const originalText = btnText.textContent;
+        
+        btnText.textContent = 'Deleting...';
+        spinner.classList.remove('hidden');
+        deleteBtn.disabled = true;
+        
         fetch(`/admin/archived-users/${archiveId}`, {
             method: 'DELETE',
             headers: {
@@ -1219,12 +1671,17 @@ function saveUser() {
                 loadArchivedUsers();
                 loadArchiveStats();
             } else {
-                alert(data.message || 'Error deleting user');
+                showToast(data.message || 'Error deleting user', 'error');
             }
         })
         .catch(error => {
             console.error('Error deleting user:', error);
             showToast('Error deleting user', 'error');
+        })
+        .finally(() => {
+            btnText.textContent = originalText;
+            spinner.classList.add('hidden');
+            deleteBtn.disabled = false;
         });
     }
 
@@ -1245,7 +1702,7 @@ function saveUser() {
                     loadArchivedUsers();
                     loadArchiveStats();
                 } else {
-                    alert(data.message || 'Error emptying recycle bin');
+                    showToast(data.message || 'Error emptying recycle bin', 'error');
                 }
             })
             .catch(error => {
@@ -1256,133 +1713,172 @@ function saveUser() {
     }
 
     // View User
-    function viewUser(userId) {
-        closeAllDropdowns();
+function viewUser(userId) {
+    closeAllDropdowns();
+    
+    fetch(`/admin/users/${userId}`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const user = data.user;
+        const stats = data.stats;
         
-        fetch(`/admin/users/${userId}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const user = data.user;
-            const stats = data.stats;
+        // Handle profile image
+        const profileImg = document.getElementById('viewProfileImg');
+        const initials = document.getElementById('avatarInitials');
+        
+        if (user.profile_img) {
+            profileImg.src = `/storage/${user.profile_img}`;
+            profileImg.classList.remove('hidden');
+            initials.classList.add('hidden');
+        } else {
+            profileImg.classList.add('hidden');
+            initials.classList.remove('hidden');
+            initials.textContent = user.initials || 'U';
+        }
+        
+        document.getElementById('viewFullName').textContent = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
+        document.getElementById('viewPosition').innerHTML = `<i class="bi bi-briefcase me-1"></i>${user.position || 'N/A'}`;
+
+        let statusColor = '';
+        let statusText = '';
+        
+        if (user.is_active) {
+            statusColor = 'green';
+            statusText = 'Active';
+        } else {
+            statusColor = 'gray';
+            statusText = 'Deactivated';
+        }
+        
+        document.getElementById('viewStatusBadge').innerHTML = `<i class="bi bi-circle-fill text-${statusColor}-300"></i> ${statusText}`;
+
+        document.getElementById('viewUsername').textContent = user.username || 'N/A';
+        document.getElementById('viewEmail').textContent = user.email;
+        document.getElementById('viewContact').textContent = user.contact_no || 'N/A';
+        document.getElementById('viewGender').textContent = user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1).replace('_', ' ') : 'N/A';
+
+        if (user.birthdate) {
+            const birthDate = new Date(user.birthdate);
+            document.getElementById('viewBirthdate').textContent = birthDate.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            });
             
-            document.getElementById('avatarInitials').textContent = user.initials || 'U';
-            document.getElementById('viewFullName').textContent = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
-            document.getElementById('viewPosition').innerHTML = `<i class="bi bi-briefcase me-1"></i>${user.position || 'N/A'}`;
-
-            const statusClass = user.is_active ? 'green' : 'red';
-            const statusText = user.is_active ? 'Active' : 'Inactive';
-            document.getElementById('viewStatusBadge').innerHTML = `<i class="bi bi-circle-fill me-1 text-${statusClass}-300"></i>${statusText}`;
-
-            document.getElementById('viewUsername').textContent = user.username || 'N/A';
-            document.getElementById('viewEmail').textContent = user.email;
-            document.getElementById('viewContact').textContent = user.contact_no || 'N/A';
-            document.getElementById('viewGender').textContent = user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1) : 'N/A';
-
-            if (user.birthdate) {
-                const birthDate = new Date(user.birthdate);
-                document.getElementById('viewBirthdate').textContent = birthDate.toLocaleDateString('en-US', {
-                    year: 'numeric', month: 'long', day: 'numeric'
-                });
-                document.getElementById('viewAge').textContent = user.age || 'N/A';
-            } else {
-                document.getElementById('viewBirthdate').textContent = 'N/A';
-                document.getElementById('viewAge').textContent = 'N/A';
+            // Calculate age
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
             }
+            document.getElementById('viewAge').textContent = age;
+        } else {
+            document.getElementById('viewBirthdate').textContent = 'N/A';
+            document.getElementById('viewAge').textContent = 'N/A';
+        }
 
-            document.getElementById('viewDateJoined').textContent = stats.date_joined || 'N/A';
-            document.getElementById('viewLastLogin').textContent = stats.last_login || 'N/A';
+        document.getElementById('viewDateJoined').textContent = stats.date_joined || 'N/A';
+        document.getElementById('viewLastLogin').textContent = stats.last_login || 'N/A';
 
-            document.getElementById('viewUserModal').classList.add('show');
-        })
-        .catch(error => {
-            console.error('Error loading user details:', error);
-            showToast('Error loading user details', 'error');
-        });
-    }
+        document.getElementById('viewUserModal').classList.add('show');
+    })
+    .catch(error => {
+        console.error('Error loading user details:', error);
+        showToast('Error loading user details', 'error');
+    });
+}
 
     function closeViewModal() {
         document.getElementById('viewUserModal').classList.remove('show');
     }
 
     // Edit Status
-    const editStatusModal = document.getElementById('editStatusModal');
+const editStatusModal = document.getElementById('editStatusModal');
 
-    function editUserStatus(userName, userId) {
-        closeAllDropdowns();
-        document.getElementById('statusUserName').textContent = userName;
-        document.getElementById('statusUserId').value = userId;
-        document.querySelectorAll('input[name="userStatus"]').forEach(radio => radio.checked = false);
-        editStatusModal.classList.add('show');
+function editUserStatus(userName, userId, currentStatus) {
+    closeAllDropdowns();
+    document.getElementById('statusUserName').textContent = userName;
+    document.getElementById('statusUserId').value = userId;
+    document.getElementById('currentStatus').value = currentStatus;
+    
+    // Clear selected states
+    document.querySelectorAll('.status-card').forEach(card => {
+        card.classList.remove('selected');
+        card.querySelector('input[type="radio"]').checked = false;
+    });
+    
+    // Select current status
+    const currentCard = document.querySelector(`.status-card[data-status="${currentStatus}"]`);
+    if (currentCard) {
+        currentCard.classList.add('selected');
+        currentCard.querySelector('input[type="radio"]').checked = true;
     }
+    
+    editStatusModal.classList.add('show');
+}
 
     function closeEditStatusModal() {
         editStatusModal.classList.remove('show');
     }
 
     function updateStatus() {
-        const selectedStatus = document.querySelector('input[name="userStatus"]:checked');
-        const userId = document.getElementById('statusUserId').value;
-        
-        if (selectedStatus) {
-            fetch(`/admin/users/${userId}/status`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ status: selectedStatus.value })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast(`Status updated to ${selectedStatus.value}`);
-                    closeEditStatusModal();
-                    loadUsers(currentPage);
-                } else {
-                    alert(data.message || 'Error updating status');
-                }
-            })
-            .catch(error => {
-                console.error('Error updating status:', error);
-                showToast('Error updating status', 'error');
-            });
-        } else {
-            alert('Please select a status');
-        }
+    const selectedRadio = document.querySelector('input[name="userStatus"]:checked');
+    const userId = document.getElementById('statusUserId').value;
+    
+    if (!selectedRadio) {
+        showToast('Please select a status', 'error');
+        return;
     }
-
-    // Toast
-    function showToast(message, type = 'success') {
-        const toast = document.getElementById('successToast');
-        const toastMessage = document.getElementById('toastMessage');
-        
-        toastMessage.textContent = message;
-        
-        if (type === 'error') {
-            toast.querySelector('.bg-green-500').classList.remove('bg-green-500');
-            toast.querySelector('.bg-green-500').classList.add('bg-red-500');
+    
+    const selectedStatus = selectedRadio.value;
+    
+    // Show loading state
+    const updateBtn = document.getElementById('updateStatusBtn');
+    const btnText = updateBtn.querySelector('.btn-text');
+    const spinner = updateBtn.querySelector('.loading-spinner');
+    const originalText = btnText.textContent;
+    
+    btnText.textContent = 'Updating...';
+    spinner.classList.remove('hidden');
+    updateBtn.disabled = true;
+    
+    fetch(`/admin/users/${userId}/status`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ status: selectedStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            let displayStatus = selectedStatus;
+            if (selectedStatus === 'suspended') {
+                displayStatus = 'inactive'; // Map suspended to inactive for display
+            }
+            showToast(`Status updated to ${selectedStatus}`);
+            closeEditStatusModal();
+            loadUsers(currentPage);
         } else {
-            toast.querySelector('.bg-red-500')?.classList.remove('bg-red-500');
-            toast.querySelector('.bg-red-500')?.classList.add('bg-green-500');
+            showToast(data.message || 'Error updating status', 'error');
         }
-        
-        toast.classList.add('show', 'translate-y-0', 'opacity-100');
-        toast.classList.remove('translate-y-24', 'opacity-0');
-
-        setTimeout(() => {
-            toast.classList.remove('show', 'translate-y-0', 'opacity-100');
-            toast.classList.add('translate-y-24', 'opacity-0');
-        }, 3000);
-    }
+    })
+    .catch(error => {
+        console.error('Error updating status:', error);
+        showToast('Error updating status', 'error');
+    })
+    .finally(() => {
+        btnText.textContent = originalText;
+        spinner.classList.add('hidden');
+        updateBtn.disabled = false;
+    });
+}
 </script>
-
-<!-- Add CSRF Token meta tag if not already present -->
-<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @endsection

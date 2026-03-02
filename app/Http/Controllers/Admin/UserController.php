@@ -36,13 +36,14 @@ class UserController extends Controller
             $query->where('position', $request->position);
         }
 
-        // Apply status filter
+        // Apply status filter - using is_active boolean
         if ($request->filled('status') && $request->status != 'all') {
             if ($request->status == 'active') {
                 $query->where('is_active', true);
             } else if ($request->status == 'inactive') {
                 $query->where('is_active', false);
             }
+            // Note: 'suspended' will be handled in the frontend as a special case
         }
 
         // Only show non-anonymous users (staff/admin)
@@ -54,10 +55,15 @@ class UserController extends Controller
         // Paginate results
         $users = $query->paginate($request->per_page ?? 10);
 
-        // Add full name and initials to each user
+        // Add full name, initials, and status text to each user
         $users->getCollection()->transform(function ($user) {
             $user->full_name = trim($user->first_name . ' ' . $user->middle_name . ' ' . $user->last_name . ' ' . $user->suffix);
             $user->initials = strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name ?? '', 0, 1));
+            
+            // For suspended users, we'll use a custom field or you can add a suspended_at column
+            // For now, we'll treat all inactive as just "inactive"
+            $user->status_text = $user->is_active ? 'active' : 'inactive';
+            
             return $user;
         });
 
@@ -72,68 +78,63 @@ class UserController extends Controller
     }
 
     /**
- * Store a newly created user.
- */
-public function store(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'first_name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'middle_name' => 'nullable|string|max:255',
-        'suffix' => 'nullable|string|max:50',
-        'email' => 'required|email|unique:users,email',
-        'username' => 'required|string|unique:users,username|max:100', // Add username validation
-        'contact_no' => 'required|string|max:20',
-        'gender' => 'required|in:male,female,other,prefer_not_to_say',
-        'birthdate' => 'required|date',
-        'position' => 'required|string|max:100',
-        'password' => 'required|string|min:8',
-        'profile_img' => 'nullable|image|max:2048'
-    ]);
+     * Store a newly created user.
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'suffix' => 'nullable|string|max:50',
+            'email' => 'required|email|unique:users,email',
+            'username' => 'required|string|unique:users,username|max:100',
+            'contact_no' => 'required|string|max:20',
+            'gender' => 'required|in:male,female,other,prefer_not_to_say',
+            'birthdate' => 'required|date',
+            'position' => 'required|string|max:100',
+            'password' => 'required|string|min:8',
+            'profile_img' => 'nullable|image|max:2048'
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Handle profile image upload
+        $profilePath = null;
+        if ($request->hasFile('profile_img')) {
+            $profilePath = $request->file('profile_img')->store('profiles', 'public');
+        }
+
+        // Create user
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'middle_name' => $request->middle_name,
+            'suffix' => $request->suffix,
+            'email' => $request->email,
+            'username' => $request->username,
+            'contact_no' => $request->contact_no,
+            'gender' => $request->gender,
+            'birthdate' => $request->birthdate,
+            'position' => $request->position,
+            'password' => Hash::make($request->password),
+            'profile_img' => $profilePath,
+            'is_anonymous' => false,
+            'is_active' => true, // Default to active
+            'role_no' => $this->getRoleNoFromPosition($request->position)
+        ]);
+
         return response()->json([
-            'success' => false,
-            'errors' => $validator->errors()
-        ], 422);
+            'success' => true,
+            'message' => 'User created successfully',
+            'user' => $user
+        ]);
     }
-
-    // Handle profile image upload
-    $profilePath = null;
-    if ($request->hasFile('profile_img')) {
-        $profilePath = $request->file('profile_img')->store('profiles', 'public');
-    }
-
-    // Calculate age from birthdate (optional, but don't include in create)
-$birthdate = Carbon::parse($request->birthdate);
-$age = $birthdate->age; // You can still calculate but don't include it
-
-    // Create user
-    $user = User::create([
-        'first_name' => $request->first_name,
-        'last_name' => $request->last_name,
-        'middle_name' => $request->middle_name,
-        'suffix' => $request->suffix,
-        'email' => $request->email,
-        'username' => $request->username, // Make sure this is included
-        'contact_no' => $request->contact_no,
-        'gender' => $request->gender,
-        'birthdate' => $request->birthdate,
-        // 'age' => $age, >>not belong na to kasi naka-auto compute na yung age base sa birthdate bro
-        'position' => $request->position,
-        'password' => Hash::make($request->password),
-        'profile_img' => $profilePath,
-        'is_anonymous' => false,
-        'is_active' => true,
-        'role_no' => $this->getRoleNoFromPosition($request->position)
-    ]);
-
-    return response()->json([
-        'success' => true,
-        'message' => 'User created successfully',
-        'user' => $user
-    ]);
-}
 
     /**
      * Display the specified user.
@@ -151,6 +152,9 @@ $age = $birthdate->age; // You can still calculate but don't include it
 
         $user->full_name = trim($user->first_name . ' ' . $user->middle_name . ' ' . $user->last_name . ' ' . $user->suffix);
         $user->initials = strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name ?? '', 0, 1));
+        
+        // Add status text
+        $user->status_text = $user->is_active ? 'active' : 'inactive';
 
         // Get user stats
         $stats = [
@@ -166,14 +170,12 @@ $age = $birthdate->age; // You can still calculate but don't include it
     }
 
     /**
- * Generate a unique username.
- */
-public function generateUsername(Request $request)
-{
-    try {
+     * Update user status.
+     */
+    public function updateStatus(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string'
+            'status' => 'required|in:active,inactive,suspended'
         ]);
 
         if ($validator->fails()) {
@@ -183,53 +185,93 @@ public function generateUsername(Request $request)
             ], 422);
         }
 
-        $firstName = $request->first_name;
-        $lastName = $request->last_name;
-        
-        // Clean the inputs
-        $firstName = preg_replace('/[^a-zA-Z]/', '', $firstName);
-        $lastName = preg_replace('/[^a-zA-Z]/', '', $lastName);
-        
-        // Generate base username
-        $firstInitial = !empty($firstName) ? strtolower(substr($firstName, 0, 1)) : 'u';
-        $lastNamePart = !empty($lastName) ? strtolower($lastName) : 'ser';
-        
-        $base = $firstInitial . $lastNamePart;
-        
-        // If base is empty, use default
-        if (empty($base)) {
-            $base = 'user';
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Map status to is_active boolean
+        if ($request->status == 'active') {
+            $user->is_active = true;
+        } else {
+            $user->is_active = false;
         }
         
-        $username = $base;
-        $counter = 1;
+        // For suspended status, we'll also set is_active to false
+        // You can add a suspended_at column if you want to track suspensions separately
+        
+        $user->save();
 
-        // Check if username column exists first
-        if (Schema::hasColumn('users', 'username')) {
+        return response()->json([
+            'success' => true,
+            'message' => 'User status updated successfully',
+            'status' => $request->status
+        ]);
+    }
+
+    /**
+     * Generate a unique username.
+     */
+    public function generateUsername(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'required|string',
+                'last_name' => 'required|string'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $firstName = $request->first_name;
+            $lastName = $request->last_name;
+            
+            // Clean the inputs
+            $firstName = preg_replace('/[^a-zA-Z]/', '', $firstName);
+            $lastName = preg_replace('/[^a-zA-Z]/', '', $lastName);
+            
+            // Generate base username
+            $firstInitial = !empty($firstName) ? strtolower(substr($firstName, 0, 1)) : 'u';
+            $lastNamePart = !empty($lastName) ? strtolower($lastName) : 'ser';
+            
+            $base = $firstInitial . $lastNamePart;
+            
+            // If base is empty, use default
+            if (empty($base)) {
+                $base = 'user';
+            }
+            
+            $username = $base;
+            $counter = 1;
+
             while (User::where('username', $username)->exists()) {
                 $username = $base . $counter;
                 $counter++;
             }
-        } else {
-            // If column doesn't exist, just return a random username
-            $username = $base . rand(100, 999);
+
+            return response()->json([
+                'success' => true,
+                'username' => $username
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Username generation error: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => true,
+                'username' => 'user' . rand(1000, 9999)
+            ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'username' => $username
-        ]);
-
-    } catch (\Exception $e) {
-        \Log::error('Username generation error: ' . $e->getMessage());
-        
-        // Return a fallback username
-        return response()->json([
-            'success' => true,
-            'username' => 'user' . rand(1000, 9999)
-        ]);
     }
-}
+
     /**
      * Soft delete user (move to archive).
      */
