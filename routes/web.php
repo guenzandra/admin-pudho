@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Editor\EditorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -194,3 +195,21 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::post('/posts/upload-media', [PostController::class, 'uploadMedia'])->name('posts.upload-media');
+
+
+
+
+////EDITOR PAGE ::: ROUTE////*****
+
+// Add this route for Editor dashboard
+Route::get('/editor/editorDashboard', function () {
+    return view('editor.editorDashboard');
+})->name('editor.editorDashboard');
+
+//Route for Editor Messages
+
+
+///EDITOR CONTROLLER// TEMPORARY LANG!!!!!
+
+// Ito ang tamang route - gamit ang dashboard() method
+Route::get('/editor_dashboard', [EditorController::class, 'dashboard'])->name('editor.editor_dashboard.direct');
