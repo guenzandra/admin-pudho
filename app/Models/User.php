@@ -20,7 +20,7 @@ class User extends Authenticatable
     'suffix',
     'contact_no',
     'email',
-    'username', // Add this line
+    'username', 
     'birthdate',
     'age',
     'gender',
