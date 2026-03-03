@@ -1,3 +1,4 @@
+<!----2026_03_01_162401_add_title_to_posts_table.php--->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
