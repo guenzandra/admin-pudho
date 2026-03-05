@@ -1,4 +1,4 @@
-<!---usermanagement for admin, staff--->
+<!---rseources/views/admin/usermanagement.blade.php--->
 @extends('admin.layout')
 
 @section('content')
@@ -36,10 +36,12 @@
                 <select id="positionFilter" class="px-3 py-1.5 border border-gray-200 rounded-md text-sm outline-none focus:border-red-500 bg-white" onchange="filterTable()">
                     <option value="all">All Positions</option>
                     <option value="Administrator">Administrator</option>
-                    <option value="Manager">Manager</option>
-                    <option value="Supervisor">Supervisor</option>
-                    <option value="Staff">Staff</option>
+                    <option value="HeadOfficer">Head Officer</option>
                     <option value="Editor">Editor</option>
+                    <option value="HousingOfficer">Housing Officer</option>
+                    <option value="ApplicationEvaluator">ApplicationEvaluator</option>
+                    <option value="Staff">Staff</option>
+                    <option value="SiteInspector">Site Inspector</option>
                 </select>
             </div>
 
@@ -210,10 +212,12 @@
                     <select id="position" name="position" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none bg-white" required>
                         <option value="" disabled selected>Select position</option>
                         <option value="Administrator">Administrator</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Supervisor">Supervisor</option>
-                        <option value="Staff">Staff</option>
+                        <option value="HeadOfficer">Head Officer</option>
                         <option value="Editor">Editor</option>
+                        <option value="HousingOfficer">Housing Officer</option>
+                        <option value="ApplicationEvaluator">Application Evaluator</option>
+                        <option value="Staff">Staff</option>
+                        <option value="SiteInspector">Site Inspector</option>
                     </select>
                     <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-position"></div>
                 </div>
@@ -778,8 +782,6 @@
         position: 'all',
         status: 'all'
     };
-    let currentUserId = null;
-    let currentArchiveId = null;
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
@@ -818,7 +820,7 @@
             birthdateInput.max = maxDate.toISOString().split('T')[0];
         }
 
-        // Add real-time validation for email and phone
+        // Add real-time validation
         document.getElementById('email').addEventListener('input', validateEmailField);
         document.getElementById('contact').addEventListener('input', validatePhoneField);
         
@@ -838,15 +840,9 @@
         document.getElementById('position').addEventListener('change', function() {
             clearFieldError('position');
         });
-        document.getElementById('username').addEventListener('input', function() {
-            clearFieldError('username');
-        });
-        document.getElementById('password').addEventListener('input', function() {
-            clearFieldError('password');
-        });
     });
 
-    // Debounce function to limit API calls
+    // Debounce function
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -859,7 +855,7 @@
         };
     }
 
-    // Clear individual field error
+    // Clear field error
     function clearFieldError(field) {
         const errorEl = document.getElementById(`error-${field}`);
         const inputEl = document.querySelector(`[name="${field}"]`);
@@ -874,7 +870,7 @@
         }
     }
 
-    // Validate email field in real-time
+    // Validate email
     function validateEmailField() {
         const email = document.getElementById('email').value;
         const errorEl = document.getElementById('error-email');
@@ -886,8 +882,8 @@
             errorEl.classList.remove('hidden');
             formGroup.classList.add('error');
             return false;
-        } else if (!email.includes('@')) {
-            errorEl.textContent = 'Email must contain @ symbol';
+        } else if (!email.includes('@') || !email.includes('.')) {
+            errorEl.textContent = 'Please enter a valid email address';
             errorEl.classList.remove('hidden');
             formGroup.classList.add('error');
             return false;
@@ -898,14 +894,13 @@
         }
     }
 
-    // Validate phone field in real-time
+    // Validate phone
     function validatePhoneField() {
         const phone = document.getElementById('contact').value;
         const errorEl = document.getElementById('error-contact_no');
         const inputEl = document.getElementById('contact');
         const formGroup = inputEl.closest('.form-group');
         
-        // Remove non-numeric characters
         const numericPhone = phone.replace(/[^0-9]/g, '');
         
         if (!phone) {
@@ -918,11 +913,6 @@
             errorEl.classList.remove('hidden');
             formGroup.classList.add('error');
             return false;
-        } else if (!/^[0-9]+$/.test(phone)) {
-            errorEl.textContent = 'Contact number must contain only numbers';
-            errorEl.classList.remove('hidden');
-            formGroup.classList.add('error');
-            return false;
         } else {
             errorEl.classList.add('hidden');
             formGroup.classList.remove('error');
@@ -930,7 +920,7 @@
         }
     }
 
-    // Toast notification system
+    // Toast notification
     function showToast(message, type = 'success', duration = 3000) {
         const toastContainer = document.getElementById('toastContainer');
         const toastId = 'toast-' + Date.now();
@@ -967,7 +957,6 @@
 
     // Show validation errors
     function showValidationErrors(errors) {
-        // Clear all previous errors
         document.querySelectorAll('.error-message').forEach(el => {
             el.classList.add('hidden');
             el.textContent = '';
@@ -976,7 +965,6 @@
             el.classList.remove('error');
         });
 
-        // Show new errors
         for (let field in errors) {
             const errorEl = document.getElementById(`error-${field}`);
             const inputEl = document.querySelector(`[name="${field}"]`);
@@ -992,7 +980,7 @@
         }
     }
 
-    // Load users from API
+    // Load users
     function loadUsers(page = 1) {
         const params = new URLSearchParams({
             page: page,
@@ -1010,16 +998,18 @@
         })
         .then(response => response.json())
         .then(data => {
-            renderTable(data.users.data);
-            currentPage = data.users.current_page;
-            lastPage = data.users.last_page;
-            totalUsers = data.users.total;
-            
-            document.getElementById('archivedCount').textContent = data.archived_count || 0;
-            
-            updatePagination();
-            document.getElementById('resultCount').innerHTML = 
-                `<i class="bi bi-people me-1"></i> Showing ${data.users.data.length} of ${totalUsers} users`;
+            if (data.success) {
+                renderTable(data.users.data);
+                currentPage = data.users.current_page;
+                lastPage = data.users.last_page;
+                totalUsers = data.users.total;
+                
+                document.getElementById('archivedCount').textContent = data.archived_count || 0;
+                
+                updatePagination();
+                document.getElementById('resultCount').innerHTML = 
+                    `<i class="bi bi-people me-1"></i> Showing ${data.users.data.length} of ${totalUsers} users`;
+            }
         })
         .catch(error => {
             console.error('Error loading users:', error);
@@ -1037,95 +1027,85 @@
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('archivedTotal').textContent = data.stats.total;
-            document.getElementById('pendingDeletion').textContent = data.stats.expired;
+            if (data.success) {
+                document.getElementById('archivedTotal').textContent = data.stats.total;
+                document.getElementById('pendingDeletion').textContent = data.stats.expired;
+            }
         })
         .catch(error => console.error('Error loading archive stats:', error));
     }
 
     // Render table
-function renderTable(users) {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
+    function renderTable(users) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
 
-    users.forEach(user => {
-        // Determine status display based on is_active
-        let statusClass = '';
-        let statusText = '';
-        let statusColor = '';
-        
-        if (user.is_active) {
-            statusClass = 'active';
-            statusText = 'Active';
-            statusColor = 'green';
-        } else {
-            statusClass = 'inactive';
-            statusText = 'Deactivated'; // Changed from 'Inactive' to 'Deactivated'
-            statusColor = 'gray';
-        }
-        
-        // Check if user has profile image
-        const profileImage = user.profile_img ? 
-            `<img src="/storage/${user.profile_img}" class="w-7 h-7 rounded-full object-cover" alt="Profile">` : 
-            `<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-semibold text-xs">${user.initials || 'U'}</div>`;
-        
-        const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-50 transition-colors';
-        row.innerHTML = `
-            <td class="px-4 py-3">
-                <div class="flex items-center gap-2">
-                    ${profileImage}
-                </div>
-            </td>
-            <td class="px-4 py-3">
-                <div class="flex items-center gap-2">
-                    <span class="text-sm">${user.full_name || user.first_name + ' ' + user.last_name}</span>
-                </div>
-            </td>
-            <td class="px-4 py-3 text-sm">
-                <span class="flex items-center gap-1">
-                    <i class="bi bi-briefcase text-gray-400 text-xs"></i>
-                    ${user.position || 'N/A'}
-                </span>
-            </td>
-            <td class="px-4 py-3 text-sm">
-                <span class="flex items-center gap-1">
-                    <i class="bi bi-person-circle text-gray-400 text-xs"></i>
-                    ${user.username || 'N/A'}
-                </span>
-            </td>
-            <td class="px-4 py-3 text-sm">
-                <span class="flex items-center gap-1">
-                    <i class="bi bi-envelope text-gray-400 text-xs"></i>
-                    ${user.email}
-                </span>
-            </td>
-            <td class="px-4 py-3">
-                <span class="status-badge status-${statusClass}">
-                    <i class="bi bi-circle-fill text-${statusColor}-400 text-xs me-1"></i>
-                    ${statusText}
-                </span>
-            </td>
-            <td class="px-4 py-3 relative" style="overflow: visible;">
-                <button class="actions-btn w-8 h-8 bg-gray-100 rounded-lg text-gray-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center" onclick="toggleActionsMenu(this, ${user.user_id})">
-                    <i class="bi bi-three-dots"></i>
-                </button>
-                <div class="actions-menu hidden absolute right-0 bg-white rounded-lg shadow-lg z-50 min-w-[180px] mt-1 border border-gray-200 overflow-hidden" id="menu-${user.user_id}" style="top: 100%; right: 0; margin-top: 4px;">
-                    <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="viewUser(${user.user_id})">
-                        <i class="bi bi-eye text-blue-500 w-4"></i> View Details
+        users.forEach(user => {
+            let statusClass = user.is_active ? 'active' : 'inactive';
+            let statusText = user.is_active ? 'Active' : 'Deactivated';
+            let statusColor = user.is_active ? 'green' : 'gray';
+            
+            const profileImage = user.profile_img ? 
+                `<img src="/storage/${user.profile_img}" class="w-7 h-7 rounded-full object-cover" alt="Profile">` : 
+                `<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-semibold text-xs">${user.initials || 'U'}</div>`;
+            
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50 transition-colors';
+            row.innerHTML = `
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        ${profileImage}
+                    </div>
+                </td>
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm">${user.full_name || user.first_name + ' ' + user.last_name}</span>
+                    </div>
+                </td>
+                <td class="px-4 py-3 text-sm">
+                    <span class="flex items-center gap-1">
+                        <i class="bi bi-briefcase text-gray-400 text-xs"></i>
+                        ${user.position || 'N/A'}
+                    </span>
+                </td>
+                <td class="px-4 py-3 text-sm">
+                    <span class="flex items-center gap-1">
+                        <i class="bi bi-person-circle text-gray-400 text-xs"></i>
+                        ${user.username || 'N/A'}
+                    </span>
+                </td>
+                <td class="px-4 py-3 text-sm">
+                    <span class="flex items-center gap-1">
+                        <i class="bi bi-envelope text-gray-400 text-xs"></i>
+                        ${user.email}
+                    </span>
+                </td>
+                <td class="px-4 py-3">
+                    <span class="status-badge status-${statusClass}">
+                        <i class="bi bi-circle-fill text-${statusColor}-400 text-xs me-1"></i>
+                        ${statusText}
+                    </span>
+                </td>
+                <td class="px-4 py-3 relative" style="overflow: visible;">
+                    <button class="actions-btn w-8 h-8 bg-gray-100 rounded-lg text-gray-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center" onclick="toggleActionsMenu(this, ${user.user_id})">
+                        <i class="bi bi-three-dots"></i>
                     </button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="editUserStatus('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id}, '${user.is_active ? 'active' : 'inactive'}')">
-                        <i class="bi bi-pencil-square text-green-500 w-4"></i> Edit Status
-                    </button>
-                    <button class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 border-t border-gray-200" onclick="openDeleteModal('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id})">
-                        <i class="bi bi-trash text-red-500 w-4"></i> Delete Account
-                    </button>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
-}
+                    <div class="actions-menu hidden absolute right-0 bg-white rounded-lg shadow-lg z-50 min-w-[180px] mt-1 border border-gray-200 overflow-hidden" id="menu-${user.user_id}">
+                        <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="viewUser(${user.user_id})">
+                            <i class="bi bi-eye text-blue-500 w-4"></i> View Details
+                        </button>
+                        <button class="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2" onclick="editUserStatus('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id}, '${user.is_active ? 'active' : 'inactive'}')">
+                            <i class="bi bi-pencil-square text-green-500 w-4"></i> Edit Status
+                        </button>
+                        <button class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 border-t border-gray-200" onclick="openDeleteModal('${user.full_name || user.first_name + ' ' + user.last_name}', ${user.user_id})">
+                            <i class="bi bi-trash text-red-500 w-4"></i> Delete Account
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
 
     // Filter table
     function filterTable() {
@@ -1188,7 +1168,6 @@ function renderTable(users) {
         document.getElementById('addUserForm').reset();
         document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
         
-        // Clear all validation errors
         document.querySelectorAll('.error-message').forEach(el => {
             el.classList.add('hidden');
             el.textContent = '';
@@ -1206,14 +1185,12 @@ function renderTable(users) {
     function previewProfileImage(event) {
         const file = event.target.files[0];
         if (file) {
-            // Check file size (max 2MB)
             if (file.size > 2 * 1024 * 1024) {
                 showToast('Image size should be less than 2MB', 'error');
                 event.target.value = '';
                 return;
             }
             
-            // Check file type
             if (!file.type.startsWith('image/')) {
                 showToast('Please upload an image file', 'error');
                 event.target.value = '';
@@ -1239,8 +1216,7 @@ function renderTable(users) {
             return;
         }
 
-        // Show loading state
-        const generateBtn = event.target;
+        const generateBtn = event.target.closest('button');
         const originalText = generateBtn.innerHTML;
         generateBtn.innerHTML = '<i class="bi bi-hourglass me-2"></i>Generating...';
         generateBtn.disabled = true;
@@ -1257,12 +1233,7 @@ function renderTable(users) {
                 last_name: lastName 
             })
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
                 document.getElementById('username').value = data.username;
@@ -1284,9 +1255,9 @@ function renderTable(users) {
 
     // Generate Password
     function generatePassword() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
         let password = '';
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 12; i++) {
             password += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         document.getElementById('password').value = password;
@@ -1299,10 +1270,8 @@ function renderTable(users) {
         const form = document.getElementById('addUserForm');
         const formData = new FormData(form);
         
-        // Validate all fields
         let hasError = false;
         
-        // Check first name
         const firstName = document.getElementById('first_name').value;
         if (!firstName) {
             document.getElementById('error-first_name').textContent = 'First name is required';
@@ -1311,7 +1280,6 @@ function renderTable(users) {
             hasError = true;
         }
         
-        // Check last name
         const lastName = document.getElementById('last_name').value;
         if (!lastName) {
             document.getElementById('error-last_name').textContent = 'Last name is required';
@@ -1320,7 +1288,6 @@ function renderTable(users) {
             hasError = true;
         }
         
-        // Check gender
         const gender = document.getElementById('gender').value;
         if (!gender) {
             document.getElementById('error-gender').textContent = 'Gender is required';
@@ -1329,57 +1296,13 @@ function renderTable(users) {
             hasError = true;
         }
         
-        // Check birthdate
         const birthdate = document.getElementById('birthdate').value;
         if (!birthdate) {
             document.getElementById('error-birthdate').textContent = 'Birthdate is required';
             document.getElementById('error-birthdate').classList.remove('hidden');
             document.getElementById('birthdate').closest('.form-group').classList.add('error');
             hasError = true;
-        }
-        
-        // Check position
-        const position = document.getElementById('position').value;
-        if (!position) {
-            document.getElementById('error-position').textContent = 'Position is required';
-            document.getElementById('error-position').classList.remove('hidden');
-            document.getElementById('position').closest('.form-group').classList.add('error');
-            hasError = true;
-        }
-        
-        // Check username
-        const username = document.getElementById('username').value;
-        if (!username) {
-            document.getElementById('error-username').textContent = 'Username is required';
-            document.getElementById('error-username').classList.remove('hidden');
-            document.getElementById('username').closest('.form-group').classList.add('error');
-            hasError = true;
-        }
-        
-        // Check password
-        const password = document.getElementById('password').value;
-        if (!password) {
-            document.getElementById('error-password').textContent = 'Password is required';
-            document.getElementById('error-password').classList.remove('hidden');
-            document.getElementById('password').closest('.form-group').classList.add('error');
-            hasError = true;
-        } else if (password.length < 8) {
-            document.getElementById('error-password').textContent = 'Password must be at least 8 characters';
-            document.getElementById('error-password').classList.remove('hidden');
-            document.getElementById('password').closest('.form-group').classList.add('error');
-            hasError = true;
-        }
-        
-        // Validate email
-        const emailValid = validateEmailField();
-        if (!emailValid) hasError = true;
-        
-        // Validate phone
-        const phoneValid = validatePhoneField();
-        if (!phoneValid) hasError = true;
-        
-        // Validate age (must be 18+)
-        if (birthdate) {
+        } else {
             const birthDate = new Date(birthdate);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -1395,12 +1318,46 @@ function renderTable(users) {
             }
         }
         
+        const position = document.getElementById('position').value;
+        if (!position) {
+            document.getElementById('error-position').textContent = 'Position is required';
+            document.getElementById('error-position').classList.remove('hidden');
+            document.getElementById('position').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        const username = document.getElementById('username').value;
+        if (!username) {
+            document.getElementById('error-username').textContent = 'Username is required';
+            document.getElementById('error-username').classList.remove('hidden');
+            document.getElementById('username').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        const password = document.getElementById('password').value;
+        if (!password) {
+            document.getElementById('error-password').textContent = 'Password is required';
+            document.getElementById('error-password').classList.remove('hidden');
+            document.getElementById('password').closest('.form-group').classList.add('error');
+            hasError = true;
+        } else if (password.length < 8) {
+            document.getElementById('error-password').textContent = 'Password must be at least 8 characters';
+            document.getElementById('error-password').classList.remove('hidden');
+            document.getElementById('password').closest('.form-group').classList.add('error');
+            hasError = true;
+        }
+        
+        const emailValid = validateEmailField();
+        if (!emailValid) hasError = true;
+        
+        const phoneValid = validatePhoneField();
+        if (!phoneValid) hasError = true;
+        
         if (hasError) {
             showToast('Please fix the errors in the form', 'error');
             return;
         }
 
-        // Show loading state
         const saveBtn = document.getElementById('saveUserBtn');
         const btnText = saveBtn.querySelector('.btn-text');
         const spinner = saveBtn.querySelector('.loading-spinner');
@@ -1426,7 +1383,6 @@ function renderTable(users) {
                 loadUsers(currentPage);
                 loadArchiveStats();
                 
-                // Reset form
                 document.getElementById('addUserForm').reset();
                 document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
             } else {
@@ -1466,7 +1422,6 @@ function renderTable(users) {
     function moveToArchive() {
         const userId = document.getElementById('deleteUserId').value;
         
-        // Show loading state
         const moveBtn = document.getElementById('moveToArchiveBtn');
         const btnText = moveBtn.querySelector('.btn-text');
         const spinner = moveBtn.querySelector('.loading-spinner');
@@ -1486,7 +1441,7 @@ function renderTable(users) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(`User moved to recycle bin`);
+                showToast('User moved to recycle bin');
                 closeDeleteModal();
                 loadUsers(currentPage);
                 loadArchiveStats();
@@ -1528,9 +1483,11 @@ function renderTable(users) {
         })
         .then(response => response.json())
         .then(data => {
-            renderArchiveTable(data.archived_users);
-            document.getElementById('archivedTotal').textContent = data.stats.total;
-            document.getElementById('pendingDeletion').textContent = data.stats.expired;
+            if (data.success) {
+                renderArchiveTable(data.archived_users);
+                document.getElementById('archivedTotal').textContent = data.stats.total;
+                document.getElementById('pendingDeletion').textContent = data.stats.expired;
+            }
         })
         .catch(error => console.error('Error loading archived users:', error));
     }
@@ -1589,7 +1546,6 @@ function renderTable(users) {
     function restoreUser() {
         const archiveId = document.getElementById('restoreArchiveId').value;
         
-        // Show loading state
         const restoreBtn = document.getElementById('restoreUserBtn');
         const btnText = restoreBtn.querySelector('.btn-text');
         const spinner = restoreBtn.querySelector('.loading-spinner');
@@ -1609,7 +1565,7 @@ function renderTable(users) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(`User restored successfully`);
+                showToast('User restored successfully');
                 closeRestoreModal();
                 loadArchivedUsers();
                 loadUsers(currentPage);
@@ -1646,7 +1602,6 @@ function renderTable(users) {
     function permanentDelete() {
         const archiveId = document.getElementById('permanentDeleteArchiveId').value;
         
-        // Show loading state
         const deleteBtn = document.getElementById('permanentDeleteBtn');
         const btnText = deleteBtn.querySelector('.btn-text');
         const spinner = deleteBtn.querySelector('.loading-spinner');
@@ -1666,7 +1621,7 @@ function renderTable(users) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showToast(`User permanently deleted`);
+                showToast('User permanently deleted');
                 closePermanentDeleteModal();
                 loadArchivedUsers();
                 loadArchiveStats();
@@ -1713,172 +1668,157 @@ function renderTable(users) {
     }
 
     // View User
-function viewUser(userId) {
-    closeAllDropdowns();
-    
-    fetch(`/admin/users/${userId}`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const user = data.user;
-        const stats = data.stats;
+    function viewUser(userId) {
+        closeAllDropdowns();
         
-        // Handle profile image
-        const profileImg = document.getElementById('viewProfileImg');
-        const initials = document.getElementById('avatarInitials');
-        
-        if (user.profile_img) {
-            profileImg.src = `/storage/${user.profile_img}`;
-            profileImg.classList.remove('hidden');
-            initials.classList.add('hidden');
-        } else {
-            profileImg.classList.add('hidden');
-            initials.classList.remove('hidden');
-            initials.textContent = user.initials || 'U';
-        }
-        
-        document.getElementById('viewFullName').textContent = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
-        document.getElementById('viewPosition').innerHTML = `<i class="bi bi-briefcase me-1"></i>${user.position || 'N/A'}`;
-
-        let statusColor = '';
-        let statusText = '';
-        
-        if (user.is_active) {
-            statusColor = 'green';
-            statusText = 'Active';
-        } else {
-            statusColor = 'gray';
-            statusText = 'Deactivated';
-        }
-        
-        document.getElementById('viewStatusBadge').innerHTML = `<i class="bi bi-circle-fill text-${statusColor}-300"></i> ${statusText}`;
-
-        document.getElementById('viewUsername').textContent = user.username || 'N/A';
-        document.getElementById('viewEmail').textContent = user.email;
-        document.getElementById('viewContact').textContent = user.contact_no || 'N/A';
-        document.getElementById('viewGender').textContent = user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1).replace('_', ' ') : 'N/A';
-
-        if (user.birthdate) {
-            const birthDate = new Date(user.birthdate);
-            document.getElementById('viewBirthdate').textContent = birthDate.toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric'
-            });
-            
-            // Calculate age
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
+        fetch(`/admin/users/${userId}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
             }
-            document.getElementById('viewAge').textContent = age;
-        } else {
-            document.getElementById('viewBirthdate').textContent = 'N/A';
-            document.getElementById('viewAge').textContent = 'N/A';
-        }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const user = data.user;
+                const stats = data.stats;
+                
+                const profileImg = document.getElementById('viewProfileImg');
+                const initials = document.getElementById('avatarInitials');
+                
+                if (user.profile_img) {
+                    profileImg.src = `/storage/${user.profile_img}`;
+                    profileImg.classList.remove('hidden');
+                    initials.classList.add('hidden');
+                } else {
+                    profileImg.classList.add('hidden');
+                    initials.classList.remove('hidden');
+                    initials.textContent = user.initials || 'U';
+                }
+                
+                document.getElementById('viewFullName').textContent = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
+                document.getElementById('viewPosition').innerHTML = `<i class="bi bi-briefcase me-1"></i>${user.position || 'N/A'}`;
 
-        document.getElementById('viewDateJoined').textContent = stats.date_joined || 'N/A';
-        document.getElementById('viewLastLogin').textContent = stats.last_login || 'N/A';
+                let statusColor = user.is_active ? 'green' : 'gray';
+                let statusText = user.is_active ? 'Active' : 'Deactivated';
+                
+                document.getElementById('viewStatusBadge').innerHTML = `<i class="bi bi-circle-fill text-${statusColor}-300"></i> ${statusText}`;
 
-        document.getElementById('viewUserModal').classList.add('show');
-    })
-    .catch(error => {
-        console.error('Error loading user details:', error);
-        showToast('Error loading user details', 'error');
-    });
-}
+                document.getElementById('viewUsername').textContent = user.username || 'N/A';
+                document.getElementById('viewEmail').textContent = user.email;
+                document.getElementById('viewContact').textContent = user.contact_no || 'N/A';
+                document.getElementById('viewGender').textContent = user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1).replace('_', ' ') : 'N/A';
+
+                if (user.birthdate) {
+                    const birthDate = new Date(user.birthdate);
+                    document.getElementById('viewBirthdate').textContent = birthDate.toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+                    
+                    const today = new Date();
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    document.getElementById('viewAge').textContent = age;
+                } else {
+                    document.getElementById('viewBirthdate').textContent = 'N/A';
+                    document.getElementById('viewAge').textContent = 'N/A';
+                }
+
+                document.getElementById('viewDateJoined').textContent = stats.date_joined || 'N/A';
+                document.getElementById('viewLastLogin').textContent = stats.last_login || 'N/A';
+
+                document.getElementById('viewUserModal').classList.add('show');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading user details:', error);
+            showToast('Error loading user details', 'error');
+        });
+    }
 
     function closeViewModal() {
         document.getElementById('viewUserModal').classList.remove('show');
     }
 
     // Edit Status
-const editStatusModal = document.getElementById('editStatusModal');
+    const editStatusModal = document.getElementById('editStatusModal');
 
-function editUserStatus(userName, userId, currentStatus) {
-    closeAllDropdowns();
-    document.getElementById('statusUserName').textContent = userName;
-    document.getElementById('statusUserId').value = userId;
-    document.getElementById('currentStatus').value = currentStatus;
-    
-    // Clear selected states
-    document.querySelectorAll('.status-card').forEach(card => {
-        card.classList.remove('selected');
-        card.querySelector('input[type="radio"]').checked = false;
-    });
-    
-    // Select current status
-    const currentCard = document.querySelector(`.status-card[data-status="${currentStatus}"]`);
-    if (currentCard) {
-        currentCard.classList.add('selected');
-        currentCard.querySelector('input[type="radio"]').checked = true;
+    function editUserStatus(userName, userId, currentStatus) {
+        closeAllDropdowns();
+        document.getElementById('statusUserName').textContent = userName;
+        document.getElementById('statusUserId').value = userId;
+        document.getElementById('currentStatus').value = currentStatus;
+        
+        document.querySelectorAll('.status-card').forEach(card => {
+            card.classList.remove('selected');
+            card.querySelector('input[type="radio"]').checked = false;
+        });
+        
+        const currentCard = document.querySelector(`.status-card[data-status="${currentStatus}"]`);
+        if (currentCard) {
+            currentCard.classList.add('selected');
+            currentCard.querySelector('input[type="radio"]').checked = true;
+        }
+        
+        editStatusModal.classList.add('show');
     }
-    
-    editStatusModal.classList.add('show');
-}
 
     function closeEditStatusModal() {
         editStatusModal.classList.remove('show');
     }
 
     function updateStatus() {
-    const selectedRadio = document.querySelector('input[name="userStatus"]:checked');
-    const userId = document.getElementById('statusUserId').value;
-    
-    if (!selectedRadio) {
-        showToast('Please select a status', 'error');
-        return;
-    }
-    
-    const selectedStatus = selectedRadio.value;
-    
-    // Show loading state
-    const updateBtn = document.getElementById('updateStatusBtn');
-    const btnText = updateBtn.querySelector('.btn-text');
-    const spinner = updateBtn.querySelector('.loading-spinner');
-    const originalText = btnText.textContent;
-    
-    btnText.textContent = 'Updating...';
-    spinner.classList.remove('hidden');
-    updateBtn.disabled = true;
-    
-    fetch(`/admin/users/${userId}/status`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ status: selectedStatus })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            let displayStatus = selectedStatus;
-            if (selectedStatus === 'suspended') {
-                displayStatus = 'inactive'; // Map suspended to inactive for display
-            }
-            showToast(`Status updated to ${selectedStatus}`);
-            closeEditStatusModal();
-            loadUsers(currentPage);
-        } else {
-            showToast(data.message || 'Error updating status', 'error');
+        const selectedRadio = document.querySelector('input[name="userStatus"]:checked');
+        const userId = document.getElementById('statusUserId').value;
+        
+        if (!selectedRadio) {
+            showToast('Please select a status', 'error');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error updating status:', error);
-        showToast('Error updating status', 'error');
-    })
-    .finally(() => {
-        btnText.textContent = originalText;
-        spinner.classList.add('hidden');
-        updateBtn.disabled = false;
-    });
-}
+        
+        const selectedStatus = selectedRadio.value;
+        
+        const updateBtn = document.getElementById('updateStatusBtn');
+        const btnText = updateBtn.querySelector('.btn-text');
+        const spinner = updateBtn.querySelector('.loading-spinner');
+        const originalText = btnText.textContent;
+        
+        btnText.textContent = 'Updating...';
+        spinner.classList.remove('hidden');
+        updateBtn.disabled = true;
+        
+        fetch(`/admin/users/${userId}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ status: selectedStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(`Status updated to ${selectedStatus}`);
+                closeEditStatusModal();
+                loadUsers(currentPage);
+            } else {
+                showToast(data.message || 'Error updating status', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating status:', error);
+            showToast('Error updating status', 'error');
+        })
+        .finally(() => {
+            btnText.textContent = originalText;
+            spinner.classList.add('hidden');
+            updateBtn.disabled = false;
+        });
+    }
 </script>
 
 @endsection

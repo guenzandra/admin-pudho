@@ -1,3 +1,4 @@
+<!----database/migrations/2026_02_27_014417_add_username_to_users_table--->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +17,7 @@ return new class extends Migration
             Schema::table('users', function (Blueprint $table) {
                 $table->string('username', 100)->unique()->nullable()->after('email');
             });
-            
+             
             // Log success
             \Illuminate\Support\Facades\Log::info('Username column added to users table');
         } else {

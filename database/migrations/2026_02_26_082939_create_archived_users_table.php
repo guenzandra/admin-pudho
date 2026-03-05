@@ -1,3 +1,4 @@
+<!---database/migrations/2026_02_26_082939_create_archived_users_table---->
 <?php
 
 use Illuminate\Database\Migrations\Migration;

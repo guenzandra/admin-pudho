@@ -50,7 +50,7 @@
         </a>
 
         <!-- CMS Section -->
-        <div>
+        <!-- <div>
           <div onclick="toggleDropdown('cmsDropdown', this)" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group cursor-pointer">
             <div class="flex items-center space-x-3">
               <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,15 +63,15 @@
             </svg>
           </div>
           <div id="cmsDropdown" class="hidden pl-11 space-y-1 mt-1">
-            <a href="{{ route('allpost') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">All Post</a>
-            <a href="{{ route('addpost') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Add Post</a>
-            <a href="{{ route('categories') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Categories</a>
-            <a href="{{ route('media') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Media Library</a>
+            <a href="{{ route('admin.allpost') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">All Post</a>
+            <a href="{{ route('admin.addpost') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Add Post</a>
+            <a href="{{ route('admin.categories') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Categories</a>
+            <a href="{{ route('admin.media') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Media Library</a>
           </div>
-        </div>
+        </div> -->
 
         <!-- File Management -->
-        <a href="{{ route('filemanagement') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
+        <a href="{{ route('admin.filemanagement') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
           <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
@@ -79,7 +79,7 @@
         </a>
 
         <!-- Residents -->
-        <a href="{{ route('residents') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
+        <a href="{{ route('admin.residents') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
           <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
@@ -87,7 +87,7 @@
         </a>
 
         <!-- Check Missing Files -->
-        <a href="{{ route('cmissingfiles') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
+        <a href="{{ route('admin.cmissingfiles') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
           <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -108,9 +108,10 @@
             </svg>
           </div>
           <div id="squattingDropdown" class="hidden pl-11 space-y-1 mt-1">
-            <a href="{{ route('reports') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Reports</a>
-            <a href="{{ route('investigation') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Investigation</a>
-            <a href="{{ route('mapview') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Map View</a>
+            <a href="{{ route('admin.overview') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Overview</a>
+            <a href="{{ route('admin.reports') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Reports</a>
+            <a href="{{ route('admin.investigation') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Investigation</a>
+            <a href="{{ route('admin.mapview') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Map View</a>
           </div>
         </div>
 
@@ -132,9 +133,9 @@
               </svg>
             </div>
             <div id="messagesDropdown" class="hidden pl-11 space-y-1 mt-1">
-              <a href="{{ route('inbox') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Inbox</a>
-              <a href="{{ route('sent') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Sent</a>
-              <a href="{{ route('archived') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Archived</a>
+              <a href="{{ route('admin.inbox') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Inbox</a>
+              <a href="{{ route('admin.sent') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Sent</a>
+              <a href="{{ route('admin.archived') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Archived</a>
             </div>
           </div>
 
@@ -152,14 +153,14 @@
               </svg>
             </div>
             <div id="faqsDropdown" class="hidden pl-11 space-y-1 mt-1">
-              <a href="{{ route('pending') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Pending Questions</a>
-              <a href="{{ route('answered') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Answered</a>
+              <a href="{{ route('admin.pending') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Pending Questions</a>
+              <a href="{{ route('admin.answered') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Answered</a>
             </div>
           </div>
         </div>
 
         <!-- User Management -->
-        <a href="{{ route('usermanagement') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
+        <a href="{{ route('admin.usermanagement') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
           <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
@@ -167,7 +168,7 @@
         </a>
 
         <!-- Reports & Analytics -->
-        <a href="{{ route('reportsAnalytics') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
+        <a href="{{ route('admin.reportsAnalytics') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition duration-200 group">
           <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
@@ -189,11 +190,11 @@
             </svg>
           </div>
           <div id="settingsDropdown" class="hidden pl-11 space-y-1 mt-1">
-            <a href="{{ route('general') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">General</a>
-            <a href="{{ route('help') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Security</a>
-            <a href="{{ route('notifications') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Notifications</a>
-            <a href="{{ route('logs') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Audit Logs</a>
-            <a href="{{ route('security') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Help</a>
+            <a href="{{ route('admin.general') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">General</a>
+            <a href="{{ route('admin.help') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Security</a>
+            <a href="{{ route('admin.notifications') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Notifications</a>
+            <a href="{{ route('admin.logs') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Audit Logs</a>
+            <a href="{{ route('admin.security') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-lg sidebar-submenu">Help</a>
           </div>
         </div>
       </div>
@@ -425,7 +426,7 @@
               <!-- Red top accent for dropdown -->
               <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-400 to-red-600 rounded-t-lg"></div>
 
-              <a href="{{ route('profile') }}" class="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 group">
+              <a href="{{ route('admin.profile') }}" class="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 group">
                 <svg class="w-4 h-4 text-gray-400 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>

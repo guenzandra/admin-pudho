@@ -7,8 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -43,7 +44,6 @@ class UserController extends Controller
             } else if ($request->status == 'inactive') {
                 $query->where('is_active', false);
             }
-            // Note: 'suspended' will be handled in the frontend as a special case
         }
 
         // Only show non-anonymous users (staff/admin)
@@ -59,11 +59,7 @@ class UserController extends Controller
         $users->getCollection()->transform(function ($user) {
             $user->full_name = trim($user->first_name . ' ' . $user->middle_name . ' ' . $user->last_name . ' ' . $user->suffix);
             $user->initials = strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name ?? '', 0, 1));
-            
-            // For suspended users, we'll use a custom field or you can add a suspended_at column
-            // For now, we'll treat all inactive as just "inactive"
             $user->status_text = $user->is_active ? 'active' : 'inactive';
-            
             return $user;
         });
 
@@ -91,7 +87,7 @@ class UserController extends Controller
             'username' => 'required|string|unique:users,username|max:100',
             'contact_no' => 'required|string|max:20',
             'gender' => 'required|in:male,female,other,prefer_not_to_say',
-            'birthdate' => 'required|date',
+            'birthdate' => 'required|date|before:-18 years',
             'position' => 'required|string|max:100',
             'password' => 'required|string|min:8',
             'profile_img' => 'nullable|image|max:2048'
@@ -125,7 +121,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'profile_img' => $profilePath,
             'is_anonymous' => false,
-            'is_active' => true, // Default to active
+            'is_active' => true,
             'role_no' => $this->getRoleNoFromPosition($request->position)
         ]);
 
@@ -152,14 +148,12 @@ class UserController extends Controller
 
         $user->full_name = trim($user->first_name . ' ' . $user->middle_name . ' ' . $user->last_name . ' ' . $user->suffix);
         $user->initials = strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name ?? '', 0, 1));
-        
-        // Add status text
         $user->status_text = $user->is_active ? 'active' : 'inactive';
 
         // Get user stats
         $stats = [
             'date_joined' => $user->created_at ? $user->created_at->format('F d, Y') : 'N/A',
-            'last_login' => $user->last_login_at ? Carbon::parse($user->last_login_at)->format('F d, Y') : 'Never'
+            'last_login' => $user->last_login_at ? Carbon::parse($user->last_login_at)->format('F d, Y h:i A') : 'Never'
         ];
 
         return response()->json([
@@ -175,7 +169,7 @@ class UserController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:active,inactive,suspended'
+            'status' => 'required|in:active,inactive'
         ]);
 
         if ($validator->fails()) {
@@ -194,16 +188,7 @@ class UserController extends Controller
             ], 404);
         }
 
-        // Map status to is_active boolean
-        if ($request->status == 'active') {
-            $user->is_active = true;
-        } else {
-            $user->is_active = false;
-        }
-        
-        // For suspended status, we'll also set is_active to false
-        // You can add a suspended_at column if you want to track suspensions separately
-        
+        $user->is_active = ($request->status == 'active');
         $user->save();
 
         return response()->json([
@@ -231,20 +216,14 @@ class UserController extends Controller
                 ], 422);
             }
 
-            $firstName = $request->first_name;
-            $lastName = $request->last_name;
+            $firstName = preg_replace('/[^a-zA-Z]/', '', $request->first_name);
+            $lastName = preg_replace('/[^a-zA-Z]/', '', $request->last_name);
             
-            // Clean the inputs
-            $firstName = preg_replace('/[^a-zA-Z]/', '', $firstName);
-            $lastName = preg_replace('/[^a-zA-Z]/', '', $lastName);
-            
-            // Generate base username
             $firstInitial = !empty($firstName) ? strtolower(substr($firstName, 0, 1)) : 'u';
             $lastNamePart = !empty($lastName) ? strtolower($lastName) : 'ser';
             
             $base = $firstInitial . $lastNamePart;
             
-            // If base is empty, use default
             if (empty($base)) {
                 $base = 'user';
             }
@@ -263,7 +242,7 @@ class UserController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error('Username generation error: ' . $e->getMessage());
+            Log::error('Username generation error: ' . $e->getMessage());
             
             return response()->json([
                 'success' => true,
@@ -286,7 +265,7 @@ class UserController extends Controller
             ], 404);
         }
 
-        $user->delete(); // Soft delete
+        $user->delete();
 
         return response()->json([
             'success' => true,
@@ -366,8 +345,8 @@ class UserController extends Controller
         }
 
         // Delete profile image if exists
-        if ($user->profile_img && \Storage::disk('public')->exists($user->profile_img)) {
-            \Storage::disk('public')->delete($user->profile_img);
+        if ($user->profile_img && Storage::disk('public')->exists($user->profile_img)) {
+            Storage::disk('public')->delete($user->profile_img);
         }
 
         $user->forceDelete();
@@ -388,8 +367,8 @@ class UserController extends Controller
             ->get();
 
         foreach ($expiredUsers as $user) {
-            if ($user->profile_img && \Storage::disk('public')->exists($user->profile_img)) {
-                \Storage::disk('public')->delete($user->profile_img);
+            if ($user->profile_img && Storage::disk('public')->exists($user->profile_img)) {
+                Storage::disk('public')->delete($user->profile_img);
             }
             $user->forceDelete();
         }
@@ -407,9 +386,13 @@ class UserController extends Controller
     {
         return match ($position) {
             'Administrator' => 1,
-            'Editor' => 2,
-            'Staff' => 3,
-            default => 3,
+            'HeadOfficer' => 2,
+            'Editor' => 3,
+            'HousingOfficer' => 4,
+            'ApplicationEvaluator' => 5,
+            'Staff' => 6,
+            'SiteInspector' => 7,
+            default => 6,
         };
     }
 }

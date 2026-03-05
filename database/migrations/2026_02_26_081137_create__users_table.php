@@ -1,4 +1,4 @@
-<!--2026_02_26_081137_create__users_table--->
+<!--database/migrations/2026_02_26_081137_create__users_table--->
 
 <?php
 
