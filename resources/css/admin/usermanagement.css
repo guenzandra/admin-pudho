@@ -1,0 +1,152 @@
+/*resources/css/admin/usermanagement.css*/
+
+.modal.show {
+    display: flex;
+}
+
+.actions-menu.show {
+    display: block;
+}
+
+.status-card.selected {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+.status-card.selected .selected-indicator {
+    display: block !important;
+}
+
+.status-badge {
+    @apply px-2 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
+}
+
+.status-active {
+    @apply bg-green-100 text-green-700;
+}
+
+.status-inactive {
+    @apply bg-gray-100 text-gray-700;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.actions-menu.show {
+    animation: slideDown 0.2s ease;
+}
+
+.modal.show .modal-content {
+    animation: slideUp 0.3s ease;
+}
+
+.overflow-visible {
+    overflow: visible !important;
+}
+
+td.relative {
+    position: relative;
+    overflow: visible;
+}
+
+.actions-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    z-index: 100;
+    min-width: 180px;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+tr {
+    overflow: visible;
+}
+
+.modal {
+    z-index: 1000;
+}
+
+/* Toast animations */
+.toast-item {
+    animation: slideInRight 0.3s ease forwards;
+}
+
+.toast-item.hide {
+    animation: slideOutRight 0.3s ease forwards;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(100%);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 0;
+    }
+}
+
+/* Form validation styles */
+.form-group.error input,
+.form-group.error select {
+    border-color: #ef4444;
+}
+
+.error-message {
+    color: #ef4444;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Button loading state */
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}

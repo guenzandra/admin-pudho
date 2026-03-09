@@ -185,23 +185,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     
     // ============ SETTINGS ROUTES ============
     Route::get('/general', function () {
-        return view('admin.settingsPudho.general');
+        return view('admin.settingPudho.general');
     })->name('general');
     
     Route::get('/security', function () {
-        return view('admin.settingsPudho.security');
+        return view('admin.settingPudho.security');
     })->name('security');
     
     Route::get('/logs', function () {
-        return view('admin.settingsPudho.logs');
+        return view('admin.settingPudho.logs');
     })->name('logs');
     
     Route::get('/notifications', function () {
-        return view('admin.settingsPudho.notifications');
+        return view('admin.settingPudho.notifications');
     })->name('notifications');
     
     Route::get('/help', function () {
-        return view('admin.settingsPudho.help');
+        return view('admin.settingPudho.help');
     })->name('help');
 });
 
@@ -235,4 +235,52 @@ Route::get('/welcome', function () {
 // Fallback
 Route::fallback(function () {
     return redirect()->route('admin.login');
+});
+
+
+
+///TESTIN
+use App\Models\Report;
+
+Route::get('/test-db-connection', function() {
+    try {
+        // Test first database (pudho_db)
+        $firstDB = DB::connection('mysql')->getPdo();
+        
+        // Test second database (test_reports)
+        $secondDB = DB::connection('mysql_second')->getPdo();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Both databases connected successfully!',
+            'first_db' => 'pudho_db is connected',
+            'second_db' => 'test_reports is connected'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
+});
+
+//test route lang kung keribels
+Route::get('/test-reports', function() {
+    try {
+        // Try to get reports from second database
+        $reports = DB::connection('mysql_second')
+                     ->table('reports')
+                     ->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'total_reports' => $reports->count(),
+            'reports' => $reports
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+    }
 });
