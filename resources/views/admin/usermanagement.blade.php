@@ -38,15 +38,77 @@
             <div class="w-full sm:w-auto flex items-center gap-2">
                 <i class="bi bi-funnel text-gray-400 text-xs"></i>
                 <label class="text-gray-600 text-sm whitespace-nowrap">Position:</label>
-                <select id="positionFilter" class="flex-1 sm:w-auto px-3 py-1.5 border border-gray-200 rounded-md text-sm outline-none focus:border-red-500 bg-white" onchange="filterTable()">
-                    <option value="all">All</option>
-                    <option value="Administrator">Admin</option>
-                    <option value="HeadOfficer">Head</option>
-                    <option value="Editor">Editor</option>
-                    <option value="HousingOfficer">Housing</option>
-                    <option value="ApplicationEvaluator">Evaluator</option>
-                    <option value="Staff">Staff</option>
-                    <option value="SiteInspector">Inspector</option>
+                <select id="positionFilter" class="flex-1 sm:w-64 px-3 py-1.5 border border-gray-200 rounded-md text-sm outline-none focus:border-red-500 bg-white" onchange="filterTable()">
+                    <option value="all">All Positions</option>
+
+                    <optgroup label="LEADERSHIP & MANAGEMENT">
+                        <option value="Administrator">Administrator</option>
+                        <option value="Action Officer for Urban Development and Housing">Action Officer</option>
+                        <option value="HeadOfficer">Head Officer</option>
+                        <option value="Administrative Officer III">Administrative Officer III</option>
+                    </optgroup>
+
+                    <optgroup label="ADMINISTRATIVE & GENERAL SERVICES">
+                        <option value="Housing and Homesite Regulation Officer I">Housing and Homesite Regulation Officer I</option>
+                        <option value="Administrative Assistant II">Administrative Assistant II</option>
+                        <option value="Administrative Aide VI">Administrative Aide VI (Clerk III)</option>
+                        <option value="Administrative Aide IV">Administrative Aide IV (Bookbinder II)</option>
+                        <option value="Administrative Aide III">Administrative Aide III</option>
+                        <option value="Administrative Aide I">Administrative Aide I</option>
+                        <option value="Administrative Aide I (Detailed)">Administrative Aide I (Detailed)</option>
+                        <option value="Administrative Aide I (Casual)">Administrative Aide I (Casual)</option>
+                        <option value="Job Order - Admin">Job Order</option>
+                    </optgroup>
+
+                    <optgroup label="OPERATIONS & FIELD WORK - DISTRICT I">
+                        <option value="Job Order - San Pedro">Job Order (San Pedro)</option>
+                        <option value="Job Order - Biñan">Job Order (Biñan)</option>
+                    </optgroup>
+
+                    <optgroup label="OPERATIONS & FIELD WORK - DISTRICT II">
+                        <option value="Resettlement and Homeowners Affairs Coordinator">Resettlement Coordinator (Calamba)</option>
+                        <option value="Administrative Aide I - Calamba">Administrative Aide I (Calamba)</option>
+                        <option value="Job Order - Calamba">Job Order (Calamba)</option>
+                        <option value="Job Order - Cabuyao">Job Order (Cabuyao)</option>
+                        <option value="Job Order - Los Baños">Job Order (Los Baños & Bay)</option>
+                    </optgroup>
+
+                    <optgroup label="OPERATIONS & FIELD WORK - DISTRICT III">
+                        <option value="Administrative Aide IV">Administrative Aide IV (Bookbinder II)</option>
+                        <option value="Administrative Aide I (Casual) - District III">Administrative Aide I (Casual)</option>
+                    </optgroup>
+
+                    <optgroup label="OPERATIONS & FIELD WORK - DISTRICT IV">
+                        <option value="Administrative Aide I - District IV-A">Administrative Aide I (District IV-A)</option>
+                        <option value="Administrative Aide I - District IV-B">Administrative Aide I (District IV-B)</option>
+                        <option value="Community Development Assistant 1">Community Development Assistant I (District IV-B)</option>
+                    </optgroup>
+
+                    <optgroup label="TECHNICAL & SPECIAL PROJECTS">
+                        <option value="Community Development Assistant I">Community Development Assistant I</option>
+                        <option value="Administrative Aide VI">Administrative Aide VI </option>
+                        <option value="Community Affairs Assistant I">Community Affairs Assistant I</option>
+                        <option value="Administrative Aide I (Casual) - Technical">Administrative Aide I (Casual)</option>
+                        <option value="Administrative Officer III">Administrative Officer III (Detailed)</option>
+                        <option value="Architect IV">Architect IV (Detailed)</option>
+                    </optgroup>
+
+                    <optgroup label="INSTITUTIONAL RELATIONS">
+                        <option value="Housing and Homesite Regulation Officer III">Housing and Homesite Regulation Officer III</option>
+                    </optgroup>
+
+                    <optgroup label="MEDIA & COMMUNICATIONS">
+                        <option value="Editor">Editor</option>
+                        <option value="Job Order - Media">Job Order (Media & Communications)</option>
+                    </optgroup>
+
+                    <optgroup label="GENERAL CLASSIFICATIONS">
+                        <option value="Staff">General Staff</option>
+                        <option value="Job Order">Job Order</option>
+                        <option value="Contract of Service">Contract of Service</option>
+                        <option value="ApplicationEvaluator">Application Evaluator</option>
+                        <option value="SiteInspector">Site Inspector</option>
+                    </optgroup>
                 </select>
             </div>
 
@@ -66,7 +128,7 @@
         </div>
 
         <!-- Table Container - Horizontal scroll on mobile -->
-        <div class="overflow-x-auto rounded-lg border border-gray-200 -mx-4 sm:mx-0">
+        <div class="overflow-x-auto rounded-lg border border-gray-200 -mx-4 sm:mx-0" style="overflow: visible;">
             <div class="inline-block min-w-full align-middle">
                 <table class="min-w-full divide-y divide-gray-200" id="userTable">
                     <thead class="bg-gray-50">
@@ -225,13 +287,75 @@
                         </label>
                         <select id="position" name="position" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none bg-white" required>
                             <option value="" disabled selected>Select position</option>
-                            <option value="Administrator">Administrator</option>
-                            <option value="HeadOfficer">Head Officer</option>
-                            <option value="Editor">Editor</option>
-                            <option value="HousingOfficer">Housing Officer</option>
-                            <option value="ApplicationEvaluator">Application Evaluator</option>
-                            <option value="Staff">Staff</option>
-                            <option value="SiteInspector">Site Inspector</option>
+
+                            <optgroup label="LEADERSHIP & MANAGEMENT">
+                                <option value="Administrator">Administrator</option>
+                                <option value="Action Officer for Urban Development and Housing">Action Officer (The Boss)</option>
+                                <option value="HeadOfficer">Head Officer</option>
+                                <option value="Administrative Officer III">Administrative Officer III (Detailed)</option>
+                            </optgroup>
+
+                            <optgroup label="ADMINISTRATIVE & GENERAL SERVICES">
+                                <option value="Housing and Homesite Regulation Officer I">Housing and Homesite Regulation Officer I</option>
+                                <option value="Administrative Assistant II">Administrative Assistant II</option>
+                                <option value="Administrative Aide VI">Administrative Aide VI (Clerk III)</option>
+                                <option value="Administrative Aide IV">Administrative Aide IV (Bookbinder II)</option>
+                                <option value="Administrative Aide III">Administrative Aide III</option>
+                                <option value="Administrative Aide I">Administrative Aide I</option>
+                                <option value="Administrative Aide I (Detailed)">Administrative Aide I (Detailed)</option>
+                                <option value="Administrative Aide I (Casual)">Administrative Aide I (Casual)</option>
+                                <option value="Job Order - Admin">Job Order (Admin Services)</option>
+                            </optgroup>
+
+                            <optgroup label="OPERATIONS & FIELD WORK - DISTRICT I">
+                                <option value="Job Order - San Pedro">Job Order (San Pedro)</option>
+                                <option value="Job Order - Biñan">Job Order (Biñan)</option>
+                            </optgroup>
+
+                            <optgroup label="OPERATIONS & FIELD WORK - DISTRICT II">
+                                <option value="Resettlement and Homeowners Affairs Coordinator">Resettlement Coordinator (Calamba)</option>
+                                <option value="Administrative Aide I - Calamba">Administrative Aide I (Calamba)</option>
+                                <option value="Job Order - Calamba">Job Order (Calamba)</option>
+                                <option value="Job Order - Cabuyao">Job Order (Cabuyao)</option>
+                                <option value="Job Order - Los Baños">Job Order (Los Baños & Bay)</option>
+                            </optgroup>
+
+                            <optgroup label="OPERATIONS & FIELD WORK - DISTRICT III">
+                                <option value="Administrative Aide IV - District III">Administrative Aide IV (Bookbinder II) - District III</option>
+                                <option value="Administrative Aide I (Casual) - District III">Administrative Aide I (Casual) - District III</option>
+                            </optgroup>
+
+                            <optgroup label="OPERATIONS & FIELD WORK - DISTRICT IV">
+                                <option value="Administrative Aide I - District IV-A">Administrative Aide I (District IV-A)</option>
+                                <option value="Administrative Aide I - District IV-B">Administrative Aide I (District IV-B)</option>
+                                <option value="Community Development Assistant 1 - District IV-B">Community Development Assistant I (District IV-B)</option>
+                            </optgroup>
+
+                            <optgroup label="TECHNICAL & SPECIAL PROJECTS">
+                                <option value="Community Development Assistant I - Technical">Community Development Assistant I</option>
+                                <option value="Administrative Aide VI - Technical">Administrative Aide VI (Clerk III)</option>
+                                <option value="Community Affairs Assistant I">Community Affairs Assistant I</option>
+                                <option value="Administrative Aide I (Casual) - Technical">Administrative Aide I (Casual)</option>
+                                <option value="Administrative Officer III - Technical">Administrative Officer III (Detailed)</option>
+                                <option value="Architect IV">Architect IV (Detailed)</option>
+                            </optgroup>
+
+                            <optgroup label="INSTITUTIONAL RELATIONS">
+                                <option value="Housing and Homesite Regulation Officer III">Housing and Homesite Regulation Officer III</option>
+                            </optgroup>
+
+                            <optgroup label="MEDIA & COMMUNICATIONS">
+                                <option value="Editor">Editor</option>
+                                <option value="Job Order - Media">Job Order (Media & Communications)</option>
+                            </optgroup>
+
+                            <optgroup label="GENERAL CLASSIFICATIONS">
+                                <option value="Staff">General Staff</option>
+                                <option value="Job Order">Job Order</option>
+                                <option value="Contract of Service">Contract of Service</option>
+                                <option value="ApplicationEvaluator">Application Evaluator</option>
+                                <option value="SiteInspector">Site Inspector</option>
+                            </optgroup>
                         </select>
                         <div class="text-red-500 text-xs mt-1 hidden error-message" id="error-position"></div>
                     </div>
@@ -772,15 +896,23 @@
     }
 
     .status-badge {
-        @apply px-2 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
     }
 
     .status-active {
-        @apply bg-green-100 text-green-700;
+        background-color: #d1fae5;
+        color: #047857;
     }
 
     .status-inactive {
-        @apply bg-gray-100 text-gray-700;
+        background-color: #f3f4f6;
+        color: #4b5563;
     }
 
     @keyframes slideDown {
@@ -788,6 +920,7 @@
             opacity: 0;
             transform: translateY(-10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -799,6 +932,7 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -809,10 +943,21 @@
         animation: slideDown 0.2s ease;
     }
 
-    .modal.show .modal-content {
-        animation: slideUp 0.3s ease;
+    .modal.show {
+        animation: fadeIn 0.2s ease;
     }
 
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Updated Actions Menu Styles - Old School Style */
     .actions-menu {
         position: absolute;
         top: 100%;
@@ -822,9 +967,77 @@
         min-width: 180px;
         background: white;
         border-radius: 0.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         border: 1px solid #e5e7eb;
         overflow: hidden;
+        display: none;
+    }
+
+    .actions-menu button {
+        width: 100%;
+        text-align: left;
+        padding: 10px 16px;
+        font-size: 0.875rem;
+        color: #374151;
+        background: white;
+        border: none;
+        border-bottom: 1px solid #f3f4f6;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .actions-menu button:last-child {
+        border-bottom: none;
+    }
+
+    .actions-menu button:hover {
+        background-color: #f9fafb;
+    }
+
+    .actions-menu button i {
+        width: 16px;
+        font-size: 0.875rem;
+    }
+
+    .actions-menu button.text-red-600:hover {
+        background-color: #fef2f2;
+    }
+
+    /* Make sure the table cell can contain the absolute positioned menu */
+    td.relative {
+        position: relative !important;
+        overflow: visible !important;
+    }
+
+    /* Ensure the table container doesn't clip the dropdown */
+    .overflow-x-auto {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+    }
+
+    /* Actions button */
+    .actions-btn {
+        width: 32px;
+        height: 32px;
+        background: #f3f4f6;
+        border-radius: 8px;
+        color: #6b7280;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        z-index: 10;
+    }
+
+    .actions-btn:hover {
+        background: #ef4444;
+        color: white;
     }
 
     /* Mobile-friendly actions menu */
@@ -839,10 +1052,19 @@
             margin: 0;
             border-radius: 1rem 1rem 0 0;
             animation: slideUp 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
         }
-        
+
         .actions-menu button {
-            padding: 12px 16px;
+            padding: 14px 20px;
+            font-size: 1rem;
+        }
+
+        .actions-btn {
+            width: 36px;
+            height: 36px;
         }
     }
 
@@ -860,6 +1082,7 @@
             transform: translateX(100%);
             opacity: 0;
         }
+
         to {
             transform: translateX(0);
             opacity: 1;
@@ -871,6 +1094,7 @@
             transform: translateX(0);
             opacity: 1;
         }
+
         to {
             transform: translateX(100%);
             opacity: 0;
@@ -884,17 +1108,19 @@
                 transform: translateY(-100%);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
             }
         }
-        
+
         @keyframes slideOutRight {
             from {
                 transform: translateY(0);
                 opacity: 1;
             }
+
             to {
                 transform: translateY(-100%);
                 opacity: 0;
@@ -917,6 +1143,7 @@
         from {
             transform: rotate(0deg);
         }
+
         to {
             transform: rotate(360deg);
         }
@@ -937,6 +1164,19 @@
         .hidden-xs {
             display: none;
         }
+    }
+
+    /* optgroup styling */
+    optgroup {
+        font-weight: 600;
+        color: #374151;
+        background-color: #f9fafb;
+    }
+
+    optgroup option {
+        font-weight: normal;
+        color: #1f2937;
+        padding-left: 20px;
     }
 </style>
 
@@ -996,7 +1236,7 @@
         // Add real-time validation
         document.getElementById('email')?.addEventListener('input', validateEmailField);
         document.getElementById('contact')?.addEventListener('input', validatePhoneField);
-        
+
         // Add real-time validation for other fields
         document.getElementById('first_name')?.addEventListener('input', function() {
             clearFieldError('first_name');
@@ -1032,12 +1272,12 @@
     function clearFieldError(field) {
         const errorEl = document.getElementById(`error-${field}`);
         const inputEl = document.querySelector(`[name="${field}"]`);
-        
+
         if (errorEl) {
             errorEl.classList.add('hidden');
             errorEl.textContent = '';
         }
-        
+
         if (inputEl) {
             inputEl.closest('.form-group')?.classList.remove('error');
         }
@@ -1049,9 +1289,9 @@
         const errorEl = document.getElementById('error-email');
         const inputEl = document.getElementById('email');
         if (!inputEl) return true;
-        
+
         const formGroup = inputEl.closest('.form-group');
-        
+
         if (!email) {
             if (errorEl) {
                 errorEl.textContent = 'Email is required';
@@ -1081,11 +1321,11 @@
         const errorEl = document.getElementById('error-contact_no');
         const inputEl = document.getElementById('contact');
         if (!inputEl) return true;
-        
+
         const formGroup = inputEl.closest('.form-group');
-        
+
         const numericPhone = phone ? phone.replace(/[^0-9]/g, '') : '';
-        
+
         if (!phone) {
             if (errorEl) {
                 errorEl.textContent = 'Contact number is required';
@@ -1113,10 +1353,10 @@
     function showToast(message, type = 'success', duration = 3000) {
         const toastContainer = document.getElementById('toastContainer');
         const toastId = 'toast-' + Date.now();
-        
+
         const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
         const icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle';
-        
+
         const toastHTML = `
             <div id="${toastId}" class="toast-item flex items-center gap-3 ${bgColor} text-white px-4 py-3 rounded-lg shadow-lg mb-2 w-full sm:min-w-[300px]">
                 <i class="bi ${icon} text-lg flex-shrink-0"></i>
@@ -1126,9 +1366,9 @@
                 </button>
             </div>
         `;
-        
+
         toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-        
+
         setTimeout(() => {
             closeToast(toastId);
         }, duration);
@@ -1157,11 +1397,11 @@
         for (let field in errors) {
             const errorEl = document.getElementById(`error-${field}`);
             const inputEl = document.querySelector(`[name="${field}"]`);
-            
+
             if (errorEl) {
                 errorEl.textContent = errors[field][0];
                 errorEl.classList.remove('hidden');
-                
+
                 if (inputEl) {
                     inputEl.closest('.form-group')?.classList.add('error');
                 }
@@ -1180,48 +1420,48 @@
         });
 
         fetch(`/admin/users?${params}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                renderTable(data.users.data);
-                currentPage = data.users.current_page;
-                lastPage = data.users.last_page;
-                totalUsers = data.users.total;
-                
-                document.getElementById('archivedCount').textContent = data.archived_count || 0;
-                
-                updatePagination();
-                document.getElementById('resultCount').innerHTML = 
-                    `<i class="bi bi-people me-1"></i> ${data.users.data.length} of ${totalUsers}`;
-            }
-        })
-        .catch(error => {
-            console.error('Error loading users:', error);
-            showToast('Error loading users', 'error');
-        });
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    renderTable(data.users.data);
+                    currentPage = data.users.current_page;
+                    lastPage = data.users.last_page;
+                    totalUsers = data.users.total;
+
+                    document.getElementById('archivedCount').textContent = data.archived_count || 0;
+
+                    updatePagination();
+                    document.getElementById('resultCount').innerHTML =
+                        `<i class="bi bi-people me-1"></i> ${data.users.data.length} of ${totalUsers}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading users:', error);
+                showToast('Error loading users', 'error');
+            });
     }
 
     // Load archive stats
     function loadArchiveStats() {
         fetch('/admin/archived-users', {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('archivedTotal').textContent = data.stats.total;
-                document.getElementById('pendingDeletion').textContent = data.stats.expired;
-            }
-        })
-        .catch(error => console.error('Error loading archive stats:', error));
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('archivedTotal').textContent = data.stats.total;
+                    document.getElementById('pendingDeletion').textContent = data.stats.expired;
+                }
+            })
+            .catch(error => console.error('Error loading archive stats:', error));
     }
 
     // Render table
@@ -1233,13 +1473,13 @@
             let statusClass = user.is_active ? 'active' : 'inactive';
             let statusText = user.is_active ? 'Active' : 'Deactivated';
             let statusColor = user.is_active ? 'green' : 'gray';
-            
-            const profileImage = user.profile_img ? 
-                `<img src="/storage/${user.profile_img}" class="w-7 h-7 rounded-full object-cover" alt="Profile">` : 
+
+            const profileImage = user.profile_img ?
+                `<img src="/storage/${user.profile_img}" class="w-7 h-7 rounded-full object-cover" alt="Profile">` :
                 `<div class="w-7 h-7 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-semibold text-xs">${user.initials || 'U'}</div>`;
-            
+
             const fullName = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
-            
+
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50 transition-colors';
             row.innerHTML = `
@@ -1263,30 +1503,30 @@
                     <span class="text-xs sm:text-sm truncate max-w-[150px]">${user.email}</span>
                 </td>
                 <td class="px-3 sm:px-4 py-3">
-                    <span class="status-badge status-${statusClass} text-xs">
+                    <span class="status-badge status-${statusClass}">
                         <i class="bi bi-circle-fill text-${statusColor}-400 me-1"></i>
                         ${statusText}
                     </span>
                 </td>
-                <td class="px-3 sm:px-4 py-3 relative" style="overflow: visible;">
-                    <button class="actions-btn w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 rounded-lg text-gray-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center" onclick="toggleActionsMenu(this, ${user.user_id})">
+                <td class="px-3 sm:px-4 py-3 relative" style="position: relative; overflow: visible;">
+                    <button class="actions-btn" onclick="toggleActionsMenu(this, ${user.user_id})">
                         <i class="bi bi-three-dots text-sm sm:text-base"></i>
                     </button>
-                    <div class="actions-menu hidden fixed sm:absolute bottom-0 sm:top-full left-0 sm:left-auto right-0 sm:right-0 sm:bottom-auto bg-white rounded-t-xl sm:rounded-lg shadow-lg z-50 w-full sm:w-48 sm:min-w-[180px] mt-0 sm:mt-1 border border-gray-200 overflow-hidden" id="menu-${user.user_id}">
-                        <button class="w-full text-left px-4 py-3 sm:py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2 border-b sm:border-b-0 border-gray-100" onclick="viewUser(${user.user_id})">
-                            <i class="bi bi-eye text-blue-500 w-4"></i> View Details
+                    <div class="actions-menu" id="menu-${user.user_id}">
+                        <button onclick="viewUser(${user.user_id})">
+                            <i class="bi bi-eye text-blue-500"></i> View Details
                         </button>
-                        <button class="w-full text-left px-4 py-3 sm:py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2 border-b sm:border-b-0 border-gray-100" onclick="editUserStatus('${fullName}', ${user.user_id}, '${user.is_active ? 'active' : 'inactive'}')">
-                            <i class="bi bi-pencil-square text-green-500 w-4"></i> Edit Status
+                        <button onclick="editUserStatus('${fullName.replace(/'/g, "\\'")}', ${user.user_id}, '${user.is_active ? 'active' : 'inactive'}')">
+                            <i class="bi bi-pencil-square text-green-500"></i> Edit Status
                         </button>
-                        <button class="w-full text-left px-4 py-3 sm:py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2 border-b sm:border-b-0 border-gray-100" onclick="openResetPasswordModal('${fullName}', ${user.user_id})">
-                            <i class="bi bi-key text-yellow-500 w-4"></i> Reset Password
+                        <button onclick="openResetPasswordModal('${fullName.replace(/'/g, "\\'")}', ${user.user_id})">
+                            <i class="bi bi-key text-yellow-500"></i> Reset Password
                         </button>
-                        <button class="w-full text-left px-4 py-3 sm:py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2 border-b sm:border-b-0 border-gray-100" onclick="openResetUsernameModal('${fullName}', ${user.user_id}, '${user.username || ''}')">
-                            <i class="bi bi-person-circle text-purple-500 w-4"></i> Reset Username
+                        <button onclick="openResetUsernameModal('${fullName.replace(/'/g, "\\'")}', ${user.user_id}, '${user.username || ''}')">
+                            <i class="bi bi-person-circle text-purple-500"></i> Reset Username
                         </button>
-                        <button class="w-full text-left px-4 py-3 sm:py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2" onclick="openDeleteModal('${fullName}', ${user.user_id})">
-                            <i class="bi bi-trash text-red-500 w-4"></i> Delete Account
+                        <button class="text-red-600" onclick="openDeleteModal('${fullName.replace(/'/g, "\\'")}', ${user.user_id})">
+                            <i class="bi bi-trash text-red-500"></i> Delete Account
                         </button>
                     </div>
                 </td>
@@ -1325,20 +1565,41 @@
 
     // Toggle Actions Menu
     function toggleActionsMenu(btn, userId) {
+        // Close all other dropdowns first
         closeAllDropdowns();
+
         const menu = document.getElementById(`menu-${userId}`);
-        if (menu) {
-            menu.classList.toggle('show');
-            
-            if (menu.classList.contains('show')) {
-                const closeMenu = (e) => {
-                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                        menu.classList.remove('show');
-                        document.removeEventListener('click', closeMenu);
-                    }
-                };
-                setTimeout(() => document.addEventListener('click', closeMenu), 0);
+        if (!menu) return;
+
+        // Toggle current menu
+        menu.classList.toggle('show');
+
+        if (menu.classList.contains('show')) {
+            // Position the menu on desktop
+            if (window.innerWidth > 640) {
+                const rect = btn.getBoundingClientRect();
+                const tableContainer = document.querySelector('.overflow-x-auto');
+
+                menu.style.position = 'absolute';
+                menu.style.top = '100%';
+                menu.style.right = '0';
+                menu.style.left = 'auto';
+                menu.style.bottom = 'auto';
+                menu.style.marginTop = '4px';
             }
+
+            // Close menu when clicking outside
+            const closeMenu = (e) => {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.remove('show');
+                    document.removeEventListener('click', closeMenu);
+                }
+            };
+
+            // Add delay to prevent immediate closing
+            setTimeout(() => {
+                document.addEventListener('click', closeMenu);
+            }, 0);
         }
     }
 
@@ -1355,7 +1616,7 @@
         addUserModal.classList.add('show');
         document.getElementById('addUserForm').reset();
         document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
-        
+
         document.querySelectorAll('.error-message').forEach(el => {
             el.classList.add('hidden');
             el.textContent = '';
@@ -1378,13 +1639,13 @@
                 event.target.value = '';
                 return;
             }
-            
+
             if (!file.type.startsWith('image/')) {
                 showToast('Please upload an image file', 'error');
                 event.target.value = '';
                 return;
             }
-            
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const preview = document.getElementById('profilePreview');
@@ -1410,35 +1671,35 @@
         generateBtn.disabled = true;
 
         fetch('/admin/generate-username', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ 
-                first_name: firstName, 
-                last_name: lastName 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    first_name: firstName,
+                    last_name: lastName
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('username').value = data.username;
-                clearFieldError('username');
-                showToast('Username generated successfully');
-            } else {
-                showToast(data.message || 'Error generating username', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error generating username:', error);
-            showToast('Error generating username', 'error');
-        })
-        .finally(() => {
-            generateBtn.innerHTML = originalText;
-            generateBtn.disabled = false;
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('username').value = data.username;
+                    clearFieldError('username');
+                    showToast('Username generated successfully');
+                } else {
+                    showToast(data.message || 'Error generating username', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error generating username:', error);
+                showToast('Error generating username', 'error');
+            })
+            .finally(() => {
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            });
     }
 
     // Generate Password
@@ -1457,9 +1718,9 @@
     function saveUser() {
         const form = document.getElementById('addUserForm');
         const formData = new FormData(form);
-        
+
         let hasError = false;
-        
+
         const firstName = document.getElementById('first_name').value;
         if (!firstName) {
             document.getElementById('error-first_name').textContent = 'First name is required';
@@ -1467,7 +1728,7 @@
             document.getElementById('first_name').closest('.form-group').classList.add('error');
             hasError = true;
         }
-        
+
         const lastName = document.getElementById('last_name').value;
         if (!lastName) {
             document.getElementById('error-last_name').textContent = 'Last name is required';
@@ -1475,7 +1736,7 @@
             document.getElementById('last_name').closest('.form-group').classList.add('error');
             hasError = true;
         }
-        
+
         const gender = document.getElementById('gender').value;
         if (!gender) {
             document.getElementById('error-gender').textContent = 'Gender is required';
@@ -1483,7 +1744,7 @@
             document.getElementById('gender').closest('.form-group').classList.add('error');
             hasError = true;
         }
-        
+
         const birthdate = document.getElementById('birthdate').value;
         if (!birthdate) {
             document.getElementById('error-birthdate').textContent = 'Birthdate is required';
@@ -1505,7 +1766,7 @@
                 hasError = true;
             }
         }
-        
+
         const position = document.getElementById('position').value;
         if (!position) {
             document.getElementById('error-position').textContent = 'Position is required';
@@ -1513,7 +1774,7 @@
             document.getElementById('position').closest('.form-group').classList.add('error');
             hasError = true;
         }
-        
+
         const username = document.getElementById('username').value;
         if (!username) {
             document.getElementById('error-username').textContent = 'Username is required';
@@ -1521,7 +1782,7 @@
             document.getElementById('username').closest('.form-group').classList.add('error');
             hasError = true;
         }
-        
+
         const password = document.getElementById('password').value;
         if (!password) {
             document.getElementById('error-password').textContent = 'Password is required';
@@ -1534,13 +1795,13 @@
             document.getElementById('password').closest('.form-group').classList.add('error');
             hasError = true;
         }
-        
+
         const emailValid = validateEmailField();
         if (!emailValid) hasError = true;
-        
+
         const phoneValid = validatePhoneField();
         if (!phoneValid) hasError = true;
-        
+
         if (hasError) {
             showToast('Please fix the errors in the form', 'error');
             return;
@@ -1550,47 +1811,47 @@
         const btnText = saveBtn.querySelector('.btn-text');
         const spinner = saveBtn.querySelector('.loading-spinner');
         const originalText = btnText.textContent;
-        
+
         btnText.textContent = 'Saving...';
         spinner.classList.remove('hidden');
         saveBtn.disabled = true;
 
         fetch('/admin/users', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('User added successfully');
-                closeAddUserModal();
-                loadUsers(currentPage);
-                loadArchiveStats();
-                
-                document.getElementById('addUserForm').reset();
-                document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
-            } else {
-                if (data.errors) {
-                    showValidationErrors(data.errors);
-                    showToast('Please check the form for errors', 'error');
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('User added successfully');
+                    closeAddUserModal();
+                    loadUsers(currentPage);
+                    loadArchiveStats();
+
+                    document.getElementById('addUserForm').reset();
+                    document.getElementById('profilePreview').innerHTML = '<i class="bi bi-camera"></i>';
                 } else {
-                    showToast(data.message || 'Error creating user', 'error');
+                    if (data.errors) {
+                        showValidationErrors(data.errors);
+                        showToast('Please check the form for errors', 'error');
+                    } else {
+                        showToast(data.message || 'Error creating user', 'error');
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            console.error('Error saving user:', error);
-            showToast('Error saving user', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            saveBtn.disabled = false;
-        });
+            })
+            .catch(error => {
+                console.error('Error saving user:', error);
+                showToast('Error saving user', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                saveBtn.disabled = false;
+            });
     }
 
     // Delete Modal
@@ -1609,43 +1870,43 @@
 
     function moveToArchive() {
         const userId = document.getElementById('deleteUserId').value;
-        
+
         const moveBtn = document.getElementById('moveToArchiveBtn');
         const btnText = moveBtn.querySelector('.btn-text');
         const spinner = moveBtn.querySelector('.loading-spinner');
         const originalText = btnText.textContent;
-        
+
         btnText.textContent = 'Moving...';
         spinner.classList.remove('hidden');
         moveBtn.disabled = true;
-        
+
         fetch(`/admin/users/${userId}/archive`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('User moved to recycle bin');
-                closeDeleteModal();
-                loadUsers(currentPage);
-                loadArchiveStats();
-            } else {
-                showToast(data.message || 'Error archiving user', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error archiving user:', error);
-            showToast('Error archiving user', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            moveBtn.disabled = false;
-        });
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('User moved to recycle bin');
+                    closeDeleteModal();
+                    loadUsers(currentPage);
+                    loadArchiveStats();
+                } else {
+                    showToast(data.message || 'Error archiving user', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error archiving user:', error);
+                showToast('Error archiving user', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                moveBtn.disabled = false;
+            });
     }
 
     // Archive Modal
@@ -1664,20 +1925,20 @@
     // Load archived users
     function loadArchivedUsers() {
         fetch('/admin/archived-users', {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                renderArchiveTable(data.archived_users);
-                document.getElementById('archivedTotal').textContent = data.stats.total;
-                document.getElementById('pendingDeletion').textContent = data.stats.expired;
-            }
-        })
-        .catch(error => console.error('Error loading archived users:', error));
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    renderArchiveTable(data.archived_users);
+                    document.getElementById('archivedTotal').textContent = data.stats.total;
+                    document.getElementById('pendingDeletion').textContent = data.stats.expired;
+                }
+            })
+            .catch(error => console.error('Error loading archived users:', error));
     }
 
     // Render archive table
@@ -1733,44 +1994,44 @@
 
     function restoreUser() {
         const archiveId = document.getElementById('restoreArchiveId').value;
-        
+
         const restoreBtn = document.getElementById('restoreUserBtn');
         const btnText = restoreBtn.querySelector('.btn-text');
         const spinner = restoreBtn.querySelector('.loading-spinner');
         const originalText = btnText.textContent;
-        
+
         btnText.textContent = 'Restoring...';
         spinner.classList.remove('hidden');
         restoreBtn.disabled = true;
-        
+
         fetch(`/admin/archived-users/${archiveId}/restore`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('User restored successfully');
-                closeRestoreModal();
-                loadArchivedUsers();
-                loadUsers(currentPage);
-                loadArchiveStats();
-            } else {
-                showToast(data.message || 'Error restoring user', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error restoring user:', error);
-            showToast('Error restoring user', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            restoreBtn.disabled = false;
-        });
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('User restored successfully');
+                    closeRestoreModal();
+                    loadArchivedUsers();
+                    loadUsers(currentPage);
+                    loadArchiveStats();
+                } else {
+                    showToast(data.message || 'Error restoring user', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error restoring user:', error);
+                showToast('Error restoring user', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                restoreBtn.disabled = false;
+            });
     }
 
     // Permanent Delete
@@ -1789,49 +2050,17 @@
 
     function permanentDelete() {
         const archiveId = document.getElementById('permanentDeleteArchiveId').value;
-        
+
         const deleteBtn = document.getElementById('permanentDeleteBtn');
         const btnText = deleteBtn.querySelector('.btn-text');
         const spinner = deleteBtn.querySelector('.loading-spinner');
         const originalText = btnText.textContent;
-        
+
         btnText.textContent = 'Deleting...';
         spinner.classList.remove('hidden');
         deleteBtn.disabled = true;
-        
-        fetch(`/admin/archived-users/${archiveId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('User permanently deleted');
-                closePermanentDeleteModal();
-                loadArchivedUsers();
-                loadArchiveStats();
-            } else {
-                showToast(data.message || 'Error deleting user', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting user:', error);
-            showToast('Error deleting user', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            deleteBtn.disabled = false;
-        });
-    }
 
-    // Empty Recycle Bin
-    function emptyRecycleBin() {
-        if (confirm('Permanently delete all expired items?')) {
-            fetch('/admin/recycle-bin/empty', {
+        fetch(`/admin/archived-users/${archiveId}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -1841,90 +2070,124 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showToast('Recycle bin emptied');
+                    showToast('User permanently deleted');
+                    closePermanentDeleteModal();
                     loadArchivedUsers();
                     loadArchiveStats();
                 } else {
-                    showToast(data.message || 'Error emptying recycle bin', 'error');
+                    showToast(data.message || 'Error deleting user', 'error');
                 }
             })
             .catch(error => {
-                console.error('Error emptying recycle bin:', error);
-                showToast('Error emptying recycle bin', 'error');
+                console.error('Error deleting user:', error);
+                showToast('Error deleting user', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                deleteBtn.disabled = false;
             });
+    }
+
+    // Empty Recycle Bin
+    function emptyRecycleBin() {
+        if (confirm('Permanently delete all expired items?')) {
+            fetch('/admin/recycle-bin/empty', {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Recycle bin emptied');
+                        loadArchivedUsers();
+                        loadArchiveStats();
+                    } else {
+                        showToast(data.message || 'Error emptying recycle bin', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error emptying recycle bin:', error);
+                    showToast('Error emptying recycle bin', 'error');
+                });
         }
     }
 
     // View User
     function viewUser(userId) {
         closeAllDropdowns();
-        
+
         fetch(`/admin/users/${userId}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const user = data.user;
-                const stats = data.stats;
-                
-                const profileImg = document.getElementById('viewProfileImg');
-                const initials = document.getElementById('avatarInitials');
-                
-                if (user.profile_img) {
-                    profileImg.src = `/storage/${user.profile_img}`;
-                    profileImg.classList.remove('hidden');
-                    initials.classList.add('hidden');
-                } else {
-                    profileImg.classList.add('hidden');
-                    initials.classList.remove('hidden');
-                    initials.textContent = user.initials || 'U';
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
                 }
-                
-                document.getElementById('viewFullName').textContent = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
-                document.getElementById('viewPosition').innerHTML = `<i class="bi bi-briefcase me-1"></i>${user.position || 'N/A'}`;
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const user = data.user;
+                    const stats = data.stats;
 
-                let statusColor = user.is_active ? 'green' : 'gray';
-                let statusText = user.is_active ? 'Active' : 'Deactivated';
-                
-                document.getElementById('viewStatusBadge').innerHTML = `<i class="bi bi-circle-fill text-${statusColor}-300"></i> ${statusText}`;
+                    const profileImg = document.getElementById('viewProfileImg');
+                    const initials = document.getElementById('avatarInitials');
 
-                document.getElementById('viewUsername').textContent = user.username || 'N/A';
-                document.getElementById('viewEmail').textContent = user.email;
-                document.getElementById('viewContact').textContent = user.contact_no || 'N/A';
-                document.getElementById('viewGender').textContent = user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1).replace('_', ' ') : 'N/A';
-
-                if (user.birthdate) {
-                    const birthDate = new Date(user.birthdate);
-                    document.getElementById('viewBirthdate').textContent = birthDate.toLocaleDateString('en-US', {
-                        year: 'numeric', month: 'long', day: 'numeric'
-                    });
-                    
-                    const today = new Date();
-                    let age = today.getFullYear() - birthDate.getFullYear();
-                    const monthDiff = today.getMonth() - birthDate.getMonth();
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                        age--;
+                    if (user.profile_img) {
+                        profileImg.src = `/storage/${user.profile_img}`;
+                        profileImg.classList.remove('hidden');
+                        initials.classList.add('hidden');
+                    } else {
+                        profileImg.classList.add('hidden');
+                        initials.classList.remove('hidden');
+                        initials.textContent = user.initials || 'U';
                     }
-                    document.getElementById('viewAge').textContent = age;
-                } else {
-                    document.getElementById('viewBirthdate').textContent = 'N/A';
-                    document.getElementById('viewAge').textContent = 'N/A';
+
+                    document.getElementById('viewFullName').textContent = user.full_name || `${user.first_name} ${user.middle_name || ''} ${user.last_name} ${user.suffix || ''}`;
+                    document.getElementById('viewPosition').innerHTML = `<i class="bi bi-briefcase me-1"></i>${user.position || 'N/A'}`;
+
+                    let statusColor = user.is_active ? 'green' : 'gray';
+                    let statusText = user.is_active ? 'Active' : 'Deactivated';
+
+                    document.getElementById('viewStatusBadge').innerHTML = `<i class="bi bi-circle-fill text-${statusColor}-300"></i> ${statusText}`;
+
+                    document.getElementById('viewUsername').textContent = user.username || 'N/A';
+                    document.getElementById('viewEmail').textContent = user.email;
+                    document.getElementById('viewContact').textContent = user.contact_no || 'N/A';
+                    document.getElementById('viewGender').textContent = user.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1).replace('_', ' ') : 'N/A';
+
+                    if (user.birthdate) {
+                        const birthDate = new Date(user.birthdate);
+                        document.getElementById('viewBirthdate').textContent = birthDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+
+                        const today = new Date();
+                        let age = today.getFullYear() - birthDate.getFullYear();
+                        const monthDiff = today.getMonth() - birthDate.getMonth();
+                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                            age--;
+                        }
+                        document.getElementById('viewAge').textContent = age;
+                    } else {
+                        document.getElementById('viewBirthdate').textContent = 'N/A';
+                        document.getElementById('viewAge').textContent = 'N/A';
+                    }
+
+                    document.getElementById('viewDateJoined').textContent = stats.date_joined || 'N/A';
+                    document.getElementById('viewLastLogin').textContent = stats.last_login || 'N/A';
+
+                    document.getElementById('viewUserModal').classList.add('show');
                 }
-
-                document.getElementById('viewDateJoined').textContent = stats.date_joined || 'N/A';
-                document.getElementById('viewLastLogin').textContent = stats.last_login || 'N/A';
-
-                document.getElementById('viewUserModal').classList.add('show');
-            }
-        })
-        .catch(error => {
-            console.error('Error loading user details:', error);
-            showToast('Error loading user details', 'error');
-        });
+            })
+            .catch(error => {
+                console.error('Error loading user details:', error);
+                showToast('Error loading user details', 'error');
+            });
     }
 
     function closeViewModal() {
@@ -1939,18 +2202,18 @@
         document.getElementById('statusUserName').textContent = userName;
         document.getElementById('statusUserId').value = userId;
         document.getElementById('currentStatus').value = currentStatus;
-        
+
         document.querySelectorAll('.status-card').forEach(card => {
             card.classList.remove('selected');
             card.querySelector('input[type="radio"]').checked = false;
         });
-        
+
         const currentCard = document.querySelector(`.status-card[data-status="${currentStatus}"]`);
         if (currentCard) {
             currentCard.classList.add('selected');
             currentCard.querySelector('input[type="radio"]').checked = true;
         }
-        
+
         editStatusModal.classList.add('show');
     }
 
@@ -1961,51 +2224,53 @@
     function updateStatus() {
         const selectedRadio = document.querySelector('input[name="userStatus"]:checked');
         const userId = document.getElementById('statusUserId').value;
-        
+
         if (!selectedRadio) {
             showToast('Please select a status', 'error');
             return;
         }
-        
+
         const selectedStatus = selectedRadio.value;
-        
+
         const updateBtn = document.getElementById('updateStatusBtn');
         const btnText = updateBtn.querySelector('.btn-text');
         const spinner = updateBtn.querySelector('.loading-spinner');
         const originalText = btnText.textContent;
-        
+
         btnText.textContent = 'Updating...';
         spinner.classList.remove('hidden');
         updateBtn.disabled = true;
-        
+
         fetch(`/admin/users/${userId}/status`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ status: selectedStatus })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast(`Status updated to ${selectedStatus}`);
-                closeEditStatusModal();
-                loadUsers(currentPage);
-            } else {
-                showToast(data.message || 'Error updating status', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error updating status:', error);
-            showToast('Error updating status', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            updateBtn.disabled = false;
-        });
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: selectedStatus
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(`Status updated to ${selectedStatus}`);
+                    closeEditStatusModal();
+                    loadUsers(currentPage);
+                } else {
+                    showToast(data.message || 'Error updating status', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating status:', error);
+                showToast('Error updating status', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                updateBtn.disabled = false;
+            });
     }
 
     // Reset Password functionality
@@ -2052,32 +2317,34 @@
         resetBtn.disabled = true;
 
         fetch(`/admin/users/${userId}/reset-password`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ password: newPassword })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('Password reset successfully');
-                closeResetPasswordModal();
-            } else {
-                showToast(data.message || 'Error resetting password', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error resetting password:', error);
-            showToast('Error resetting password', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            resetBtn.disabled = false;
-        });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    password: newPassword
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Password reset successfully');
+                    closeResetPasswordModal();
+                } else {
+                    showToast(data.message || 'Error resetting password', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error resetting password:', error);
+                showToast('Error resetting password', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                resetBtn.disabled = false;
+            });
     }
 
     // Reset Username functionality
@@ -2098,36 +2365,36 @@
 
     function generateNewUsername() {
         const userId = document.getElementById('resetUsernameUserId').value;
-        
+
         const generateBtn = event.target.closest('button');
         const originalText = generateBtn.innerHTML;
         generateBtn.innerHTML = '<i class="bi bi-hourglass"></i><span class="hidden sm:inline ms-2">Generating...</span>';
         generateBtn.disabled = true;
 
         fetch(`/admin/users/${userId}/generate-username`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('newUsername').value = data.username;
-                showToast('Username generated successfully');
-            } else {
-                showToast(data.message || 'Error generating username', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error generating username:', error);
-            showToast('Error generating username', 'error');
-        })
-        .finally(() => {
-            generateBtn.innerHTML = originalText;
-            generateBtn.disabled = false;
-        });
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('newUsername').value = data.username;
+                    showToast('Username generated successfully');
+                } else {
+                    showToast(data.message || 'Error generating username', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error generating username:', error);
+                showToast('Error generating username', 'error');
+            })
+            .finally(() => {
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            });
     }
 
     function resetUsername() {
@@ -2149,33 +2416,35 @@
         resetBtn.disabled = true;
 
         fetch(`/admin/users/${userId}/reset-username`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ username: newUsername })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('Username reset successfully');
-                closeResetUsernameModal();
-                loadUsers(currentPage);
-            } else {
-                showToast(data.message || 'Error resetting username', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error resetting username:', error);
-            showToast('Error resetting username', 'error');
-        })
-        .finally(() => {
-            btnText.textContent = originalText;
-            spinner.classList.add('hidden');
-            resetBtn.disabled = false;
-        });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: newUsername
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Username reset successfully');
+                    closeResetUsernameModal();
+                    loadUsers(currentPage);
+                } else {
+                    showToast(data.message || 'Error resetting username', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error resetting username:', error);
+                showToast('Error resetting username', 'error');
+            })
+            .finally(() => {
+                btnText.textContent = originalText;
+                spinner.classList.add('hidden');
+                resetBtn.disabled = false;
+            });
     }
 </script>
 

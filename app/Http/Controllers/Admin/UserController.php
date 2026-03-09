@@ -383,16 +383,47 @@ class UserController extends Controller
      * Get role number from position.
      */
     private function getRoleNoFromPosition($position)
-    {
-        return match ($position) {
-            'Administrator' => 1,
-            'HeadOfficer' => 2,
-            'Editor' => 3,
-            'HousingOfficer' => 4,
-            'ApplicationEvaluator' => 5,
-            'Staff' => 6,
-            'SiteInspector' => 7,
-            default => 6,
-        };
-    }
+{
+    return match ($position) {
+        // Leadership (Role 1 & 2)
+        'Administrator' => 1,
+        'Action Officer for Urban Development and Housing' => 2, // "The Boss"
+        'HeadOfficer' => 2,
+        'Administrative Officer III (Detailed)' => 2, // Senior Officer
+
+        // Editorial / Comms (Role 3)
+        'Editor' => 3,
+        // Media and Communications Unit (Job Order) - Treated as Editor/Comms role
+
+        // Housing Regulation & Community Affairs (Role 4)
+        'HousingOfficer' => 4,
+        'Housing and Homesite Regulation Officer I' => 4,
+        'Housing and Homesite Regulation Officer III' => 4,
+        'Community Development Assistant I' => 4,
+        'Community Affairs Assistant I' => 4,
+        'Resettlement and Homeowners Affairs Coordinator' => 4,
+
+        // Evaluators / Technical Staff (Role 5)
+        'ApplicationEvaluator' => 5,
+        'Architect IV (Detailed)' => 5,
+
+        // General Staff / Admin Support (Role 6 - Default)
+        'Staff' => 6,
+        'Administrative Assistant II' => 6,
+        'Administrative Aide I' => 6,
+        'Administrative Aide I (Detailed)' => 6,
+        'Administrative Aide I (Casual)' => 6,
+        'Administrative Aide III' => 6,
+        'Administrative Aide IV (Bookbinder II)' => 6,
+        'Administrative Aide VI (Clerk III)' => 6,
+        // All Job Orders and Contract of Service fall here unless specified otherwise
+
+        // Field Work / Inspection (Role 7)
+        'SiteInspector' => 7,
+        // Operations and Field Work Unit personnel fall here
+
+        // Default case for any unspecified position
+        default => 6,
+    };
+}
 }
