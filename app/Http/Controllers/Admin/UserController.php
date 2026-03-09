@@ -421,6 +421,7 @@ class UserController extends Controller
         // Field Work / Inspection (Role 7)
         'SiteInspector' => 7,
         // Operations and Field Work Unit personnel fall here
+        'AppUser' => 8,
 
         // Default case for any unspecified position
         default => 6,
