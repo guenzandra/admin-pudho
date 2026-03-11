@@ -1,29 +1,36 @@
 {{-- resources/views/layouts/admin.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUDHO Admin — @yield('title', 'Dashboard')</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         :root {
-            --red:          #C0202F;
-            --red-dark:     #8C111E;
-            --red-mid:      #A8192A;
-            --red-pale:     #FEF0F1;
-            --red-pale2:    #FDE8EA;
-            --red-border:   #F3CACE;
-            --sidebar-w:    268px;
-            --topbar-h:     68px;
+            --red: #C0202F;
+            --red-dark: #8C111E;
+            --red-mid: #A8192A;
+            --red-pale: #FEF0F1;
+            --red-pale2: #FDE8EA;
+            --red-border: #F3CACE;
+            --sidebar-w: 268px;
+            --topbar-h: 68px;
             --text-primary: #1A0508;
             --text-secondary: #7A4A50;
-            --text-muted:   #B08888;
-            --surface:      #FFFFFF;
-            --bg:           #F6F1F2;
-            --border:       #EDE0E1;
+            --text-muted: #B08888;
+            --surface: #FFFFFF;
+            --bg: #F6F1F2;
+            --border: #EDE0E1;
         }
 
         body {
@@ -32,10 +39,10 @@
             color: var(--text-primary);
         }
 
-        /* ═══════════ SIDEBAR ═══════════ */
         #sidebar {
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: var(--sidebar-w);
             height: 100vh;
             background: var(--surface);
@@ -43,66 +50,116 @@
             display: flex;
             flex-direction: column;
             z-index: 40;
-            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
 
-        /* Collapsed state */
-        #sidebar.collapsed { width: 70px; }
+        #sidebar.collapsed {
+            width: 70px;
+        }
+
         #sidebar.collapsed .nav-label,
         #sidebar.collapsed .nav-arrow,
         #sidebar.collapsed .sidebar-brand-text,
         #sidebar.collapsed .section-label,
         #sidebar.collapsed .sub-menu,
-        #sidebar.collapsed .user-info { opacity: 0; pointer-events: none; width: 0; overflow: hidden; white-space: nowrap; }
-        #sidebar.collapsed .nav-item { justify-content: center; padding: 11px 0; }
-        #sidebar.collapsed .nav-icon { margin: 0; }
-        #sidebar.collapsed .logo-area { justify-content: center; padding: 18px 0; }
-        #sidebar.collapsed .sidebar-user { justify-content: center; padding: 14px 0; }
+        #sidebar.collapsed .user-info {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        #sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 11px 0;
+        }
+
+        #sidebar.collapsed .nav-icon {
+            margin: 0;
+        }
+
+        #sidebar.collapsed .logo-area {
+            justify-content: center;
+            padding: 18px 0;
+        }
+
+        #sidebar.collapsed .sidebar-user {
+            justify-content: center;
+            padding: 14px 0;
+        }
 
         @media (max-width: 1023px) {
             #sidebar {
                 transform: translateX(-100%);
                 width: var(--sidebar-w) !important;
-                box-shadow: 8px 0 32px rgba(192,32,47,0.15);
+                box-shadow: 8px 0 32px rgba(192, 32, 47, 0.15);
             }
-            #sidebar.mobile-open { transform: translateX(0); }
+
+            #sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
             #sidebar.collapsed .nav-label,
             #sidebar.collapsed .nav-arrow,
             #sidebar.collapsed .sidebar-brand-text,
             #sidebar.collapsed .section-label,
             #sidebar.collapsed .sub-menu,
-            #sidebar.collapsed .user-info { opacity: 1; pointer-events: auto; width: auto; overflow: visible; }
-            #sidebar.collapsed .nav-item { justify-content: flex-start; padding: 11px 14px; }
-            #sidebar.collapsed .logo-area { justify-content: flex-start; padding: 16px 18px; }
-            #sidebar.collapsed .sidebar-user { justify-content: flex-start; padding: 14px 16px; }
+            #sidebar.collapsed .user-info {
+                opacity: 1;
+                pointer-events: auto;
+                width: auto;
+                overflow: visible;
+            }
+
+            #sidebar.collapsed .nav-item {
+                justify-content: flex-start;
+                padding: 11px 14px;
+            }
+
+            #sidebar.collapsed .logo-area {
+                justify-content: flex-start;
+                padding: 16px 18px;
+            }
+
+            #sidebar.collapsed .sidebar-user {
+                justify-content: flex-start;
+                padding: 14px 16px;
+            }
         }
 
-        /* Brand area */
         .sidebar-brand {
             flex-shrink: 0;
             background: linear-gradient(145deg, var(--red-dark) 0%, var(--red) 60%, #D94050 100%);
             position: relative;
             overflow: hidden;
         }
+
         .sidebar-brand::before {
             content: '';
             position: absolute;
-            top: -30px; right: -30px;
-            width: 110px; height: 110px;
+            top: -30px;
+            right: -30px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             pointer-events: none;
         }
+
         .sidebar-brand::after {
             content: '';
             position: absolute;
-            bottom: -20px; left: 20px;
-            width: 70px; height: 70px;
+            bottom: -20px;
+            left: 20px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             pointer-events: none;
         }
+
         .logo-area {
             display: flex;
             align-items: center;
@@ -113,17 +170,27 @@
             z-index: 1;
             transition: padding 0.3s;
         }
+
         .logo-img {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.35);
+            border: 2px solid rgba(255, 255, 255, 0.35);
             object-fit: cover;
             flex-shrink: 0;
             transition: transform 0.3s;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
         }
-        .logo-area:hover .logo-img { transform: scale(1.07); }
-        .sidebar-brand-text { overflow: hidden; transition: opacity 0.25s, width 0.3s; }
+
+        .logo-area:hover .logo-img {
+            transform: scale(1.07);
+        }
+
+        .sidebar-brand-text {
+            overflow: hidden;
+            transition: opacity 0.25s, width 0.3s;
+        }
+
         .brand-name {
             font-size: 14px;
             font-weight: 700;
@@ -132,16 +199,20 @@
             white-space: nowrap;
             letter-spacing: 0.01em;
         }
-        .brand-name span { color: rgba(255,255,255,0.6); font-weight: 500; }
+
+        .brand-name span {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
         .brand-tagline {
             font-size: 10.5px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             white-space: nowrap;
             margin-top: 3px;
             letter-spacing: 0.02em;
         }
 
-        /* Nav area */
         .sidebar-nav {
             flex: 1;
             overflow-y: auto;
@@ -150,8 +221,15 @@
             scrollbar-width: thin;
             scrollbar-color: var(--red-border) transparent;
         }
-        .sidebar-nav::-webkit-scrollbar { width: 3px; }
-        .sidebar-nav::-webkit-scrollbar-thumb { background: var(--red-border); border-radius: 3px; }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--red-border);
+            border-radius: 3px;
+        }
 
         .section-label {
             font-size: 10px;
@@ -165,7 +243,6 @@
             transition: opacity 0.25s;
         }
 
-        /* Nav items */
         .nav-item {
             display: flex;
             align-items: center;
@@ -186,61 +263,85 @@
             font-family: 'DM Sans', sans-serif;
             text-align: left;
         }
+
         .nav-item:hover {
             background: var(--red-pale);
             color: var(--red);
         }
-        .nav-item:hover .nav-icon { color: var(--red); }
 
-        /* Active state — persistent highlight */
+        .nav-item:hover .nav-icon {
+            color: var(--red);
+        }
+
         .nav-item.active {
             background: var(--red-pale2);
             color: var(--red);
             font-weight: 600;
         }
-        .nav-item.active .nav-icon { color: var(--red); }
+
+        .nav-item.active .nav-icon {
+            color: var(--red);
+        }
+
         .nav-item.active::before {
             content: '';
             position: absolute;
-            left: 0; top: 18%; bottom: 18%;
+            left: 0;
+            top: 18%;
+            bottom: 18%;
             width: 3.5px;
             background: var(--red);
             border-radius: 0 3px 3px 0;
         }
 
-        /* Sub-items also get active state */
         .sub-item.active {
             background: var(--red-pale2);
             color: var(--red);
             font-weight: 600;
         }
+
         .sub-item.active::after {
             background: var(--red) !important;
         }
 
         .nav-icon {
-            width: 18px; height: 18px;
+            width: 18px;
+            height: 18px;
             color: #C09090;
             flex-shrink: 0;
             transition: color 0.15s;
         }
-        .nav-label { flex: 1; overflow: hidden; transition: opacity 0.25s; }
+
+        .nav-label {
+            flex: 1;
+            overflow: hidden;
+            transition: opacity 0.25s;
+        }
+
         .nav-arrow {
-            width: 14px; height: 14px;
+            width: 14px;
+            height: 14px;
             color: var(--text-muted);
             flex-shrink: 0;
             transition: transform 0.2s, opacity 0.25s;
         }
-        .nav-arrow.open { transform: rotate(180deg); }
 
-        /* Sub-menu */
+        .nav-arrow.open {
+            transform: rotate(180deg);
+        }
+
         .sub-menu {
             overflow: hidden;
             max-height: 0;
             transition: max-height 0.28s ease, opacity 0.25s;
             opacity: 0;
         }
-        .sub-menu.open { max-height: 320px; opacity: 1; }
+
+        .sub-menu.open {
+            max-height: 320px;
+            opacity: 1;
+        }
+
         .sub-item {
             display: flex;
             align-items: center;
@@ -255,20 +356,26 @@
             font-weight: 500;
             position: relative;
         }
+
         .sub-item::after {
             content: '';
             position: absolute;
             left: 22px;
-            width: 5px; height: 5px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             background: #D4AAAE;
             transition: background 0.15s;
         }
+
         .sub-item:hover {
             background: var(--red-pale);
             color: var(--red);
         }
-        .sub-item:hover::after { background: var(--red); }
+
+        .sub-item:hover::after {
+            background: var(--red);
+        }
 
         /* Sidebar user strip */
         .sidebar-user {
@@ -282,40 +389,67 @@
             overflow: hidden;
             transition: padding 0.3s;
         }
+
         .user-avatar {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: 700; font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(192,32,47,0.3);
+            box-shadow: 0 2px 8px rgba(192, 32, 47, 0.3);
             position: relative;
         }
+
         .user-avatar .online-dot {
             position: absolute;
-            bottom: 1px; right: 1px;
-            width: 9px; height: 9px;
+            bottom: 1px;
+            right: 1px;
+            width: 9px;
+            height: 9px;
             background: #22c55e;
             border-radius: 50%;
             border: 2px solid white;
         }
-        .user-info { flex: 1; overflow: hidden; transition: opacity 0.25s; }
-        .user-name { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
-        .user-role { font-size: 11px; color: var(--text-muted); white-space: nowrap; margin-top: 1px; }
 
-        /* ═══════════ OVERLAY ═══════════ */
+        .user-info {
+            flex: 1;
+            overflow: hidden;
+            transition: opacity 0.25s;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            margin-top: 1px;
+        }
+
         #sidebarOverlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(15,0,5,0.5);
+            background: rgba(15, 0, 5, 0.5);
             z-index: 39;
             backdrop-filter: blur(3px);
         }
-        #sidebarOverlay.show { display: block; }
 
-        /* ═══════════ TOP NAV ═══════════ */
+        #sidebarOverlay.show {
+            display: block;
+        }
+
         #topNav {
             position: fixed;
             top: 0;
@@ -327,18 +461,29 @@
             z-index: 30;
             display: flex;
             align-items: center;
-            transition: left 0.3s cubic-bezier(0.4,0,0.2,1);
-            box-shadow: 0 2px 16px rgba(192,32,47,0.06);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 16px rgba(192, 32, 47, 0.06);
         }
+
         #topNav::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 50%, rgba(220,100,112,0.4) 100%);
+            background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 50%, rgba(220, 100, 112, 0.4) 100%);
         }
-        #topNav.sidebar-collapsed { left: 70px; }
-        @media (max-width: 1023px) { #topNav { left: 0 !important; } }
+
+        #topNav.sidebar-collapsed {
+            left: 70px;
+        }
+
+        @media (max-width: 1023px) {
+            #topNav {
+                left: 0 !important;
+            }
+        }
 
         .topnav-inner {
             display: flex;
@@ -354,6 +499,7 @@
             align-items: center;
             gap: 10px;
         }
+
         .hamburger-btn {
             display: none;
             background: none;
@@ -364,9 +510,18 @@
             border-radius: 9px;
             transition: background 0.15s, color 0.15s;
         }
-        .hamburger-btn:hover { background: var(--red-pale); color: var(--red); }
+
+        .hamburger-btn:hover {
+            background: var(--red-pale);
+            color: var(--red);
+        }
+
         @media (max-width: 1023px) {
-            .hamburger-btn { display: flex; align-items: center; justify-content: center; }
+            .hamburger-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
 
         .desktop-toggle-btn {
@@ -378,12 +533,21 @@
             padding: 8px;
             border-radius: 9px;
             transition: background 0.15s, color 0.15s;
-            align-items: center; justify-content: center;
+            align-items: center;
+            justify-content: center;
         }
-        .desktop-toggle-btn:hover { background: var(--red-pale); color: var(--red); }
-        @media (max-width: 1023px) { .desktop-toggle-btn { display: none; } }
 
-/* ── Right side ── */
+        .desktop-toggle-btn:hover {
+            background: var(--red-pale);
+            color: var(--red);
+        }
+
+        @media (max-width: 1023px) {
+            .desktop-toggle-btn {
+                display: none;
+            }
+        }
+
         .topnav-right {
             display: flex;
             align-items: center;
@@ -400,7 +564,13 @@
             border-right: 1.5px solid var(--red-border);
             gap: 1px;
         }
-        @media (min-width: 768px) { .datetime-wrap { display: flex; } }
+
+        @media (min-width: 768px) {
+            .datetime-wrap {
+                display: flex;
+            }
+        }
+
         .dt-time {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 18px;
@@ -409,6 +579,7 @@
             line-height: 1;
             letter-spacing: -0.01em;
         }
+
         .dt-date {
             font-size: 11px;
             font-weight: 600;
@@ -431,18 +602,31 @@
             justify-content: center;
             transition: background 0.15s, color 0.15s;
         }
-        .icon-btn:hover { background: var(--red-pale); color: var(--red); }
-        .icon-btn svg { width: 20px; height: 20px; }
+
+        .icon-btn:hover {
+            background: var(--red-pale);
+            color: var(--red);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
         .badge {
             position: absolute;
-            top: 4px; right: 4px;
-            min-width: 16px; height: 16px;
+            top: 4px;
+            right: 4px;
+            min-width: 16px;
+            height: 16px;
             background: var(--red);
             border-radius: 8px;
             color: white;
             font-size: 9px;
             font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0 3px;
             border: 2px solid white;
         }
@@ -460,23 +644,48 @@
             transition: background 0.15s;
             margin-left: 4px;
         }
-        .profile-btn:hover { background: var(--red-pale); }
+
+        .profile-btn:hover {
+            background: var(--red-pale);
+        }
+
         .profile-av {
-            width: 34px; height: 34px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--red), var(--red-dark));
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 13px; font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
             position: relative;
         }
-        .profile-av .online { position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; border: 2px solid white; }
+
+        .profile-av .online {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
         .profile-name {
             font-size: 13.5px;
             font-weight: 600;
             color: var(--text-primary);
             display: none;
         }
-        @media (min-width: 640px) { .profile-name { display: block; } }
+
+        @media (min-width: 640px) {
+            .profile-name {
+                display: block;
+            }
+        }
 
         /* ── Dropdowns ── */
         .dropdown-panel {
@@ -487,18 +696,33 @@
             background: white;
             border: 1px solid var(--red-border);
             border-radius: 14px;
-            box-shadow: 0 10px 40px rgba(192,32,47,0.14), 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 40px rgba(192, 32, 47, 0.14), 0 2px 10px rgba(0, 0, 0, 0.05);
             z-index: 100;
             overflow: hidden;
             display: none;
             animation: dropIn 0.18s ease;
         }
-        .dropdown-panel.show { display: block; }
-        .dropdown-panel.narrow { width: 220px; }
-        @keyframes dropIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to   { opacity: 1; transform: translateY(0); }
+
+        .dropdown-panel.show {
+            display: block;
         }
+
+        .dropdown-panel.narrow {
+            width: 220px;
+        }
+
+        @keyframes dropIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .dp-header {
             padding: 12px 16px;
             border-bottom: 1px solid var(--red-border);
@@ -507,10 +731,29 @@
             justify-content: space-between;
             background: linear-gradient(135deg, #FFF5F6, #fff);
         }
-        .dp-header h4 { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-        .dp-header a { font-size: 12px; color: var(--red); text-decoration: none; font-weight: 600; }
-        .dp-header a:hover { text-decoration: underline; }
-        .dp-body { max-height: 300px; overflow-y: auto; }
+
+        .dp-header h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .dp-header a {
+            font-size: 12px;
+            color: var(--red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .dp-header a:hover {
+            text-decoration: underline;
+        }
+
+        .dp-body {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
         .dp-item {
             display: flex;
             align-items: flex-start;
@@ -520,21 +763,68 @@
             text-decoration: none;
             transition: background 0.12s;
         }
-        .dp-item:hover { background: #FFF7F7; }
+
+        .dp-item:hover {
+            background: #FFF7F7;
+        }
+
         .dp-item-icon {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
         }
-        .dp-item-icon svg { width: 16px; height: 16px; }
-        .dp-item-text { flex: 1; }
-        .dp-item-title { font-size: 13px; color: var(--text-primary); font-weight: 500; line-height: 1.35; }
-        .dp-item-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .dp-unread-dot { width: 7px; height: 7px; background: var(--red); border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-        .dp-footer { padding: 11px 16px; border-top: 1px solid var(--red-border); text-align: center; }
-        .dp-footer a { font-size: 12.5px; color: var(--red); text-decoration: none; font-weight: 600; }
-        .dp-footer a:hover { text-decoration: underline; }
+
+        .dp-item-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .dp-item-text {
+            flex: 1;
+        }
+
+        .dp-item-title {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.35;
+        }
+
+        .dp-item-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .dp-unread-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--red);
+            border-radius: 50%;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .dp-footer {
+            padding: 11px 16px;
+            border-top: 1px solid var(--red-border);
+            text-align: center;
+        }
+
+        .dp-footer a {
+            font-size: 12.5px;
+            color: var(--red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .dp-footer a:hover {
+            text-decoration: underline;
+        }
 
         /* Profile dropdown */
         .profile-dp-item {
@@ -554,18 +844,42 @@
             text-align: left;
             font-weight: 500;
         }
-        .profile-dp-item:hover { background: var(--red-pale); color: var(--red); }
-        .profile-dp-item svg { width: 16px; height: 16px; color: #C09090; flex-shrink: 0; }
-        .profile-dp-item:hover svg { color: var(--red); }
-        .profile-dp-item.danger { color: var(--red); }
-        .profile-dp-item.danger svg { color: var(--red); }
+
+        .profile-dp-item:hover {
+            background: var(--red-pale);
+            color: var(--red);
+        }
+
+        .profile-dp-item svg {
+            width: 16px;
+            height: 16px;
+            color: #C09090;
+            flex-shrink: 0;
+        }
+
+        .profile-dp-item:hover svg {
+            color: var(--red);
+        }
+
+        .profile-dp-item.danger {
+            color: var(--red);
+        }
+
+        .profile-dp-item.danger svg {
+            color: var(--red);
+        }
 
         /* Message avatars */
         .msg-av {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 12px; font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
             flex-shrink: 0;
         }
 
@@ -574,359 +888,428 @@
             margin-left: var(--sidebar-w);
             margin-top: var(--topbar-h);
             min-height: calc(100vh - var(--topbar-h));
-            transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 28px;
         }
-        #mainContent.sidebar-collapsed { margin-left: 70px; }
+
+        #mainContent.sidebar-collapsed {
+            margin-left: 70px;
+        }
+
         @media (max-width: 1023px) {
-            #mainContent { margin-left: 0 !important; padding: 18px; }
+            #mainContent {
+                margin-left: 0 !important;
+                padding: 18px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ═══ SIDEBAR ═══ -->
-<aside id="sidebar">
+    <aside id="sidebar">
 
-    <!-- Brand -->
-    <div class="sidebar-brand">
-        <div class="logo-area" onclick="toggleDesktopSidebar()" title="Toggle sidebar">
-            <img src="{{ asset('build/assets/images/logo-pudho.jpg') }}"
-                 alt="PUDHO"
-                 class="logo-img"
-                 onerror="this.src='https://via.placeholder.com/42x42/ffffff/C0202F?text=P'">
-            <div class="sidebar-brand-text">
-                <div class="brand-name"><span>LAGUNA</span> PUDHO</div>
-                <div class="brand-tagline">Urban Development & Housing</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="sidebar-nav">
-
-        <div class="section-label">Main</div>
-
-        <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-            <span class="nav-label">Dashboard</span>
-        </a>
-
-        <a href="{{ route('admin.filemanagement') }}" class="nav-item {{ request()->routeIs('admin.filemanagement') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-            <span class="nav-label">File Management</span>
-        </a>
-
-        <a href="{{ route('admin.residents') }}" class="nav-item {{ request()->routeIs('admin.residents') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span class="nav-label">Residents</span>
-        </a>
-
-        <a href="{{ route('admin.cmissingfiles') }}" class="nav-item {{ request()->routeIs('admin.cmissingfiles') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span class="nav-label">Missing Files</span>
-        </a>
-
-        <!-- Anti-Squatting -->
-        <button class="nav-item {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'active' : '' }}"
-                onclick="toggleNav('squattingMenu', this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-            <span class="nav-label">Anti-Squatting</span>
-            <svg class="nav-arrow {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="sub-menu {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'open' : '' }}" id="squattingMenu">
-            <a href="{{ route('admin.overview') }}" class="sub-item {{ request()->routeIs('admin.overview') ? 'active' : '' }}">Overview</a>
-            <a href="{{ route('admin.reports') }}" class="sub-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">Reports</a>
-            <a href="{{ route('admin.investigation') }}" class="sub-item {{ request()->routeIs('admin.investigation') ? 'active' : '' }}">Investigation</a>
-            <a href="{{ route('admin.mapview') }}" class="sub-item {{ request()->routeIs('admin.mapview') ? 'active' : '' }}">Map View</a>
-        </div>
-
-        <div class="section-label">Support</div>
-
-        <!-- Messages -->
-        <button class="nav-item {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'active' : '' }}"
-                onclick="toggleNav('messagesMenu', this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-            <span class="nav-label">Messages</span>
-            <svg class="nav-arrow {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="sub-menu {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'open' : '' }}" id="messagesMenu">
-            <a href="{{ route('admin.inbox') }}" class="sub-item {{ request()->routeIs('admin.inbox') ? 'active' : '' }}">Inbox</a>
-            <a href="{{ route('admin.sent') }}" class="sub-item {{ request()->routeIs('admin.sent') ? 'active' : '' }}">Sent</a>
-            <a href="{{ route('admin.archived') }}" class="sub-item {{ request()->routeIs('admin.archived') ? 'active' : '' }}">Archived</a>
-        </div>
-
-        <!-- FAQs -->
-        <button class="nav-item {{ request()->routeIs('admin.pending','admin.answered') ? 'active' : '' }}"
-                onclick="toggleNav('faqsMenu', this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span class="nav-label">FAQs</span>
-            <svg class="nav-arrow {{ request()->routeIs('admin.pending','admin.answered') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="sub-menu {{ request()->routeIs('admin.pending','admin.answered') ? 'open' : '' }}" id="faqsMenu">
-            <a href="{{ route('admin.pending') }}" class="sub-item {{ request()->routeIs('admin.pending') ? 'active' : '' }}">Pending Questions</a>
-            <a href="{{ route('admin.answered') }}" class="sub-item {{ request()->routeIs('admin.answered') ? 'active' : '' }}">Answered</a>
-        </div>
-
-        <div class="section-label">Administration</div>
-
-        <a href="{{ route('admin.usermanagement') }}" class="nav-item {{ request()->routeIs('admin.usermanagement') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            <span class="nav-label">User Management</span>
-        </a>
-
-        <a href="{{ route('admin.reportsAnalytics') }}" class="nav-item {{ request()->routeIs('admin.reportsAnalytics') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-            <span class="nav-label">Reports & Analytics</span>
-        </a>
-
-        <!-- Settings -->
-        <button class="nav-item {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'active' : '' }}"
-                onclick="toggleNav('settingsMenu', this)">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span class="nav-label">Settings</span>
-            <svg class="nav-arrow {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="sub-menu {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'open' : '' }}" id="settingsMenu">
-            <a href="{{ route('admin.general') }}" class="sub-item {{ request()->routeIs('admin.general') ? 'active' : '' }}">General</a>
-            <a href="{{ route('admin.help') }}" class="sub-item {{ request()->routeIs('admin.help') ? 'active' : '' }}">Security</a>
-            <a href="{{ route('admin.notifications') }}" class="sub-item {{ request()->routeIs('admin.notifications') ? 'active' : '' }}">Notifications</a>
-            <a href="{{ route('admin.logs') }}" class="sub-item {{ request()->routeIs('admin.logs') ? 'active' : '' }}">Audit Logs</a>
-            <a href="{{ route('admin.security') }}" class="sub-item {{ request()->routeIs('admin.security') ? 'active' : '' }}">Help</a>
-        </div>
-
-    </nav>
-
-    <!-- User strip -->
-    <div class="sidebar-user">
-        <div class="user-avatar">
-            A
-            <span class="online-dot"></span>
-        </div>
-        <div class="user-info">
-            <div class="user-name">Administrator</div>
-            <div class="user-role">PUDHO — Province of Laguna</div>
-        </div>
-    </div>
-</aside>
-
-<!-- ═══ TOP NAV ═══ -->
-<header id="topNav">
-    <div class="topnav-inner">
-        <div class="topnav-left">
-            <button class="hamburger-btn" onclick="openSidebar()" aria-label="Open menu">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-            <button class="desktop-toggle-btn" onclick="toggleDesktopSidebar()" aria-label="Toggle sidebar">
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h10M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="topnav-right">
-            <!-- Date/time — large & prominent -->
-            <div class="datetime-wrap">
-                <span class="dt-time" id="topTime"></span>
-                <span class="dt-date" id="topDate"></span>
-            </div>
-
-            <!-- Notifications -->
-            <div style="position:relative">
-                <button class="icon-btn" onclick="toggleDropdown('notifPanel')" aria-label="Notifications">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                    <span class="badge">3</span>
-                </button>
-                <div class="dropdown-panel" id="notifPanel">
-                    <div class="dp-header">
-                        <h4>Notifications</h4>
-                        <a href="#">Mark all read</a>
-                    </div>
-                    <div class="dp-body">
-                        <a href="#" class="dp-item">
-                            <div class="dp-item-icon" style="background:#FFF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-                            <div class="dp-item-text">
-                                <div class="dp-item-title">New resident application submitted</div>
-                                <div class="dp-item-meta">5 minutes ago</div>
-                            </div>
-                            <div class="dp-unread-dot"></div>
-                        </a>
-                        <a href="#" class="dp-item">
-                            <div class="dp-item-icon" style="background:#EFF6FF"><svg fill="none" stroke="#3B82F6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-                            <div class="dp-item-text">
-                                <div class="dp-item-title">New message from John Doe</div>
-                                <div class="dp-item-meta">15 minutes ago</div>
-                            </div>
-                            <div class="dp-unread-dot"></div>
-                        </a>
-                        <a href="#" class="dp-item">
-                            <div class="dp-item-icon" style="background:#F0FDF4"><svg fill="none" stroke="#22C55E" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-                            <div class="dp-item-text">
-                                <div class="dp-item-title">File verification complete</div>
-                                <div class="dp-item-meta">1 hour ago</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="dp-footer"><a href="#">View all notifications</a></div>
+        <!-- Brand -->
+        <div class="sidebar-brand">
+            <div class="logo-area" onclick="toggleDesktopSidebar()" title="Toggle sidebar">
+                <img src="{{ asset('build/assets/images/logo-pudho.jpg') }}"
+                    alt="PUDHO"
+                    class="logo-img"
+                    onerror="this.src='https://via.placeholder.com/42x42/ffffff/C0202F?text=P'">
+                <div class="sidebar-brand-text">
+                    <div class="brand-name"><span>LAGUNA</span> PUDHO</div>
+                    <div class="brand-tagline">Urban Development & Housing</div>
                 </div>
             </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+
+            <div class="section-label">Main</div>
+
+            <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span class="nav-label">Dashboard</span>
+            </a>
+
+            <a href="{{ route('admin.post') }}" class="nav-item {{ request()->routeIs('admin.post') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
+                </svg>
+                <span class="nav-label">Posts</span>
+            </a>
+            
+            <a href="{{ route('admin.filemanagement') }}" class="nav-item {{ request()->routeIs('admin.filemanagement') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+                <span class="nav-label">File Management</span>
+            </a>
+
+            <a href="{{ route('admin.residents') }}" class="nav-item {{ request()->routeIs('admin.residents') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="nav-label">Residents</span>
+            </a>
+
+            <!-- <a href="{{ route('admin.cmissingfiles') }}" class="nav-item {{ request()->routeIs('admin.cmissingfiles') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="nav-label">Missing Files</span>
+            </a> -->
+
+            <!-- Anti-Squatting -->
+            <button class="nav-item {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'active' : '' }}"
+                onclick="toggleNav('squattingMenu', this)">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <span class="nav-label">Anti-Squatting</span>
+                <svg class="nav-arrow {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="sub-menu {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'open' : '' }}" id="squattingMenu">
+                <a href="{{ route('admin.overview') }}" class="sub-item {{ request()->routeIs('admin.overview') ? 'active' : '' }}">Overview</a>
+                <a href="{{ route('admin.reports') }}" class="sub-item {{ request()->routeIs('admin.reports') ? 'active' : '' }}">Reports</a>
+                <a href="{{ route('admin.investigation') }}" class="sub-item {{ request()->routeIs('admin.investigation') ? 'active' : '' }}">Investigation</a>
+                <a href="{{ route('admin.mapview') }}" class="sub-item {{ request()->routeIs('admin.mapview') ? 'active' : '' }}">Map View</a>
+            </div>
+
+            <div class="section-label">Support</div>
 
             <!-- Messages -->
-            <div style="position:relative">
-                <button class="icon-btn" onclick="toggleDropdown('msgPanel')" aria-label="Messages">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                    <span class="badge">5</span>
-                </button>
-                <div class="dropdown-panel" id="msgPanel">
-                    <div class="dp-header">
-                        <h4>Messages</h4>
-                        <a href="#">New message</a>
-                    </div>
-                    <div class="dp-body">
-                        <a href="#" class="dp-item">
-                            <div class="msg-av" style="background:linear-gradient(135deg,#C0202F,#9A1520)">JD</div>
-                            <div class="dp-item-text">
-                                <div style="display:flex;justify-content:space-between;align-items:center">
-                                    <div class="dp-item-title" style="font-weight:600">John Doe</div>
-                                    <div class="dp-item-meta">2 min</div>
-                                </div>
-                                <div class="dp-item-meta" style="margin-top:2px">Regarding the file verification process…</div>
-                            </div>
-                            <div class="dp-unread-dot" style="margin-top:6px"></div>
-                        </a>
-                        <a href="#" class="dp-item">
-                            <div class="msg-av" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">JS</div>
-                            <div class="dp-item-text">
-                                <div style="display:flex;justify-content:space-between;align-items:center">
-                                    <div class="dp-item-title" style="font-weight:600">Jane Smith</div>
-                                    <div class="dp-item-meta">1 hr</div>
-                                </div>
-                                <div class="dp-item-meta" style="margin-top:2px">Updated the anti-squatting report…</div>
-                            </div>
-                        </a>
-                        <a href="#" class="dp-item">
-                            <div class="msg-av" style="background:linear-gradient(135deg,#22C55E,#16A34A)">MR</div>
-                            <div class="dp-item-text">
-                                <div style="display:flex;justify-content:space-between;align-items:center">
-                                    <div class="dp-item-title" style="font-weight:600">Mike Ross</div>
-                                    <div class="dp-item-meta">3 hr</div>
-                                </div>
-                                <div class="dp-item-meta" style="margin-top:2px">New resident application needs review…</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="dp-footer"><a href="#">View all messages</a></div>
-                </div>
+            <button class="nav-item {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'active' : '' }}"
+                onclick="toggleNav('messagesMenu', this)">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+                <span class="nav-label">Messages</span>
+                <svg class="nav-arrow {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="sub-menu {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'open' : '' }}" id="messagesMenu">
+                <a href="{{ route('admin.inbox') }}" class="sub-item {{ request()->routeIs('admin.inbox') ? 'active' : '' }}">Inbox</a>
+                <a href="{{ route('admin.sent') }}" class="sub-item {{ request()->routeIs('admin.sent') ? 'active' : '' }}">Sent</a>
+                <a href="{{ route('admin.archived') }}" class="sub-item {{ request()->routeIs('admin.archived') ? 'active' : '' }}">Archived</a>
             </div>
 
-            <!-- Profile -->
-            <div style="position:relative">
-                <button class="profile-btn" onclick="toggleDropdown('profilePanel')">
-                    <div class="profile-av">
-                        A
-                        <span class="online"></span>
-                    </div>
-                    <span class="profile-name">Admin</span>
-                </button>
-                <div class="dropdown-panel narrow" id="profilePanel">
-                    <div style="padding:14px 16px 11px; border-bottom:1px solid var(--red-border);">
-                        <div style="font-size:14px;font-weight:700;color:var(--text-primary)">Administrator</div>
-                        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">admin@pudho-laguna.gov.ph</div>
-                    </div>
-                    <a href="{{ route('admin.profile') }}" class="profile-dp-item">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                        My Profile
-                    </a>
-                    <a href="{{ route('admin.general') }}" class="profile-dp-item">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        Settings
-                    </a>
-                    <div style="height:1px;background:var(--red-border);margin:4px 0"></div>
-                    <a href="{{ route('welcome') }}" class="profile-dp-item danger">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                        Logout
-                    </a>
-                </div>
+            <!-- FAQs -->
+            <button class="nav-item {{ request()->routeIs('admin.pending','admin.answered') ? 'active' : '' }}"
+                onclick="toggleNav('faqsMenu', this)">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="nav-label">FAQs</span>
+                <svg class="nav-arrow {{ request()->routeIs('admin.pending','admin.answered') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="sub-menu {{ request()->routeIs('admin.pending','admin.answered') ? 'open' : '' }}" id="faqsMenu">
+                <a href="{{ route('admin.pending') }}" class="sub-item {{ request()->routeIs('admin.pending') ? 'active' : '' }}">Pending Questions</a>
+                <a href="{{ route('admin.answered') }}" class="sub-item {{ request()->routeIs('admin.answered') ? 'active' : '' }}">Answered</a>
             </div>
 
+            <div class="section-label">Administration</div>
+
+            <a href="{{ route('admin.usermanagement') }}" class="nav-item {{ request()->routeIs('admin.usermanagement') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span class="nav-label">User Management</span>
+            </a>
+
+            <a href="{{ route('admin.reportsAnalytics') }}" class="nav-item {{ request()->routeIs('admin.reportsAnalytics') ? 'active' : '' }}">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="nav-label">Reports & Analytics</span>
+            </a>
+
+            <!-- Settings -->
+            <button class="nav-item {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'active' : '' }}"
+                onclick="toggleNav('settingsMenu', this)">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="nav-label">Settings</span>
+                <svg class="nav-arrow {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="sub-menu {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'open' : '' }}" id="settingsMenu">
+                <a href="{{ route('admin.general') }}" class="sub-item {{ request()->routeIs('admin.general') ? 'active' : '' }}">General</a>
+                <a href="{{ route('admin.help') }}" class="sub-item {{ request()->routeIs('admin.help') ? 'active' : '' }}">Security</a>
+                <a href="{{ route('admin.notifications') }}" class="sub-item {{ request()->routeIs('admin.notifications') ? 'active' : '' }}">Notifications</a>
+                <a href="{{ route('admin.logs') }}" class="sub-item {{ request()->routeIs('admin.logs') ? 'active' : '' }}">Audit Logs</a>
+                <a href="{{ route('admin.security') }}" class="sub-item {{ request()->routeIs('admin.security') ? 'active' : '' }}">Help</a>
+            </div>
+
+        </nav>
+
+        <!-- User strip -->
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                A
+                <span class="online-dot"></span>
+            </div>
+            <div class="user-info">
+                <div class="user-name">Administrator</div>
+                <div class="user-role">PUDHO — Province of Laguna</div>
+            </div>
         </div>
-    </div>
-</header>
+    </aside>
 
-<!-- ═══ MAIN CONTENT ═══ -->
-<main id="mainContent">
-    @yield('content')
-</main>
+    <!-- ═══ TOP NAV ═══ -->
+    <header id="topNav">
+        <div class="topnav-inner">
+            <div class="topnav-left">
+                <button class="hamburger-btn" onclick="openSidebar()" aria-label="Open menu">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <button class="desktop-toggle-btn" onclick="toggleDesktopSidebar()" aria-label="Toggle sidebar">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h10M4 18h16" />
+                    </svg>
+                </button>
+            </div>
 
-<script>
-    let sidebarCollapsed = false;
+            <div class="topnav-right">
+                <!-- Date/time — large & prominent -->
+                <div class="datetime-wrap">
+                    <span class="dt-time" id="topTime"></span>
+                    <span class="dt-date" id="topDate"></span>
+                </div>
 
-    function toggleDesktopSidebar() {
-        if (window.innerWidth < 1024) return;
-        sidebarCollapsed = !sidebarCollapsed;
-        document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
-        document.getElementById('topNav').classList.toggle('sidebar-collapsed', sidebarCollapsed);
-        document.getElementById('mainContent').classList.toggle('sidebar-collapsed', sidebarCollapsed);
-    }
+                <!-- Notifications -->
+                <div style="position:relative">
+                    <button class="icon-btn" onclick="toggleDropdown('notifPanel')" aria-label="Notifications">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="badge">3</span>
+                    </button>
+                    <div class="dropdown-panel" id="notifPanel">
+                        <div class="dp-header">
+                            <h4>Notifications</h4>
+                            <a href="#">Mark all read</a>
+                        </div>
+                        <div class="dp-body">
+                            <a href="#" class="dp-item">
+                                <div class="dp-item-icon" style="background:#FFF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg></div>
+                                <div class="dp-item-text">
+                                    <div class="dp-item-title">New resident application submitted</div>
+                                    <div class="dp-item-meta">5 minutes ago</div>
+                                </div>
+                                <div class="dp-unread-dot"></div>
+                            </a>
+                            <a href="#" class="dp-item">
+                                <div class="dp-item-icon" style="background:#EFF6FF"><svg fill="none" stroke="#3B82F6" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg></div>
+                                <div class="dp-item-text">
+                                    <div class="dp-item-title">New message from John Doe</div>
+                                    <div class="dp-item-meta">15 minutes ago</div>
+                                </div>
+                                <div class="dp-unread-dot"></div>
+                            </a>
+                            <a href="#" class="dp-item">
+                                <div class="dp-item-icon" style="background:#F0FDF4"><svg fill="none" stroke="#22C55E" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg></div>
+                                <div class="dp-item-text">
+                                    <div class="dp-item-title">File verification complete</div>
+                                    <div class="dp-item-meta">1 hour ago</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="dp-footer"><a href="#">View all notifications</a></div>
+                    </div>
+                </div>
 
-    function openSidebar() {
-        document.getElementById('sidebar').classList.add('mobile-open');
-        document.getElementById('sidebarOverlay').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeSidebar() {
-        document.getElementById('sidebar').classList.remove('mobile-open');
-        document.getElementById('sidebarOverlay').classList.remove('show');
-        document.body.style.overflow = '';
-    }
+                <!-- Messages -->
+                <div style="position:relative">
+                    <button class="icon-btn" onclick="toggleDropdown('msgPanel')" aria-label="Messages">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        <span class="badge">5</span>
+                    </button>
+                    <div class="dropdown-panel" id="msgPanel">
+                        <div class="dp-header">
+                            <h4>Messages</h4>
+                            <a href="#">New message</a>
+                        </div>
+                        <div class="dp-body">
+                            <a href="#" class="dp-item">
+                                <div class="msg-av" style="background:linear-gradient(135deg,#C0202F,#9A1520)">JD</div>
+                                <div class="dp-item-text">
+                                    <div style="display:flex;justify-content:space-between;align-items:center">
+                                        <div class="dp-item-title" style="font-weight:600">John Doe</div>
+                                        <div class="dp-item-meta">2 min</div>
+                                    </div>
+                                    <div class="dp-item-meta" style="margin-top:2px">Regarding the file verification process…</div>
+                                </div>
+                                <div class="dp-unread-dot" style="margin-top:6px"></div>
+                            </a>
+                            <a href="#" class="dp-item">
+                                <div class="msg-av" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">JS</div>
+                                <div class="dp-item-text">
+                                    <div style="display:flex;justify-content:space-between;align-items:center">
+                                        <div class="dp-item-title" style="font-weight:600">Jane Smith</div>
+                                        <div class="dp-item-meta">1 hr</div>
+                                    </div>
+                                    <div class="dp-item-meta" style="margin-top:2px">Updated the anti-squatting report…</div>
+                                </div>
+                            </a>
+                            <a href="#" class="dp-item">
+                                <div class="msg-av" style="background:linear-gradient(135deg,#22C55E,#16A34A)">MR</div>
+                                <div class="dp-item-text">
+                                    <div style="display:flex;justify-content:space-between;align-items:center">
+                                        <div class="dp-item-title" style="font-weight:600">Mike Ross</div>
+                                        <div class="dp-item-meta">3 hr</div>
+                                    </div>
+                                    <div class="dp-item-meta" style="margin-top:2px">New resident application needs review…</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="dp-footer"><a href="#">View all messages</a></div>
+                    </div>
+                </div>
 
-    function toggleNav(menuId, btn) {
-        if (window.innerWidth >= 1024 && sidebarCollapsed) return;
-        const menu  = document.getElementById(menuId);
-        const arrow = btn.querySelector('.nav-arrow');
-        const isOpen = menu.classList.contains('open');
-        document.querySelectorAll('.sub-menu.open').forEach(m => m.classList.remove('open'));
-        document.querySelectorAll('.nav-arrow.open').forEach(a => a.classList.remove('open'));
-        if (!isOpen) {
-            menu.classList.add('open');
-            if (arrow) arrow.classList.add('open');
+                <!-- Profile -->
+                <div style="position:relative">
+                    <button class="profile-btn" onclick="toggleDropdown('profilePanel')">
+                        <div class="profile-av">
+                            A
+                            <span class="online"></span>
+                        </div>
+                        <span class="profile-name">Admin</span>
+                    </button>
+                    <div class="dropdown-panel narrow" id="profilePanel">
+                        <div style="padding:14px 16px 11px; border-bottom:1px solid var(--red-border);">
+                            <div style="font-size:14px;font-weight:700;color:var(--text-primary)">Administrator</div>
+                            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">admin@pudho-laguna.gov.ph</div>
+                        </div>
+                        <a href="{{ route('admin.profile') }}" class="profile-dp-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            My Profile
+                        </a>
+                        <a href="{{ route('admin.general') }}" class="profile-dp-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Settings
+                        </a>
+                        <div style="height:1px;background:var(--red-border);margin:4px 0"></div>
+                        <a href="{{ route('welcome') }}" class="profile-dp-item danger">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main id="mainContent">
+        @yield('content')
+    </main>
+
+    <script>
+        let sidebarCollapsed = false;
+
+        function toggleDesktopSidebar() {
+            if (window.innerWidth < 1024) return;
+            sidebarCollapsed = !sidebarCollapsed;
+            document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+            document.getElementById('topNav').classList.toggle('sidebar-collapsed', sidebarCollapsed);
+            document.getElementById('mainContent').classList.toggle('sidebar-collapsed', sidebarCollapsed);
         }
-    }
 
-    function toggleDropdown(id) {
-        const panel = document.getElementById(id);
-        const isOpen = panel.classList.contains('show');
-        document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
-        if (!isOpen) panel.classList.add('show');
-    }
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('mobile-open');
+            document.getElementById('sidebarOverlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
 
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('.dropdown-panel')) {
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('mobile-open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function toggleNav(menuId, btn) {
+            if (window.innerWidth >= 1024 && sidebarCollapsed) return;
+            const menu = document.getElementById(menuId);
+            const arrow = btn.querySelector('.nav-arrow');
+            const isOpen = menu.classList.contains('open');
+            document.querySelectorAll('.sub-menu.open').forEach(m => m.classList.remove('open'));
+            document.querySelectorAll('.nav-arrow.open').forEach(a => a.classList.remove('open'));
+            if (!isOpen) {
+                menu.classList.add('open');
+                if (arrow) arrow.classList.add('open');
+            }
+        }
+
+        function toggleDropdown(id) {
+            const panel = document.getElementById(id);
+            const isOpen = panel.classList.contains('show');
             document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
+            if (!isOpen) panel.classList.add('show');
         }
-    });
 
-    window.addEventListener('resize', function() {
-        if (window.innerWidth >= 1024) closeSidebar();
-    });
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('.dropdown-panel')) {
+                document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
+            }
+        });
 
-    // Date/time — time shown large on top, date below
-    function updateTime() {
-        const now = new Date();
-        let h = now.getHours(), m = now.getMinutes().toString().padStart(2,'0'), s = now.getSeconds().toString().padStart(2,'0');
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        document.getElementById('topTime').textContent = `${h}:${m}:${s} ${ampm}`;
-        const dateOpts = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
-        document.getElementById('topDate').textContent = now.toLocaleDateString('en-US', dateOpts).toUpperCase();
-    }
-    updateTime();
-    setInterval(updateTime, 1000);
-</script>
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) closeSidebar();
+        });
+
+        // Date/time — time shown large on top, date below
+        function updateTime() {
+            const now = new Date();
+            let h = now.getHours(),
+                m = now.getMinutes().toString().padStart(2, '0'),
+                s = now.getSeconds().toString().padStart(2, '0');
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            document.getElementById('topTime').textContent = `${h}:${m}:${s} ${ampm}`;
+            const dateOpts = {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            };
+            document.getElementById('topDate').textContent = now.toLocaleDateString('en-US', dateOpts).toUpperCase();
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
 
 </body>
+
 </html>

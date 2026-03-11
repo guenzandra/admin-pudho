@@ -93,6 +93,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     })->name('inspector.dashboard');
 
     // ============ CMS ROUTES (Post Drop-down) ============
+
+    //Posts main page
+    Route::get('/post', function () {
+        return view('admin.post');
+    })->name('post');
+
     // All Posts page
     Route::get('/allpost', function () {
         return view('admin.cms-dropdown.allpost');

@@ -1,4 +1,4 @@
-{{-- resources/views/layouts/nav.blade.php (refactored) --}}
+{{-- resources/views/layouts/nav.blade.php (redesigned — matches admin.blade.php) --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,7 +39,7 @@
       color: var(--text-primary);
     }
 
-    /* ═══════════ SIDEBAR ═══════════ */
+    /* ═══ SIDEBAR ═══ */
     #sidebar {
       position: fixed;
       top: 0;
@@ -55,7 +55,6 @@
       overflow: hidden;
     }
 
-    /* Collapsed state */
     #sidebar.collapsed {
       width: 70px;
     }
@@ -131,7 +130,7 @@
       }
     }
 
-    /* Brand area */
+    /* Brand */
     .sidebar-brand {
       flex-shrink: 0;
       background: linear-gradient(145deg, var(--red-dark) 0%, var(--red) 60%, #D94050 100%);
@@ -216,7 +215,7 @@
       letter-spacing: 0.02em;
     }
 
-    /* Nav area */
+    /* Nav */
     .sidebar-nav {
       flex: 1;
       overflow-y: auto;
@@ -247,7 +246,6 @@
       transition: opacity 0.25s;
     }
 
-    /* Nav items */
     .nav-item {
       display: flex;
       align-items: center;
@@ -278,7 +276,6 @@
       color: var(--red);
     }
 
-    /* Active state — persistent highlight */
     .nav-item.active {
       background: var(--red-pale2);
       color: var(--red);
@@ -298,16 +295,6 @@
       width: 3.5px;
       background: var(--red);
       border-radius: 0 3px 3px 0;
-    }
-
-    .sub-item.active {
-      background: var(--red-pale2);
-      color: var(--red);
-      font-weight: 600;
-    }
-
-    .sub-item.active::after {
-      background: var(--red) !important;
     }
 
     .nav-icon {
@@ -336,7 +323,7 @@
       transform: rotate(180deg);
     }
 
-    /* Sub-menu */
+    /* Dropdown sub-menu */
     .sub-menu {
       overflow: hidden;
       max-height: 0;
@@ -382,6 +369,16 @@
 
     .sub-item:hover::after {
       background: var(--red);
+    }
+
+    .sub-item.active {
+      background: var(--red-pale2);
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .sub-item.active::after {
+      background: var(--red) !important;
     }
 
     /* Sidebar user strip */
@@ -444,7 +441,7 @@
       margin-top: 1px;
     }
 
-    /* ═══════════ OVERLAY ═══════════ */
+    /* ═══ OVERLAY ═══ */
     #sidebarOverlay {
       display: none;
       position: fixed;
@@ -458,7 +455,7 @@
       display: block;
     }
 
-    /* ═══════════ TOP NAV ═══════════ */
+    /* ═══ TOP NAV ═══ */
     #topNav {
       position: fixed;
       top: 0;
@@ -557,13 +554,33 @@
       }
     }
 
-    /* Right side */
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    .breadcrumb strong {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .breadcrumb span {
+      color: var(--red-border);
+    }
+
     .topnav-right {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
+    /* Date/time */
     .datetime-wrap {
       display: none;
       flex-direction: column;
@@ -597,6 +614,7 @@
       text-transform: uppercase;
     }
 
+    /* Icon buttons */
     .icon-btn {
       position: relative;
       background: none;
@@ -639,6 +657,7 @@
       border: 2px solid white;
     }
 
+    /* Profile button */
     .profile-btn {
       display: flex;
       align-items: center;
@@ -752,6 +771,10 @@
       font-weight: 600;
     }
 
+    .dp-header a:hover {
+      text-decoration: underline;
+    }
+
     .dp-body {
       max-height: 300px;
       overflow-y: auto;
@@ -825,6 +848,11 @@
       font-weight: 600;
     }
 
+    .dp-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Profile dropdown */
     .profile-dp-item {
       display: flex;
       align-items: center;
@@ -867,6 +895,7 @@
       color: var(--red);
     }
 
+    /* Message avatars */
     .msg-av {
       width: 36px;
       height: 36px;
@@ -906,15 +935,12 @@
 
   <div id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-  <!-- SIDEBAR (Editor version) -->
   <aside id="sidebar">
 
-    <!-- Brand (click logo toggles desktop sidebar) -->
+    <!-- Brand -->
     <div class="sidebar-brand">
       <div class="logo-area" onclick="toggleDesktopSidebar()" title="Toggle sidebar">
-        <img src="{{ asset('build/assets/images/logo-pudho.jpg') }}"
-          alt="PUDHO"
-          class="logo-img"
+        <img src="{{ asset('build/assets/images/logo-pudho.jpg') }}" alt="PUDHO" class="logo-img"
           onerror="this.src='https://via.placeholder.com/42x42/ffffff/C0202F?text=P'">
         <div class="sidebar-brand-text">
           <div class="brand-name"><span>LAGUNA</span> PUDHO</div>
@@ -923,12 +949,11 @@
       </div>
     </div>
 
-    <!-- Navigation (Editor routes) -->
+    <!-- Navigation -->
     <nav class="sidebar-nav">
 
       <div class="section-label">Main</div>
 
-      <!-- Dashboard -->
       <a href="{{ route('editor.editorDashboard') }}" class="nav-item {{ request()->routeIs('editor.editorDashboard') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -936,21 +961,37 @@
         <span class="nav-label">Dashboard</span>
       </a>
 
-      <!-- Content Management -->
-      <button class="nav-item {{ request()->routeIs('editor.announcements','editor.news') ? 'active' : '' }}"
-        onclick="toggleNav('contentMenu', this)">
+      <div class="section-label">Content</div>
+
+      <a href="{{ route('editor.announcements') }}" class="nav-item {{ request()->routeIs('editor.announcements') ? 'active' : '' }}">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+        </svg>
+        <span class="nav-label">Announcements</span>
+      </a>
+
+      <a href="{{ route('editor.news') }}" class="nav-item {{ request()->routeIs('editor.news') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
         </svg>
-        <span class="nav-label">Content Management</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.announcements','editor.news') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+        <span class="nav-label">News & Accomplishments</span>
+      </a>
+
+      <a href="{{ route('editor.images') }}" class="nav-item {{ request()->routeIs('editor.images') ? 'active' : '' }}">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
-      </button>
-      <div class="sub-menu {{ request()->routeIs('editor.announcements','editor.news') ? 'open' : '' }}" id="contentMenu">
-        <a href="{{ route('editor.announcements') }}" class="sub-item {{ request()->routeIs('editor.announcements') ? 'active' : '' }}">Announcements</a>
-        <a href="{{ route('editor.news') }}" class="sub-item {{ request()->routeIs('editor.news') ? 'active' : '' }}">News & Accomplishments</a>
-      </div>
+        <span class="nav-label">Images</span>
+      </a>
+
+      <a href="{{ route('editor.documents') }}" class="nav-item {{ request()->routeIs('editor.documents') ? 'active' : '' }}">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span class="nav-label">Documents</span>
+      </a>
+
+      <div class="section-label">Pages & Services</div>
 
       <!-- Page Management -->
       <button class="nav-item {{ request()->routeIs('editor.vision-mission-values','editor.organizational-structure','editor.district-offices','editor.affiliated-offices','editor.citizens-charter') ? 'active' : '' }}"
@@ -971,68 +1012,42 @@
         <a href="{{ route('editor.citizens-charter') }}" class="sub-item {{ request()->routeIs('editor.citizens-charter') ? 'active' : '' }}">Citizen's Charter Preview</a>
       </div>
 
-      <!-- Service Management -->
-      <button class="nav-item {{ request()->routeIs('editor.manage-services') ? 'active' : '' }}"
-        onclick="toggleNav('serviceMenu', this)">
+      <a href="{{ route('editor.manage-services') }}" class="nav-item {{ request()->routeIs('editor.manage-services') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
-        <span class="nav-label">Service Management</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.manage-services') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="sub-menu {{ request()->routeIs('editor.manage-services') ? 'open' : '' }}" id="serviceMenu">
-        <a href="{{ route('editor.manage-services') }}" class="sub-item {{ request()->routeIs('editor.manage-services') ? 'active' : '' }}">Manage Services</a>
-      </div>
+        <span class="nav-label">Manage Services</span>
+      </a>
 
-      <!-- FAQ Management -->
-      <button class="nav-item {{ request()->routeIs('editor.manage-faqs','editor.faq-categories') ? 'active' : '' }}"
-        onclick="toggleNav('faqMenu', this)">
+      <div class="section-label">Resources</div>
+
+      <a href="{{ route('editor.manage-faqs') }}" class="nav-item {{ request()->routeIs('editor.manage-faqs') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span class="nav-label">FAQ Management</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.manage-faqs','editor.faq-categories') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="sub-menu {{ request()->routeIs('editor.manage-faqs','editor.faq-categories') ? 'open' : '' }}" id="faqMenu">
-        <a href="{{ route('editor.manage-faqs') }}" class="sub-item {{ request()->routeIs('editor.manage-faqs') ? 'active' : '' }}">Manage FAQs</a>
-        <a href="{{ route('editor.faq-categories') }}" class="sub-item {{ request()->routeIs('editor.faq-categories') ? 'active' : '' }}">FAQ Categories</a>
-      </div>
+        <span class="nav-label">Manage FAQs</span>
+      </a>
 
-      <!-- File Management -->
-      <button class="nav-item {{ request()->routeIs('editor.downloadable-forms','editor.form-categories') ? 'active' : '' }}"
-        onclick="toggleNav('fileMenu', this)">
+      <a href="{{ route('editor.faq-categories') }}" class="nav-item {{ request()->routeIs('editor.faq-categories') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
         </svg>
-        <span class="nav-label">File Management</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.downloadable-forms','editor.form-categories') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="sub-menu {{ request()->routeIs('editor.downloadable-forms','editor.form-categories') ? 'open' : '' }}" id="fileMenu">
-        <a href="{{ route('editor.downloadable-forms') }}" class="sub-item {{ request()->routeIs('editor.downloadable-forms') ? 'active' : '' }}">Downloadable Forms</a>
-        <a href="{{ route('editor.form-categories') }}" class="sub-item {{ request()->routeIs('editor.form-categories') ? 'active' : '' }}">Form Categories</a>
-      </div>
+        <span class="nav-label">FAQ Categories</span>
+      </a>
 
-      <!-- Media Management -->
-      <button class="nav-item {{ request()->routeIs('editor.images','editor.documents') ? 'active' : '' }}"
-        onclick="toggleNav('mediaMenu', this)">
+      <a href="{{ route('editor.downloadable-forms') }}" class="nav-item {{ request()->routeIs('editor.downloadable-forms') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        <span class="nav-label">Media Management</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.images','editor.documents') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+        <span class="nav-label">Downloadable Forms</span>
+      </a>
+
+      <a href="{{ route('editor.form-categories') }}" class="nav-item {{ request()->routeIs('editor.form-categories') ? 'active' : '' }}">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
         </svg>
-      </button>
-      <div class="sub-menu {{ request()->routeIs('editor.images','editor.documents') ? 'open' : '' }}" id="mediaMenu">
-        <a href="{{ route('editor.images') }}" class="sub-item {{ request()->routeIs('editor.images') ? 'active' : '' }}">Images</a>
-        <a href="{{ route('editor.documents') }}" class="sub-item {{ request()->routeIs('editor.documents') ? 'active' : '' }}">Documents</a>
-      </div>
+        <span class="nav-label">Form Categories</span>
+      </a>
 
       <div class="section-label">Configuration</div>
 
@@ -1056,7 +1071,7 @@
 
     </nav>
 
-    <!-- User strip (editor) -->
+    <!-- User strip -->
     <div class="sidebar-user">
       <div class="user-avatar">
         E
@@ -1067,9 +1082,10 @@
         <div class="user-role">PUDHO — Content Manager</div>
       </div>
     </div>
+
   </aside>
 
-  <!-- TOP NAV -->
+  <!-- ═══ TOP NAV ═══ -->
   <header id="topNav">
     <div class="topnav-inner">
       <div class="topnav-left">
@@ -1083,10 +1099,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h10M4 18h16" />
           </svg>
         </button>
+        <div class="breadcrumb">
+          <span>PUDHO</span>
+          <span>›</span>
+          <strong>@yield('title', 'Dashboard')</strong>
+        </div>
       </div>
 
       <div class="topnav-right">
-        <!-- Date/time prominent -->
+        <!-- Date/time -->
         <div class="datetime-wrap">
           <span class="dt-time" id="topTime"></span>
           <span class="dt-date" id="topDate"></span>
@@ -1106,27 +1127,42 @@
             </div>
             <div class="dp-body">
               <a href="#" class="dp-item">
-                <div class="dp-item-icon" style="background:#FFF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
+                <div class="dp-item-icon" style="background:#FFF0F1">
+                  <svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg></div>
+                  </svg>
+                </div>
                 <div class="dp-item-text">
                   <div class="dp-item-title">New announcement ready</div>
-                  <div class="dp-item-meta">5 min ago</div>
+                  <div class="dp-item-meta">5 minutes ago</div>
                 </div>
                 <div class="dp-unread-dot"></div>
               </a>
               <a href="#" class="dp-item">
-                <div class="dp-item-icon" style="background:#EFF6FF"><svg fill="none" stroke="#3B82F6" viewBox="0 0 24 24">
+                <div class="dp-item-icon" style="background:#EFF6FF">
+                  <svg fill="none" stroke="#3B82F6" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg></div>
+                  </svg>
+                </div>
                 <div class="dp-item-text">
                   <div class="dp-item-title">Message from admin</div>
-                  <div class="dp-item-meta">15 min ago</div>
+                  <div class="dp-item-meta">15 minutes ago</div>
                 </div>
                 <div class="dp-unread-dot"></div>
               </a>
+              <a href="#" class="dp-item">
+                <div class="dp-item-icon" style="background:#F0FDF4">
+                  <svg fill="none" stroke="#22C55E" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="dp-item-text">
+                  <div class="dp-item-title">Content published successfully</div>
+                  <div class="dp-item-meta">1 hour ago</div>
+                </div>
+              </a>
             </div>
-            <div class="dp-footer"><a href="#">View all</a></div>
+            <div class="dp-footer"><a href="#">View all notifications</a></div>
           </div>
         </div>
 
@@ -1146,20 +1182,26 @@
               <a href="#" class="dp-item">
                 <div class="msg-av" style="background:linear-gradient(135deg,#C0202F,#9A1520)">JD</div>
                 <div class="dp-item-text">
-                  <div style="display:flex;justify-content:space-between"><span class="dp-item-title">John Doe</span><span class="dp-item-meta">2 min</span></div>
-                  <div class="dp-item-meta">Content update requested…</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div class="dp-item-title" style="font-weight:600">John Doe</div>
+                    <div class="dp-item-meta">2 min</div>
+                  </div>
+                  <div class="dp-item-meta" style="margin-top:2px">Content update requested…</div>
                 </div>
-                <div class="dp-unread-dot"></div>
+                <div class="dp-unread-dot" style="margin-top:6px"></div>
               </a>
               <a href="#" class="dp-item">
                 <div class="msg-av" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">JS</div>
                 <div class="dp-item-text">
-                  <div style="display:flex;justify-content:space-between"><span class="dp-item-title">Jane Smith</span><span class="dp-item-meta">1 hr</span></div>
-                  <div class="dp-item-meta">FAQ category ready</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div class="dp-item-title" style="font-weight:600">Jane Smith</div>
+                    <div class="dp-item-meta">1 hr</div>
+                  </div>
+                  <div class="dp-item-meta" style="margin-top:2px">FAQ category ready</div>
                 </div>
               </a>
             </div>
-            <div class="dp-footer"><a href="#">View all</a></div>
+            <div class="dp-footer"><a href="#">View all messages</a></div>
           </div>
         </div>
 
@@ -1170,27 +1212,37 @@
             <span class="profile-name">Editor</span>
           </button>
           <div class="dropdown-panel narrow" id="profilePanel">
-            <div style="padding:14px 16px;border-bottom:1px solid var(--red-border);">
-              <div style="font-weight:700">Editor</div>
-              <div style="font-size:11px;color:var(--text-muted)">editor@pudho-laguna.gov.ph</div>
+            <div style="padding:14px 16px 11px; border-bottom:1px solid var(--red-border);">
+              <div style="font-size:14px;font-weight:700;color:var(--text-primary)">Editor</div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">editor@pudho-laguna.gov.ph</div>
             </div>
-            <a href="#" class="profile-dp-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="#" class="profile-dp-item">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg> Profile</a>
-            <a href="#" class="profile-dp-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              </svg>
+              My Profile
+            </a>
+            <a href="#" class="profile-dp-item">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              </svg> Settings</a>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Settings
+            </a>
             <div style="height:1px;background:var(--red-border);margin:4px 0"></div>
-            <a href="{{ route('welcome') }}" class="profile-dp-item danger"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="{{ route('welcome') }}" class="profile-dp-item danger">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg> Logout</a>
+              </svg>
+              Logout
+            </a>
           </div>
         </div>
+
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main id="mainContent">
     @yield('content')
   </main>
@@ -1248,7 +1300,6 @@
       if (window.innerWidth >= 1024) closeSidebar();
     });
 
-    // Update time
     function updateTime() {
       const now = new Date();
       let h = now.getHours(),
