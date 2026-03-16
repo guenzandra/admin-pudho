@@ -958,13 +958,6 @@
                 <span class="nav-label">Residents</span>
             </a>
 
-            <!-- <a href="{{ route('admin.cmissingfiles') }}" class="nav-item {{ request()->routeIs('admin.cmissingfiles') ? 'active' : '' }}">
-                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="nav-label">Missing Files</span>
-            </a> -->
-
             <!-- Anti-Squatting -->
             <button class="nav-item {{ request()->routeIs('admin.overview','admin.reports','admin.investigation','admin.mapview') ? 'active' : '' }}"
                 onclick="toggleNav('squattingMenu', this)">
@@ -993,38 +986,13 @@
                 </svg>
                 <span class="nav-label">Messages</span>
             </a>
-
-            <!-- <button class="nav-item {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'active' : '' }}"
-                onclick="toggleNav('messagesMenu', this)">
-                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-                <span class="nav-label">Messages</span>
-                <svg class="nav-arrow {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            <div class="sub-menu {{ request()->routeIs('admin.inbox','admin.sent','admin.archived') ? 'open' : '' }}" id="messagesMenu">
-                <a href="{{ route('admin.inbox') }}" class="sub-item {{ request()->routeIs('admin.inbox') ? 'active' : '' }}">Inbox</a>
-                <a href="{{ route('admin.sent') }}" class="sub-item {{ request()->routeIs('admin.sent') ? 'active' : '' }}">Sent</a>
-                <a href="{{ route('admin.archived') }}" class="sub-item {{ request()->routeIs('admin.archived') ? 'active' : '' }}">Archived</a>
-            </div> -->
-
-            <!-- FAQs -->
-            <button class="nav-item {{ request()->routeIs('admin.pending','admin.answered') ? 'active' : '' }}"
-                onclick="toggleNav('faqsMenu', this)">
+<!---FAQS--->
+            <a href="{{ route('admin.faqs') }}" class="nav-item {{ request()->routeIs('admin.faqs') ? 'active' : '' }}">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span class="nav-label">FAQs</span>
-                <svg class="nav-arrow {{ request()->routeIs('admin.pending','admin.answered') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            <div class="sub-menu {{ request()->routeIs('admin.pending','admin.answered') ? 'open' : '' }}" id="faqsMenu">
-                <a href="{{ route('admin.pending') }}" class="sub-item {{ request()->routeIs('admin.pending') ? 'active' : '' }}">Pending Questions</a>
-                <a href="{{ route('admin.answered') }}" class="sub-item {{ request()->routeIs('admin.answered') ? 'active' : '' }}">Answered</a>
-            </div>
+            </a>
 
             <div class="section-label">Administration</div>
 

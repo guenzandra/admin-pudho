@@ -1,20 +1,13 @@
 @extends('editor.layout')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Arial:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Arial:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
         :root {
             --bg: #f0f2f7;
@@ -1031,11 +1024,11 @@
             margin-bottom: 8px;
         }
 
-        .skeleton-line.w-3/4 {
+        .skeleton-line.w-3of4 {
             width: 75%;
         }
 
-        .skeleton-line.w-1/2 {
+        .skeleton-line.w-1of2 {
             width: 50%;
         }
 
@@ -1242,13 +1235,10 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
-</head>
+</style>
 
-<body>
-
-    <!-- TOAST CONTAINER -->
-    <div id="toast-container"></div>
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
 
     <!-- MODAL -->
     <div class="modal-overlay" id="modal" onclick="closeModal(event)">
@@ -1853,7 +1843,4 @@
             showToast('success', 'Welcome back, Editor!', 'Dashboard loaded successfully. Have a great day!', 4000);
         }, 1200);
     </script>
-</body>
-
-</html>
 @endsection

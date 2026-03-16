@@ -172,28 +172,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/cmissingfiles', function () {
         return view('admin.cmissingfiles');
     })->name('cmissingfiles');
+    //====Messages Routes=====
+    Route::get('/messages', function () {
+        return view('admin.messages');
+    })->name('messages');
 
-    // ============ MESSAGES DROPDOWN ROUTES ============
-    Route::get('/inbox', function () {
-        return view('admin.messages.inbox');
-    })->name('inbox');
-
-    Route::get('/sent', function () {
-        return view('admin.messages.sent');
-    })->name('sent');
-
-    Route::get('/archived', function () {
-        return view('admin.messages.archived');
-    })->name('archived');
-
-    // ============ FAQS DROPDOWN ROUTES ============
-    Route::get('/answered', function () {
-        return view('admin.faqs.answered');
-    })->name('answered');
-
-    Route::get('/pending', function () {
-        return view('admin.faqs.pending');
-    })->name('pending');
+    // ============ FAQS ROUTES ============
+    Route::get('/faqs', function () {
+        return view('admin.faqs');
+    })->name('faqs');
 
     // ============ REPORTS & ANALYTICS ============
     Route::get('/reportsAnalytics', function () {
