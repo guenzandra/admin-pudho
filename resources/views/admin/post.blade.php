@@ -10,7 +10,7 @@
 
   .cmm {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: 24px 28px 60px;
+    padding: 0;
     background: #f4f6f9;
     min-height: 100%;
   }

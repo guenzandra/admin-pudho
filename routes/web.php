@@ -17,15 +17,41 @@ use App\Http\Controllers\Editor\EditorController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index'); // Changed from 'welcome' to 'index'
 })->name('home');
 
 /*
 |--------------------------------------------------------------------------
-| Admin Guest Routes (No Authentication Required)
+| Landing Pages Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/index', function () {
+    return view('index');
+})->name('index');
+
+Route::get('/citizenscharter', function () {
+    return view('index.IPages.citizenscharter');
+})->name('citizenscharter');
+
+Route::get('/dforms', function () {
+    return view('index.IPages.dforms');
+})->name('dforms');
+
+Route::get('/faqs', function () {
+    return view('index.IPages.faqs');
+})->name('faqs');
+
+Route::get('/iabout', function () {
+    return view('index.IPages.iabout');
+})->name('iabout');
+
+/*
+|--------------------------------------------------------------------------
+| Admin User Routes (No Authentication Required)
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->group(function () {
+    // Updated to look for login.blade.php inside the 'login' folder
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
@@ -172,6 +198,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/cmissingfiles', function () {
         return view('admin.cmissingfiles');
     })->name('cmissingfiles');
+
     //====Messages Routes=====
     Route::get('/messages', function () {
         return view('admin.messages');
