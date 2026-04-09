@@ -986,7 +986,7 @@
                 </svg>
                 <span class="nav-label">Messages</span>
             </a>
-<!---FAQS--->
+            <!---FAQS--->
             <a href="{{ route('admin.faqs') }}" class="nav-item {{ request()->routeIs('admin.faqs') ? 'active' : '' }}">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1024,10 +1024,10 @@
             </button>
             <div class="sub-menu {{ request()->routeIs('admin.general','admin.help','admin.notifications','admin.logs','admin.security') ? 'open' : '' }}" id="settingsMenu">
                 <a href="{{ route('admin.general') }}" class="sub-item {{ request()->routeIs('admin.general') ? 'active' : '' }}">General</a>
-                <a href="{{ route('admin.help') }}" class="sub-item {{ request()->routeIs('admin.help') ? 'active' : '' }}">Security</a>
+                <a href="{{ route('admin.security') }}" class="sub-item {{ request()->routeIs('admin.security') ? 'active' : '' }}">Security</a>
                 <a href="{{ route('admin.notifications') }}" class="sub-item {{ request()->routeIs('admin.notifications') ? 'active' : '' }}">Notifications</a>
                 <a href="{{ route('admin.logs') }}" class="sub-item {{ request()->routeIs('admin.logs') ? 'active' : '' }}">Audit Logs</a>
-                <a href="{{ route('admin.security') }}" class="sub-item {{ request()->routeIs('admin.security') ? 'active' : '' }}">Help</a>
+                <a href="{{ route('admin.help') }}" class="sub-item {{ request()->routeIs('admin.help') ? 'active' : '' }}">Help</a>
             </div>
 
         </nav>
