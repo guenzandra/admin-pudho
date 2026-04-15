@@ -1,37 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Footer – Provincial Capitol of Laguna</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background: #f0f0f0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .page-content {
-      flex: 1;
-      padding: 60px 40px;
-      text-align: center;
-      color: #999;
-      font-size: 13px;
-    }
-
+<style>
     /* ══════════════════
        FOOTER
     ══════════════════ */
@@ -82,22 +49,10 @@
       gap: 12px;
     }
 
-    /* Placeholder box shown when no image is set yet */
-    .logo-placeholder {
+    .footer-logo-img {
       width: 48px;
       height: 48px;
-      border-radius: 50%;
-      background: #e5e7eb;
-      border: 2px dashed #9ca3af;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .logo-placeholder i {
-      font-size: 18px;
-      color: #9ca3af;
+      object-fit: contain;
     }
 
     .footer-logo-text .name {
@@ -147,8 +102,8 @@
     }
 
     .footer-socials a:hover {
-      background: #1a5fa8;
-      border-color: #1a5fa8;
+      background: #b91c1c;
+      border-color: #b91c1c;
       color: #fff;
     }
 
@@ -192,7 +147,7 @@
     }
 
     .contact-item a:hover {
-      color: #1a5fa8;
+      color: #b91c1c;
     }
 
     /* ── COL 3: QUICK LINKS ── */
@@ -219,12 +174,12 @@
     }
 
     .quick-links a:hover {
-      color: #1a5fa8;
+      color: #b91c1c;
       gap: 12px;
     }
 
     .quick-links a:hover i {
-      color: #1a5fa8;
+      color: #b91c1c;
       transform: translateX(2px);
     }
 
@@ -253,7 +208,7 @@
     }
 
     .footer-bottom a:hover {
-      color: #1a5fa8;
+      color: #b91c1c;
     }
 
     /* ── RESPONSIVE ── */
@@ -269,37 +224,15 @@
         text-align: center;
       }
     }
-  </style>
-</head>
+</style>
 
-<body>
-
-  <div class="page-content">
-    <p>Page content goes here…</p>
-  </div>
-
-  <footer class="main-footer">
+<footer class="main-footer">
     <div class="footer-inner">
 
       <!-- ── COL 1: BRAND ── -->
       <div class="footer-brand">
         <div class="footer-logo-row">
-
-          <!--
-          ┌─────────────────────────────────────────────┐
-          │  REPLACE THIS BLOCK WITH YOUR LOGO IMAGE    │
-          │                                             │                │
-          │                                             │
-          │  Laravel Blade:                             │
-          │  <img src="{{ asset('images/laguna-logo.png') }}"
-          │       class="footer-logo-img"               │
-          │       alt="Laguna Logo"/>                   │
-          └─────────────────────────────────────────────┘
-        -->
-          <div class="logo-placeholder">
-            <i class="fas fa-image"></i>
-          </div>
-
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Seal_of_Laguna.svg/1200px-Seal_of_Laguna.svg.png" class="footer-logo-img" alt="Laguna Logo"/>
           <div class="footer-logo-text">
             <div class="name">Laguna</div>
             <div class="sub">Provincial Urban</div>
@@ -363,8 +296,4 @@
         <a href="#">Privacy Policy</a>
       </div>
     </div>
-  </footer>
-
-</body>
-
-</html>
+</footer>

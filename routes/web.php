@@ -9,25 +9,21 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Editor\EditorController;
+use App\Http\Controllers\HomeController;
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 /*
 |--------------------------------------------------------------------------
 | Public Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('index'); // Changed from 'welcome' to 'index'
-})->name('home');
-
 /*
 |--------------------------------------------------------------------------
 | Landing Pages Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
+
 
 Route::get('/citizenscharter', function () {
     return view('index.IPages.citizenscharter');

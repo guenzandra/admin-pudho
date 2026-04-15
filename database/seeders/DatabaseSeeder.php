@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+$this->call(NewsArticleSeeder::class);
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            
         ]);
     }
 }
