@@ -181,16 +181,16 @@
       <a href="{{ route('home') }}">Home</a>
       <a href="{{ route('iabout') }}">About</a>
       <div class="dropdown">
-        <button class="drop-btn">
+        <a href="{{ route('iservices') }}" class="drop-btn">
           Services
           <svg class="drop-arrow" viewBox="0 0 24 24">
             <polyline points="6 9 12 15 18 9" />
           </svg>
-        </button>
+        </a>
         <div class="drop-menu">
-          <a href="#">Service 1</a>
-          <a href="#">Service 2</a>
-          <a href="#">Service 3</a>
+          <a href="{{ route('iservices') }}#query-handling">Query Handling</a>
+          <a href="{{ route('iservices') }}#seminars">Seminars</a>
+          <a href="{{ route('iservices') }}#tech-assistance">Technical Assistance</a>
         </div>
       </div>
       <a href="{{ route('citizenscharter') }}">Citizen's Charter</a>

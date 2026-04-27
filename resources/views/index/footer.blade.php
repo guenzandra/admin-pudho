@@ -280,9 +280,11 @@
       <div class="footer-col">
         <h2><i class="fas fa-link"></i> Quick Links</h2>
         <div class="quick-links">
+          <a href="{{ route('home') }}"><i class="fas fa-chevron-right"></i> Home</a>
+          <a href="{{ route('iservices') }}"><i class="fas fa-chevron-right"></i> Our Services</a>
           <a href="{{ route('iabout') }}"><i class="fas fa-chevron-right"></i> About Us</a>
           <a href="{{ route('citizenscharter') }}"><i class="fas fa-chevron-right"></i> Citizen's Charter</a>
-          <a href="{{ route('faqs') }}"><i class="fas fa-chevron-right"></i> News and Updates</a>
+          <a href="{{ route('faqs') }}"><i class="fas fa-chevron-right"></i> FAQS</a>
           <a href="{{ route('dforms') }}"><i class="fas fa-chevron-right"></i> Downloadable Forms</a>
         </div>
       </div>
