@@ -414,3 +414,6 @@ Route::get('/test-reports', function () {
 Route::fallback(function () {
     return redirect()->route('admin.login');
 });
+
+// Public Services Page
+Route::get('/services', [App\Http\Controllers\HomeController::class, 'services'])->name('iservices');
