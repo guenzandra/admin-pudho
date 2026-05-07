@@ -12,4 +12,9 @@ class HomeController extends Controller
 
         return view('index', compact('latestNews'));
     }
+
+    public function services()
+    {
+        return view('index.services');
+    }
 }

@@ -1,4 +1,4 @@
-{{-- resources/views/layouts/nav.blade.php (redesigned — matches admin.blade.php) --}}
+{{-- resources/views/layouts/nav.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PUDHO Editor — @yield('title', 'Dashboard')</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *,
     *::before,
@@ -19,40 +19,65 @@
     :root {
       --red: #C0202F;
       --red-dark: #8C111E;
-      --red-mid: #A8192A;
-      --red-pale: #FEF0F1;
-      --red-pale2: #FDE8EA;
-      --red-border: #F3CACE;
-      --sidebar-w: 268px;
-      --topbar-h: 68px;
+      --sidebar-w: 260px;
+      --topbar-h: 64px;
+      --sb-bg: #C0202F;
+      /* sidebar background (light) */
+      --sb-text: rgba(255, 255, 255, 0.72);
+      --sb-text-on: #ffffff;
+      --sb-section: rgba(255, 255, 255, 0.38);
+      --sb-div: rgba(255, 255, 255, 0.12);
+      --sb-hover: rgba(255, 255, 255, 0.13);
+      --sb-active: rgba(255, 255, 255, 0.18);
+      --sb-user-bg: rgba(0, 0, 0, 0.12);
+      --main-bg: #F6F1F2;
+      --surface: #FFFFFF;
+      --border: #EDE0E1;
       --text-primary: #1A0508;
       --text-secondary: #7A4A50;
       --text-muted: #B08888;
-      --surface: #FFFFFF;
-      --bg: #F6F1F2;
-      --border: #EDE0E1;
+      --red-pale: #FEF0F1;
+      --red-pale2: #FDE8EA;
+      --red-border: #F3CACE;
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--main-bg);
       color: var(--text-primary);
+      transition: background 0.35s, color 0.3s;
     }
 
-    /* ═══ SIDEBAR ═══ */
+    /* ════════════════════════════
+       SIDEBAR
+    ════════════════════════════ */
     #sidebar {
       position: fixed;
       top: 0;
       left: 0;
       width: var(--sidebar-w);
       height: 100vh;
-      background: var(--surface);
-      border-right: 1px solid var(--red-border);
+      background: var(--sb-bg);
       display: flex;
       flex-direction: column;
       z-index: 40;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.35s;
       overflow: hidden;
+    }
+
+    /* top-right decorative orb */
+    #sidebar::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      pointer-events: none;
     }
 
     #sidebar.collapsed {
@@ -63,8 +88,7 @@
     #sidebar.collapsed .nav-arrow,
     #sidebar.collapsed .sidebar-brand-text,
     #sidebar.collapsed .section-label,
-    #sidebar.collapsed .sub-menu,
-    #sidebar.collapsed .user-info {
+    #sidebar.collapsed .sub-menu {
       opacity: 0;
       pointer-events: none;
       width: 0;
@@ -91,23 +115,23 @@
       padding: 14px 0;
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width:1023px) {
       #sidebar {
         transform: translateX(-100%);
         width: var(--sidebar-w) !important;
-        box-shadow: 8px 0 32px rgba(192, 32, 47, 0.15);
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.25);
       }
 
       #sidebar.mobile-open {
         transform: translateX(0);
       }
 
+      /* restore collapsed styles on mobile */
       #sidebar.collapsed .nav-label,
       #sidebar.collapsed .nav-arrow,
       #sidebar.collapsed .sidebar-brand-text,
       #sidebar.collapsed .section-label,
-      #sidebar.collapsed .sub-menu,
-      #sidebar.collapsed .user-info {
+      #sidebar.collapsed .sub-menu {
         opacity: 1;
         pointer-events: auto;
         width: auto;
@@ -116,7 +140,7 @@
 
       #sidebar.collapsed .nav-item {
         justify-content: flex-start;
-        padding: 11px 14px;
+        padding: 10px 12px;
       }
 
       #sidebar.collapsed .logo-area {
@@ -130,43 +154,16 @@
       }
     }
 
-    /* Brand */
+    /* ── Brand ── */
     .sidebar-brand {
       flex-shrink: 0;
-      background: linear-gradient(145deg, var(--red-dark) 0%, var(--red) 60%, #D94050 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .sidebar-brand::before {
-      content: '';
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
-      pointer-events: none;
-    }
-
-    .sidebar-brand::after {
-      content: '';
-      position: absolute;
-      bottom: -20px;
-      left: 20px;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.04);
-      pointer-events: none;
     }
 
     .logo-area {
       display: flex;
       align-items: center;
       gap: 13px;
-      padding: 16px 18px;
+      padding: 18px 18px 14px;
       cursor: pointer;
       position: relative;
       z-index: 1;
@@ -174,14 +171,14 @@
     }
 
     .logo-img {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
-      border: 2px solid rgba(255, 255, 255, 0.35);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
       object-fit: cover;
       flex-shrink: 0;
       transition: transform 0.3s;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
 
     .logo-area:hover .logo-img {
@@ -199,7 +196,6 @@
       color: #fff;
       line-height: 1.2;
       white-space: nowrap;
-      letter-spacing: 0.01em;
     }
 
     .brand-name span {
@@ -208,21 +204,29 @@
     }
 
     .brand-tagline {
-      font-size: 10.5px;
-      color: rgba(255, 255, 255, 0.5);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.45);
       white-space: nowrap;
       margin-top: 3px;
       letter-spacing: 0.02em;
     }
 
-    /* Nav */
+    /* ── Divider ── */
+    .sb-divider {
+      height: 1px;
+      background: var(--sb-div);
+      margin: 0 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── Nav scroll ── */
     .sidebar-nav {
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 14px 10px;
+      padding: 10px 12px;
       scrollbar-width: thin;
-      scrollbar-color: var(--red-border) transparent;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
     }
 
     .sidebar-nav::-webkit-scrollbar {
@@ -230,79 +234,105 @@
     }
 
     .sidebar-nav::-webkit-scrollbar-thumb {
-      background: var(--red-border);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 3px;
     }
 
+    /* ── Section label ── */
     .section-label {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      padding: 14px 10px 5px;
+      color: var(--sb-section);
+      padding: 14px 8px 5px;
       white-space: nowrap;
       overflow: hidden;
       transition: opacity 0.25s;
     }
 
+    /* ══ NAV ITEM — ARC HOVER ══ */
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 11px;
-      padding: 10px 12px;
-      border-radius: 9px;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
       cursor: pointer;
       text-decoration: none;
-      color: var(--text-secondary);
-      font-size: 14px;
+      color: var(--sb-text);
+      font-size: 13.5px;
       font-weight: 500;
-      transition: background 0.15s, color 0.15s, padding 0.3s;
+      transition: color 0.18s;
       white-space: nowrap;
       position: relative;
-      width: 100%;
+      overflow: hidden;
       border: none;
       background: none;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      width: 100%;
       text-align: left;
     }
 
-    .nav-item:hover {
-      background: var(--red-pale);
-      color: var(--red);
+    /* The arc bubble */
+    .nav-item::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -100%;
+      transform: translateY(-50%);
+      width: 220%;
+      height: 220%;
+      border-radius: 50%;
+      background: var(--sb-hover);
+      transition: left 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
+      opacity: 0;
+      pointer-events: none;
     }
 
-    .nav-item:hover .nav-icon {
-      color: var(--red);
-    }
-
-    .nav-item.active {
-      background: var(--red-pale2);
-      color: var(--red);
-      font-weight: 600;
-    }
-
-    .nav-item.active .nav-icon {
-      color: var(--red);
+    .nav-item:hover::before {
+      left: -55%;
+      opacity: 1;
     }
 
     .nav-item.active::before {
+      left: -55%;
+      opacity: 1;
+      background: var(--sb-active);
+    }
+
+    /* right-edge active pill */
+    .nav-item.active::after {
       content: '';
       position: absolute;
-      left: 0;
-      top: 18%;
-      bottom: 18%;
+      right: 0;
+      top: 20%;
+      bottom: 20%;
       width: 3.5px;
-      background: var(--red);
-      border-radius: 0 3px 3px 0;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 3px 0 0 3px;
+    }
+
+    .nav-item:hover {
+      color: var(--sb-text-on);
+    }
+
+    .nav-item.active {
+      color: var(--sb-text-on);
+      font-weight: 600;
     }
 
     .nav-icon {
-      width: 18px;
-      height: 18px;
-      color: #C09090;
+      width: 17px;
+      height: 17px;
       flex-shrink: 0;
-      transition: color 0.15s;
+      opacity: 0.72;
+      transition: opacity 0.18s, margin 0.3s;
+    }
+
+    .nav-item:hover .nav-icon,
+    .nav-item.active .nav-icon {
+      opacity: 1;
     }
 
     .nav-label {
@@ -312,22 +342,26 @@
     }
 
     .nav-arrow {
-      width: 14px;
-      height: 14px;
-      color: var(--text-muted);
+      width: 13px;
+      height: 13px;
       flex-shrink: 0;
-      transition: transform 0.2s, opacity 0.25s;
+      color: rgba(255, 255, 255, 0.5);
+      transition: transform 0.22s, opacity 0.25s;
+    }
+
+    .nav-item:hover .nav-arrow {
+      opacity: 0.9;
     }
 
     .nav-arrow.open {
       transform: rotate(180deg);
     }
 
-    /* Dropdown sub-menu */
+    /* ── Sub-menu ── */
     .sub-menu {
       overflow: hidden;
       max-height: 0;
-      transition: max-height 0.28s ease, opacity 0.25s;
+      transition: max-height 0.3s ease, opacity 0.25s;
       opacity: 0;
     }
 
@@ -339,114 +373,150 @@
     .sub-item {
       display: flex;
       align-items: center;
-      gap: 9px;
-      padding: 8px 12px 8px 40px;
+      padding: 8px 14px 8px 42px;
       border-radius: 8px;
-      font-size: 13.5px;
-      color: var(--text-secondary);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.58);
       text-decoration: none;
-      transition: background 0.15s, color 0.15s;
+      transition: color 0.15s;
       white-space: nowrap;
       font-weight: 500;
       position: relative;
+      overflow: hidden;
     }
 
-    .sub-item::after {
+    /* arc on sub-items too */
+    .sub-item::before {
       content: '';
       position: absolute;
-      left: 22px;
-      width: 5px;
-      height: 5px;
+      top: 50%;
+      left: -80%;
+      transform: translateY(-50%);
+      width: 180%;
+      height: 200%;
       border-radius: 50%;
-      background: #D4AAAE;
-      transition: background 0.15s;
+      background: rgba(255, 255, 255, 0.07);
+      transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
+      opacity: 0;
+    }
+
+    .sub-item:hover::before {
+      left: -20%;
+      opacity: 1;
     }
 
     .sub-item:hover {
-      background: var(--red-pale);
-      color: var(--red);
-    }
-
-    .sub-item:hover::after {
-      background: var(--red);
+      color: #fff;
     }
 
     .sub-item.active {
-      background: var(--red-pale2);
-      color: var(--red);
+      color: #fff;
       font-weight: 600;
     }
 
-    .sub-item.active::after {
-      background: var(--red) !important;
+    .sub-dot {
+      position: absolute;
+      left: 24px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.38);
+      transition: background 0.15s;
     }
 
-    /* Sidebar user strip */
+    .sub-item:hover .sub-dot,
+    .sub-item.active .sub-dot {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ── User strip ── */
     .sidebar-user {
       flex-shrink: 0;
-      border-top: 1px solid var(--red-border);
+      border-top: 1px solid var(--sb-div);
       padding: 14px 14px;
       display: flex;
       align-items: center;
-      gap: 11px;
-      background: #FDF8F8;
+      gap: 10px;
+      background: var(--sb-user-bg);
       overflow: hidden;
-      transition: padding 0.3s;
+      transition: padding 0.3s, background 0.35s;
     }
 
     .user-avatar {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #fff;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(192, 32, 47, 0.3);
       position: relative;
     }
 
-    .user-avatar .online-dot {
+    .online-dot {
       position: absolute;
       bottom: 1px;
       right: 1px;
       width: 9px;
       height: 9px;
-      background: #22c55e;
+      background: #4ade80;
       border-radius: 50%;
-      border: 2px solid white;
-    }
-
-    .user-info {
-      flex: 1;
-      overflow: hidden;
-      transition: opacity 0.25s;
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
 
     .user-name {
       font-size: 13px;
       font-weight: 700;
-      color: var(--text-primary);
+      color: #fff;
       white-space: nowrap;
     }
 
     .user-role {
-      font-size: 11px;
-      color: var(--text-muted);
+      font-size: 10.5px;
+      color: rgba(255, 255, 255, 0.48);
       white-space: nowrap;
       margin-top: 1px;
     }
 
-    /* ═══ OVERLAY ═══ */
+    /* Dark-mode toggle button inside sidebar */
+    .dm-toggle-btn {
+      margin-left: auto;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: background 0.18s;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .dm-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .dm-toggle-btn svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* ════════════════════════════
+       OVERLAY (mobile)
+    ════════════════════════════ */
     #sidebarOverlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 0, 5, 0.5);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 39;
       backdrop-filter: blur(3px);
     }
@@ -455,22 +525,25 @@
       display: block;
     }
 
-    /* ═══ TOP NAV ═══ */
+    /* ════════════════════════════
+       TOP NAV
+    ════════════════════════════ */
     #topNav {
       position: fixed;
       top: 0;
       left: var(--sidebar-w);
       right: 0;
       height: var(--topbar-h);
-      background: white;
+      background: var(--surface);
       border-bottom: 1px solid var(--red-border);
       z-index: 30;
       display: flex;
       align-items: center;
-      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 16px rgba(192, 32, 47, 0.06);
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s, border-color 0.35s;
+      box-shadow: 0 1px 16px rgba(192, 32, 47, 0.05);
     }
 
+    /* slim red top line */
     #topNav::before {
       content: '';
       position: absolute;
@@ -478,14 +551,14 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 50%, rgba(220, 100, 112, 0.4) 100%);
+      background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 60%, rgba(220, 100, 112, 0.4) 100%);
     }
 
     #topNav.sidebar-collapsed {
       left: 70px;
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width:1023px) {
       #topNav {
         left: 0 !important;
       }
@@ -496,7 +569,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 0 24px;
+      padding: 0 22px;
       gap: 12px;
     }
 
@@ -506,6 +579,13 @@
       gap: 10px;
     }
 
+    .topnav-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* hamburger / desktop toggle */
     .hamburger-btn {
       display: none;
       background: none;
@@ -522,7 +602,7 @@
       color: var(--red);
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width:1023px) {
       .hamburger-btn {
         display: flex;
         align-items: center;
@@ -538,9 +618,9 @@
       color: var(--text-secondary);
       padding: 8px;
       border-radius: 9px;
-      transition: background 0.15s, color 0.15s;
       align-items: center;
       justify-content: center;
+      transition: background 0.15s, color 0.15s;
     }
 
     .desktop-toggle-btn:hover {
@@ -548,13 +628,13 @@
       color: var(--red);
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width:1023px) {
       .desktop-toggle-btn {
         display: none;
       }
     }
 
-    /* Breadcrumb */
+    /* breadcrumb */
     .breadcrumb {
       display: flex;
       align-items: center;
@@ -570,28 +650,23 @@
       font-weight: 700;
     }
 
-    .breadcrumb span {
+    .breadcrumb .bc-sep {
       color: var(--red-border);
     }
 
-    .topnav-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Date/time */
+    /* clock */
     .datetime-wrap {
       display: none;
       flex-direction: column;
       align-items: flex-end;
-      padding-right: 18px;
-      margin-right: 6px;
+      padding-right: 16px;
+      margin-right: 4px;
       border-right: 1.5px solid var(--red-border);
       gap: 1px;
+      transition: border-color 0.35s;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width:768px) {
       .datetime-wrap {
         display: flex;
       }
@@ -599,7 +674,7 @@
 
     .dt-time {
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--red);
       line-height: 1;
@@ -607,14 +682,13 @@
     }
 
     .dt-date {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: 0.01em;
       text-transform: uppercase;
     }
 
-    /* Icon buttons */
+    /* icon buttons */
     .icon-btn {
       position: relative;
       background: none;
@@ -647,17 +721,17 @@
       height: 16px;
       background: var(--red);
       border-radius: 8px;
-      color: white;
+      color: #fff;
       font-size: 9px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0 3px;
-      border: 2px solid white;
+      border: 2px solid var(--surface);
     }
 
-    /* Profile button */
+    /* profile btn */
     .profile-btn {
       display: flex;
       align-items: center;
@@ -683,7 +757,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #fff;
       font-size: 13px;
       font-weight: 700;
       position: relative;
@@ -697,7 +771,7 @@
       height: 10px;
       background: #22c55e;
       border-radius: 50%;
-      border: 2px solid white;
+      border: 2px solid var(--surface);
     }
 
     .profile-name {
@@ -707,26 +781,27 @@
       display: none;
     }
 
-    @media (min-width: 640px) {
+    @media (min-width:640px) {
       .profile-name {
         display: block;
       }
     }
 
-    /* Dropdowns */
+    /* dropdowns */
     .dropdown-panel {
       position: absolute;
       top: calc(100% + 8px);
       right: 0;
       width: 310px;
-      background: white;
+      background: var(--surface);
       border: 1px solid var(--red-border);
       border-radius: 14px;
-      box-shadow: 0 10px 40px rgba(192, 32, 47, 0.14), 0 2px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 40px rgba(192, 32, 47, 0.12), 0 2px 10px rgba(0, 0, 0, 0.05);
       z-index: 100;
       overflow: hidden;
       display: none;
       animation: dropIn 0.18s ease;
+      transition: background 0.35s, border-color 0.35s;
     }
 
     .dropdown-panel.show {
@@ -755,7 +830,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: linear-gradient(135deg, #FFF5F6, #fff);
+      background: var(--red-pale);
     }
 
     .dp-header h4 {
@@ -785,13 +860,13 @@
       align-items: flex-start;
       gap: 11px;
       padding: 12px 16px;
-      border-bottom: 1px solid #FFF0F1;
+      border-bottom: 1px solid var(--red-pale);
       text-decoration: none;
       transition: background 0.12s;
     }
 
     .dp-item:hover {
-      background: #FFF7F7;
+      background: var(--red-pale);
     }
 
     .dp-item-icon {
@@ -852,7 +927,6 @@
       text-decoration: underline;
     }
 
-    /* Profile dropdown */
     .profile-dp-item {
       display: flex;
       align-items: center;
@@ -866,7 +940,7 @@
       border: none;
       background: none;
       width: 100%;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       text-align: left;
       font-weight: 500;
     }
@@ -895,7 +969,6 @@
       color: var(--red);
     }
 
-    /* Message avatars */
     .msg-av {
       width: 36px;
       height: 36px;
@@ -903,13 +976,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #fff;
       font-size: 12px;
       font-weight: 700;
       flex-shrink: 0;
     }
 
-    /* Main content */
+    /* ════════════════════════════
+       MAIN CONTENT
+    ════════════════════════════ */
     #mainContent {
       margin-left: var(--sidebar-w);
       margin-top: var(--topbar-h);
@@ -922,7 +997,7 @@
       margin-left: 70px;
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width:1023px) {
       #mainContent {
         margin-left: 0 !important;
         padding: 18px;
@@ -941,7 +1016,7 @@
     <div class="sidebar-brand">
       <div class="logo-area" onclick="toggleDesktopSidebar()" title="Toggle sidebar">
         <img src="{{ asset('build/assets/images/logo-pudho.jpg') }}" alt="PUDHO" class="logo-img"
-          onerror="this.src='https://via.placeholder.com/42x42/ffffff/C0202F?text=P'">
+          onerror="this.src='https://via.placeholder.com/40x40/ffffff/C0202F?text=P'">
         <div class="sidebar-brand-text">
           <div class="brand-name"><span>LAGUNA</span> PUDHO</div>
           <div class="brand-tagline">Urban Development & Housing</div>
@@ -949,143 +1024,155 @@
       </div>
     </div>
 
+    <div class="sb-divider"></div>
+
     <!-- Navigation -->
     <nav class="sidebar-nav">
 
       <div class="section-label">Main</div>
 
-      <a href="{{ route('editor.editorDashboard') }}" class="nav-item {{ request()->routeIs('editor.editorDashboard') ? 'active' : '' }}">
+      <a href="{{ route('editor.editorDashboard') }}"
+        class="nav-item {{ request()->routeIs('editor.editorDashboard') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
         <span class="nav-label">Dashboard</span>
       </a>
 
       <div class="section-label">Content</div>
 
-      <a href="{{ route('editor.announcements') }}" class="nav-item {{ request()->routeIs('editor.announcements') ? 'active' : '' }}">
+      <a href="{{ route('editor.announcements') }}"
+        class="nav-item {{ request()->routeIs('editor.announcements') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
         </svg>
         <span class="nav-label">Announcements</span>
       </a>
 
-      <a href="{{ route('editor.news') }}" class="nav-item {{ request()->routeIs('editor.news') ? 'active' : '' }}">
+      <a href="{{ route('editor.news') }}"
+        class="nav-item {{ request()->routeIs('editor.news') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
         </svg>
         <span class="nav-label">News & Accomplishments</span>
       </a>
 
-      <a href="{{ route('editor.images') }}" class="nav-item {{ request()->routeIs('editor.images') ? 'active' : '' }}">
+      <a href="{{ route('editor.images') }}"
+        class="nav-item {{ request()->routeIs('editor.images') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
         <span class="nav-label">Images</span>
       </a>
 
-      <a href="{{ route('editor.documents') }}" class="nav-item {{ request()->routeIs('editor.documents') ? 'active' : '' }}">
+      <a href="{{ route('editor.documents') }}"
+        class="nav-item {{ request()->routeIs('editor.documents') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
         <span class="nav-label">Documents</span>
       </a>
 
       <div class="section-label">Pages & Services</div>
 
-      <!-- Page Management -->
       <button class="nav-item {{ request()->routeIs('editor.vision-mission-values','editor.organizational-structure','editor.district-offices','editor.affiliated-offices','editor.citizens-charter') ? 'active' : '' }}"
         onclick="toggleNav('pageMenu', this)">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
         <span class="nav-label">Page Management</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.vision-mission-values','editor.organizational-structure','editor.district-offices','editor.affiliated-offices','editor.citizens-charter') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="nav-arrow {{ request()->routeIs('editor.vision-mission-values','editor.organizational-structure','editor.district-offices','editor.affiliated-offices','editor.citizens-charter') ? 'open' : '' }}"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       <div class="sub-menu {{ request()->routeIs('editor.vision-mission-values','editor.organizational-structure','editor.district-offices','editor.affiliated-offices','editor.citizens-charter') ? 'open' : '' }}" id="pageMenu">
-        <a href="{{ route('editor.vision-mission-values') }}" class="sub-item {{ request()->routeIs('editor.vision-mission-values') ? 'active' : '' }}">Vision, Mission & Values</a>
-        <a href="{{ route('editor.organizational-structure') }}" class="sub-item {{ request()->routeIs('editor.organizational-structure') ? 'active' : '' }}">Organizational Structure</a>
-        <a href="{{ route('editor.district-offices') }}" class="sub-item {{ request()->routeIs('editor.district-offices') ? 'active' : '' }}">District Offices</a>
-        <a href="{{ route('editor.affiliated-offices') }}" class="sub-item {{ request()->routeIs('editor.affiliated-offices') ? 'active' : '' }}">Affiliated Offices</a>
-        <a href="{{ route('editor.citizens-charter') }}" class="sub-item {{ request()->routeIs('editor.citizens-charter') ? 'active' : '' }}">Citizen's Charter Preview</a>
+        <a href="{{ route('editor.vision-mission-values') }}" class="sub-item {{ request()->routeIs('editor.vision-mission-values') ? 'active' : '' }}"><span class="sub-dot"></span>Vision, Mission & Values</a>
+        <a href="{{ route('editor.organizational-structure') }}" class="sub-item {{ request()->routeIs('editor.organizational-structure') ? 'active' : '' }}"><span class="sub-dot"></span>Organizational Structure</a>
+        <a href="{{ route('editor.district-offices') }}" class="sub-item {{ request()->routeIs('editor.district-offices') ? 'active' : '' }}"><span class="sub-dot"></span>District Offices</a>
+        <a href="{{ route('editor.affiliated-offices') }}" class="sub-item {{ request()->routeIs('editor.affiliated-offices') ? 'active' : '' }}"><span class="sub-dot"></span>Affiliated Offices</a>
+        <a href="{{ route('editor.citizens-charter') }}" class="sub-item {{ request()->routeIs('editor.citizens-charter') ? 'active' : '' }}"><span class="sub-dot"></span>Citizen's Charter</a>
       </div>
 
-      <a href="{{ route('editor.manage-services') }}" class="nav-item {{ request()->routeIs('editor.manage-services') ? 'active' : '' }}">
+      <a href="{{ route('editor.manage-services') }}"
+        class="nav-item {{ request()->routeIs('editor.manage-services') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
         <span class="nav-label">Manage Services</span>
       </a>
 
       <div class="section-label">Resources</div>
 
-      <a href="{{ route('editor.manage-faqs') }}" class="nav-item {{ request()->routeIs('editor.manage-faqs') ? 'active' : '' }}">
+      <a href="{{ route('editor.manage-faqs') }}"
+        class="nav-item {{ request()->routeIs('editor.manage-faqs') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span class="nav-label">Manage FAQs</span>
       </a>
 
-      <a href="{{ route('editor.faq-categories') }}" class="nav-item {{ request()->routeIs('editor.faq-categories') ? 'active' : '' }}">
+      <a href="{{ route('editor.faq-categories') }}"
+        class="nav-item {{ request()->routeIs('editor.faq-categories') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
         </svg>
         <span class="nav-label">FAQ Categories</span>
       </a>
 
-      <a href="{{ route('editor.downloadable-forms') }}" class="nav-item {{ request()->routeIs('editor.downloadable-forms') ? 'active' : '' }}">
+      <a href="{{ route('editor.downloadable-forms') }}"
+        class="nav-item {{ request()->routeIs('editor.downloadable-forms') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
         <span class="nav-label">Downloadable Forms</span>
       </a>
 
-      <a href="{{ route('editor.form-categories') }}" class="nav-item {{ request()->routeIs('editor.form-categories') ? 'active' : '' }}">
+      <a href="{{ route('editor.form-categories') }}"
+        class="nav-item {{ request()->routeIs('editor.form-categories') ? 'active' : '' }}">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
         </svg>
         <span class="nav-label">Form Categories</span>
       </a>
 
       <div class="section-label">Configuration</div>
 
-      <!-- Settings -->
       <button class="nav-item {{ request()->routeIs('editor.settings.notifications','editor.settings.content-preferences','editor.settings.help-guide') ? 'active' : '' }}"
         onclick="toggleNav('settingsMenu', this)">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
         <span class="nav-label">Settings</span>
-        <svg class="nav-arrow {{ request()->routeIs('editor.settings.notifications','editor.settings.content-preferences','editor.settings.help-guide') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="nav-arrow {{ request()->routeIs('editor.settings.notifications','editor.settings.content-preferences','editor.settings.help-guide') ? 'open' : '' }}"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       <div class="sub-menu {{ request()->routeIs('editor.settings.notifications','editor.settings.content-preferences','editor.settings.help-guide') ? 'open' : '' }}" id="settingsMenu">
-        <a href="{{ route('editor.settings.notifications') }}" class="sub-item {{ request()->routeIs('editor.settings.notifications') ? 'active' : '' }}">Notifications</a>
-        <a href="{{ route('editor.settings.content-preferences') }}" class="sub-item {{ request()->routeIs('editor.settings.content-preferences') ? 'active' : '' }}">Content Preferences</a>
-        <a href="{{ route('editor.settings.help-guide') }}" class="sub-item {{ request()->routeIs('editor.settings.help-guide') ? 'active' : '' }}">Help / User Guide</a>
+        <a href="{{ route('editor.settings.notifications') }}" class="sub-item {{ request()->routeIs('editor.settings.notifications') ? 'active' : '' }}"><span class="sub-dot"></span>Notifications</a>
+        <a href="{{ route('editor.settings.content-preferences') }}" class="sub-item {{ request()->routeIs('editor.settings.content-preferences') ? 'active' : '' }}"><span class="sub-dot"></span>Content Preferences</a>
+        <a href="{{ route('editor.settings.help-guide') }}" class="sub-item {{ request()->routeIs('editor.settings.help-guide') ? 'active' : '' }}"><span class="sub-dot"></span>Help / User Guide</a>
       </div>
 
     </nav>
 
-    <!-- User strip -->
-    <div class="sidebar-user">
-      <div class="user-avatar">
-        E
-        <span class="online-dot"></span>
-      </div>
-      <div class="user-info">
-        <div class="user-name">Editor</div>
-        <div class="user-role">PUDHO — Content Manager</div>
-      </div>
-    </div>
-
   </aside>
 
-  <!-- ═══ TOP NAV ═══ -->
+  <!-- ════ TOP NAV ════ -->
   <header id="topNav">
     <div class="topnav-inner">
       <div class="topnav-left">
@@ -1101,13 +1188,12 @@
         </button>
         <div class="breadcrumb">
           <span>PUDHO</span>
-          <span>›</span>
+          <span class="bc-sep">›</span>
           <strong>@yield('title', 'Dashboard')</strong>
         </div>
       </div>
 
       <div class="topnav-right">
-        <!-- Date/time -->
         <div class="datetime-wrap">
           <span class="dt-time" id="topTime"></span>
           <span class="dt-date" id="topDate"></span>
@@ -1117,7 +1203,8 @@
         <div style="position:relative">
           <button class="icon-btn" onclick="toggleDropdown('notifPanel')" aria-label="Notifications">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
             <span class="badge">3</span>
           </button>
@@ -1127,11 +1214,9 @@
             </div>
             <div class="dp-body">
               <a href="#" class="dp-item">
-                <div class="dp-item-icon" style="background:#FFF0F1">
-                  <svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
+                <div class="dp-item-icon" style="background:#FFF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
+                  </svg></div>
                 <div class="dp-item-text">
                   <div class="dp-item-title">New announcement ready</div>
                   <div class="dp-item-meta">5 minutes ago</div>
@@ -1139,11 +1224,9 @@
                 <div class="dp-unread-dot"></div>
               </a>
               <a href="#" class="dp-item">
-                <div class="dp-item-icon" style="background:#EFF6FF">
-                  <svg fill="none" stroke="#3B82F6" viewBox="0 0 24 24">
+                <div class="dp-item-icon" style="background:#EFF6FF"><svg fill="none" stroke="#3B82F6" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
+                  </svg></div>
                 <div class="dp-item-text">
                   <div class="dp-item-title">Message from admin</div>
                   <div class="dp-item-meta">15 minutes ago</div>
@@ -1151,11 +1234,9 @@
                 <div class="dp-unread-dot"></div>
               </a>
               <a href="#" class="dp-item">
-                <div class="dp-item-icon" style="background:#F0FDF4">
-                  <svg fill="none" stroke="#22C55E" viewBox="0 0 24 24">
+                <div class="dp-item-icon" style="background:#F0FDF4"><svg fill="none" stroke="#22C55E" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
+                  </svg></div>
                 <div class="dp-item-text">
                   <div class="dp-item-title">Content published successfully</div>
                   <div class="dp-item-meta">1 hour ago</div>
@@ -1170,7 +1251,8 @@
         <div style="position:relative">
           <button class="icon-btn" onclick="toggleDropdown('msgPanel')" aria-label="Messages">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
             <span class="badge">5</span>
           </button>
@@ -1248,6 +1330,7 @@
   </main>
 
   <script>
+    /* ── sidebar collapse ── */
     let sidebarCollapsed = false;
 
     function toggleDesktopSidebar() {
@@ -1269,7 +1352,11 @@
       document.getElementById('sidebarOverlay').classList.remove('show');
       document.body.style.overflow = '';
     }
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) closeSidebar();
+    });
 
+    /* ── sub-menus ── */
     function toggleNav(menuId, btn) {
       if (window.innerWidth >= 1024 && sidebarCollapsed) return;
       const menu = document.getElementById(menuId);
@@ -1283,23 +1370,19 @@
       }
     }
 
+    /* ── top-nav dropdowns ── */
     function toggleDropdown(id) {
       const panel = document.getElementById(id);
       const isOpen = panel.classList.contains('show');
       document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
       if (!isOpen) panel.classList.add('show');
     }
-
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('.dropdown-panel')) {
+    document.addEventListener('click', e => {
+      if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('.dropdown-panel'))
         document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
-      }
     });
 
-    window.addEventListener('resize', function() {
-      if (window.innerWidth >= 1024) closeSidebar();
-    });
-
+    /* ── clock ── */
     function updateTime() {
       const now = new Date();
       let h = now.getHours(),
@@ -1308,16 +1391,38 @@
       const ampm = h >= 12 ? 'PM' : 'AM';
       h = h % 12 || 12;
       document.getElementById('topTime').textContent = `${h}:${m}:${s} ${ampm}`;
-      const dateOpts = {
+      document.getElementById('topDate').textContent = now.toLocaleDateString('en-US', {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
         year: 'numeric'
-      };
-      document.getElementById('topDate').textContent = now.toLocaleDateString('en-US', dateOpts).toUpperCase();
+      }).toUpperCase();
     }
     updateTime();
     setInterval(updateTime, 1000);
+
+    /* ── dark mode ── */
+    const DARK_KEY = 'pudho_dark_mode';
+    let darkMode = localStorage.getItem(DARK_KEY) === '1';
+    applyDark(darkMode);
+
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      localStorage.setItem(DARK_KEY, darkMode ? '1' : '0');
+      applyDark(darkMode);
+    }
+
+    function applyDark(on) {
+      document.body.classList.toggle('dark-mode', on);
+      const icon = document.getElementById('dmIcon');
+      if (on) {
+        // sun icon
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+      } else {
+        // moon icon
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
+      }
+    }
   </script>
 
 </body>
