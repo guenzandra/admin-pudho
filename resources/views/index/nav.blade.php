@@ -195,7 +195,7 @@
       </div>
       <a href="{{ route('citizenscharter') }}">Citizen's Charter</a>
       <a href="{{ route('dforms') }}">Downloadable Forms</a>
-      <a href="{{ route('faqs') }}">FAQS</a>
+      <a href="{{ route('landing.faqs') }}">FAQS</a>
     </div>
 
     <div class="nav-search">

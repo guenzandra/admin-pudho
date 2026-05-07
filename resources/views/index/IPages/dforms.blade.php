@@ -16,7 +16,7 @@
     <!-- Category Filters -->
     <div class="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto" id="categoryFilters">
         <button class="px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold uppercase tracking-widest bg-gray-900 text-white transition-all hover:bg-gray-800" data-category="all">All Categories</button>
-        @foreach(['Housing Programs', 'Registration', 'General', 'Support', 'Inspection', 'Training', 'Loans'] as $cat)
+        @foreach(['Housing Programs', 'Registration', 'General', 'Support', 'Inspection', 'Training'] as $cat)
         <button class="px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold uppercase tracking-widest bg-white text-gray-600 transition-all hover:border-red-200 hover:text-red-700" data-category="{{ Str::slug($cat) }}">{{ $cat }}</button>
         @endforeach
     </div>
@@ -25,14 +25,17 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="formsGrid">
         @php
             $forms = [
-                ['name' => 'Application Form for Housing Assistance', 'category' => 'Housing Programs', 'desc' => 'Complete application form for requesting housing assistance programs'],
-                ['name' => 'Community Association Registration Form', 'category' => 'Registration', 'desc' => 'Form for registering a community association with the office'],
-                ['name' => 'Inquiry Form', 'category' => 'General', 'desc' => 'Submit inquiries and queries to the office'],
-                ['name' => 'Complaint Form', 'category' => 'Support', 'desc' => 'File complaints and concerns regarding housing matters'],
-                ['name' => 'Site Inspection Request Form', 'category' => 'Inspection', 'desc' => 'Request a site inspection for housing projects'],
-                ['name' => 'Seminar Registration Form', 'category' => 'Training', 'desc' => 'Register for seminars and training programs'],
-                ['name' => 'Loan Application Form', 'category' => 'Loans', 'desc' => 'Apply for Community Mortgage Program (CMP) loans'],
-                ['name' => 'Technical Assistance Request', 'category' => 'General', 'desc' => 'Request technical assistance for community projects'],
+                ['name' => 'Evaluation and Feedback Form', 'category' => 'Support', 'desc' => 'Form for evaluating services and providing feedback to PUDHO', 'file' => '001-EVALUATION-AND-FEEDBACK-FORM.docx'],
+                ['name' => 'Learning Action Plan (LAP) Form', 'category' => 'Training', 'desc' => 'Action plan form for learning and development sessions', 'file' => '002-LEARNING-ACTION-PLAN-LAP-Form.docx'],
+                ['name' => 'Complaints and Arbitration Report', 'category' => 'Support', 'desc' => 'Report form for filing housing-related complaints and arbitration', 'file' => '003-COMPLAINTS-AND-ARBITRATION-REPORT.doc'],
+                ['name' => 'Activity Evaluation Report', 'category' => 'General', 'desc' => 'Standard report for evaluating conducted activities and events', 'file' => '004-ACTIVITY-EVALUATION-REPORT.docx'],
+                ['name' => 'Preliminary Information Sheet', 'category' => 'General', 'desc' => 'Initial information gathering sheet for housing applicants', 'file' => '005-PRELIMINARY-INFORMATION-SHEET.doc'],
+                ['name' => 'Executive Summary of HOA', 'category' => 'Registration', 'desc' => 'Summary template for Homeowners Association registration', 'file' => '006-EXECUTIVE-SUMMARY-OF-HOA.doc'],
+                ['name' => 'Socio-Eco Form', 'category' => 'General', 'desc' => 'Socio-economic profiling form for community members', 'file' => '007-SOCIO-ECO-FORM.docx'],
+                ['name' => 'Checklist for PUDHO Certification', 'category' => 'General', 'desc' => 'Requirements checklist for obtaining PUDHO certification', 'file' => '008-CHECKLIST-OF-REQUIREMENTS-FOR-ISSUANCE-OF-PUDHO-CERTIFICATION.docx'],
+                ['name' => 'Routing Slip (External)', 'category' => 'General', 'desc' => 'Standard routing slip for external document tracking', 'file' => '011-ROUTING-SLIP-External.docx'],
+                ['name' => 'Interoffice Routing Slip', 'category' => 'General', 'desc' => 'Standard routing slip for internal office document flow', 'file' => '012-INTEROFFICE-ROUTING-SLIP.docx'],
+                ['name' => 'Attendance Sheet', 'category' => 'General', 'desc' => 'General attendance sheet for meetings and activities', 'file' => '013-ATTENDANCE-SHEET.doc'],
             ];
         @endphp
 
@@ -40,8 +43,12 @@
         <div class="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col justify-between group hover:shadow-lg hover:border-red-200 transition-all form-card" data-cat="{{ Str::slug($form['category']) }}">
             <div class="space-y-4">
                 <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 shrink-0">
-                        <i class="fa-solid fa-file-pdf text-xl"></i>
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                        @if(Str::endsWith($form['file'], ['.doc', '.docx']))
+                            <i class="fa-solid fa-file-word text-xl"></i>
+                        @else
+                            <i class="fa-solid fa-file-pdf text-xl"></i>
+                        @endif
                     </div>
                     <div class="space-y-1">
                         <h3 class="text-sm font-bold text-gray-900 group-hover:text-red-900 transition-colors">{{ $form['name'] }}</h3>
@@ -51,7 +58,7 @@
                 </div>
             </div>
             <div class="mt-8 pt-4 border-t border-gray-50 flex justify-end">
-                <a href="#" class="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-red-700 transition-colors flex items-center gap-2">
+                <a href="{{ asset('forms/' . $form['file']) }}" download="{{ $form['file'] }}" class="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-red-700 transition-colors flex items-center gap-2">
                     Download Form
                     <i class="fa-solid fa-download"></i>
                 </a>

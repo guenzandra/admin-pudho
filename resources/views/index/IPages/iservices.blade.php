@@ -31,7 +31,7 @@
                         The Agency has the responsibility to answer queries of a client, group or Local Government Units with regards to housing concerns. We provide expert advice and guidance on land acquisition, relocation processes, and housing rights.
                     </p>
                     <div class="pt-4">
-                         <a href="{{ route('faqs') }}" class="text-[10px] font-black text-red-700 uppercase tracking-widest border-b-2 border-red-700/30 hover:border-red-700 transition-all flex items-center gap-2 w-fit">
+                         <a href="{{ route('landing.faqs') }}" class="text-[10px] font-black text-red-700 uppercase tracking-widest border-b-2 border-red-700/30 hover:border-red-700 transition-all flex items-center gap-2 w-fit">
                             Check common questions
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>
