@@ -340,6 +340,11 @@ Route::prefix('editor')->name('editor.')->middleware(['auth'])->group(function (
     Route::get('/settings/help-guide', function () {
         return view('editor.settings.help-guide');
     })->name('settings.help-guide');
+
+    //Settings - General Settings
+    Route::get('/settings/general-settings', function () {
+        return view('editor.settings.general-settings');
+    })->name('settings.general-settings');
 });
 
 /*

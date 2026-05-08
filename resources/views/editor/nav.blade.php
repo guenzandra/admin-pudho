@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PUDHO Editor — @yield('title', 'Dashboard')</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *,
     *::before,
@@ -19,26 +19,26 @@
     :root {
       --red: #C0202F;
       --red-dark: #8C111E;
-      --sidebar-w: 260px;
-      --topbar-h: 64px;
-      --sb-bg: #C0202F;
-      /* sidebar background (light) */
-      --sb-text: rgba(255, 255, 255, 0.72);
+      --red-deeper: #6B0A15;
+      --sidebar-w: 268px;
+      --topbar-h: 60px;
+      --sb-bg: #B01D2A;
+      --sb-text: rgba(255, 255, 255, 0.68);
       --sb-text-on: #ffffff;
-      --sb-section: rgba(255, 255, 255, 0.38);
-      --sb-div: rgba(255, 255, 255, 0.12);
+      --sb-section: rgba(255, 255, 255, 0.35);
+      --sb-div: rgba(255, 255, 255, 0.1);
       --sb-hover: rgba(255, 255, 255, 0.13);
-      --sb-active: rgba(255, 255, 255, 0.18);
-      --sb-user-bg: rgba(0, 0, 0, 0.12);
+      --sb-active: rgba(255, 255, 255, 0.16);
+      --sb-user-bg: rgba(0, 0, 0, 0.15);
       --main-bg: #F6F1F2;
       --surface: #FFFFFF;
       --border: #EDE0E1;
       --text-primary: #1A0508;
       --text-secondary: #7A4A50;
       --text-muted: #B08888;
-      --red-pale: #FEF0F1;
-      --red-pale2: #FDE8EA;
-      --red-border: #F3CACE;
+      --red-pale: rgba(255, 255, 255, 0.12);
+      --red-pale2: rgba(255, 255, 255, 0.08);
+      --red-border: rgba(255, 255, 255, 0.15);
     }
 
     body {
@@ -57,38 +57,43 @@
       left: 0;
       width: var(--sidebar-w);
       height: 100vh;
-      background: var(--sb-bg);
+      background: linear-gradient(180deg, #111827 0%, #0f172a 60%, #020617 100%);
       display: flex;
       flex-direction: column;
       z-index: 40;
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        background 0.35s;
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
+
+      /* optional */
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* top-right decorative orb */
-    #sidebar::before {
+    /* subtle noise texture */
+    #sidebar::after {
       content: '';
       position: absolute;
-      top: -60px;
-      right: -60px;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
+      z-index: 0;
+    }
+
+    #sidebar>* {
+      position: relative;
+      z-index: 1;
     }
 
     #sidebar.collapsed {
-      width: 70px;
+      width: 66px;
     }
 
     #sidebar.collapsed .nav-label,
     #sidebar.collapsed .nav-arrow,
-    #sidebar.collapsed .sidebar-brand-text,
     #sidebar.collapsed .section-label,
-    #sidebar.collapsed .sub-menu {
+    #sidebar.collapsed .sub-menu,
+    #sidebar.collapsed .user-info,
+    #sidebar.collapsed .profile-dept {
       opacity: 0;
       pointer-events: none;
       width: 0;
@@ -105,33 +110,28 @@
       margin: 0;
     }
 
-    #sidebar.collapsed .logo-area {
+    #sidebar.collapsed .sidebar-profile-area {
       justify-content: center;
-      padding: 18px 0;
-    }
-
-    #sidebar.collapsed .sidebar-user {
-      justify-content: center;
-      padding: 14px 0;
+      padding: 18px 0 16px;
     }
 
     @media (max-width:1023px) {
       #sidebar {
         transform: translateX(-100%);
         width: var(--sidebar-w) !important;
-        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.25);
+        box-shadow: 12px 0 40px rgba(0, 0, 0, 0.35);
       }
 
       #sidebar.mobile-open {
         transform: translateX(0);
       }
 
-      /* restore collapsed styles on mobile */
       #sidebar.collapsed .nav-label,
       #sidebar.collapsed .nav-arrow,
-      #sidebar.collapsed .sidebar-brand-text,
       #sidebar.collapsed .section-label,
-      #sidebar.collapsed .sub-menu {
+      #sidebar.collapsed .sub-menu,
+      #sidebar.collapsed .user-info,
+      #sidebar.collapsed .profile-dept {
         opacity: 1;
         pointer-events: auto;
         width: auto;
@@ -140,81 +140,99 @@
 
       #sidebar.collapsed .nav-item {
         justify-content: flex-start;
-        padding: 10px 12px;
+        padding: 10px 14px;
       }
 
-      #sidebar.collapsed .logo-area {
+      #sidebar.collapsed .sidebar-profile-area {
         justify-content: flex-start;
-        padding: 16px 18px;
-      }
-
-      #sidebar.collapsed .sidebar-user {
-        justify-content: flex-start;
-        padding: 14px 16px;
+        padding: 18px 18px 16px;
       }
     }
 
-    /* ── Brand ── */
-    .sidebar-brand {
-      flex-shrink: 0;
-    }
-
-    .logo-area {
+    /* ── Profile Area (top of sidebar) ── */
+    .sidebar-profile-area {
       display: flex;
       align-items: center;
       gap: 13px;
-      padding: 18px 18px 14px;
-      cursor: pointer;
-      position: relative;
-      z-index: 1;
-      transition: padding 0.3s;
-    }
-
-    .logo-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.12);
-      object-fit: cover;
+      padding: 20px 18px 16px;
+      transition: padding 0.3s, justify-content 0.3s;
       flex-shrink: 0;
-      transition: transform 0.3s;
     }
 
-    .logo-area:hover .logo-img {
-      transform: scale(1.07);
+    .profile-avatar-sb {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      border: 2px solid rgba(255, 255, 255, 0.38);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      flex-shrink: 0;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .sidebar-brand-text {
+    .profile-avatar-sb .status-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 10px;
+      height: 10px;
+      background: #4ade80;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .user-info {
       overflow: hidden;
       transition: opacity 0.25s, width 0.3s;
+      min-width: 0;
     }
 
-    .brand-name {
+    .user-name-sb {
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       color: #fff;
-      line-height: 1.2;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
     }
 
-    .brand-name span {
-      color: rgba(255, 255, 255, 0.6);
+    .user-position {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.91);
+      white-space: nowrap;
+      margin-top: 2px;
       font-weight: 500;
     }
 
-    .brand-tagline {
-      font-size: 10px;
-      color: rgba(255, 255, 255, 0.45);
-      white-space: nowrap;
-      margin-top: 3px;
+    .profile-dept {
+      margin-top: 5px;
+      overflow: hidden;
+      transition: opacity 0.25s;
+    }
+
+    .dept-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: -4px;
+      padding: 0px 4px 1px 1px;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
       letter-spacing: 0.02em;
+      white-space: nowrap;
     }
 
     /* ── Divider ── */
     .sb-divider {
       height: 1px;
-      background: var(--sb-div);
+      background: rgba(255, 255, 255, 0.52);
       margin: 0 14px;
       flex-shrink: 0;
     }
@@ -224,9 +242,9 @@
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 10px 12px;
+      padding: 8px 10px 10px;
       scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      scrollbar-color: rgba(199, 11, 11, 0.39) transparent;
     }
 
     .sidebar-nav::-webkit-scrollbar {
@@ -234,36 +252,36 @@
     }
 
     .sidebar-nav::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(199, 11, 11, 0.39) transparent;
       border-radius: 3px;
     }
 
     /* ── Section label ── */
     .section-label {
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.13em;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--sb-section);
-      padding: 14px 8px 5px;
+      color: rgba(199, 11, 11, 0.78);
+      padding: 14px 10px 5px;
       white-space: nowrap;
       overflow: hidden;
       transition: opacity 0.25s;
     }
 
-    /* ══ NAV ITEM — ARC HOVER ══ */
+    /* ══ NAV ITEM — dome left, straight right ══ */
     .nav-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 10px 14px 10px 14px;
+      /* dome left = large left border-radius, straight right */
+      border-radius: 50px 8px 8px 50px;
       cursor: pointer;
       text-decoration: none;
-      color: var(--sb-text);
-      font-size: 13.5px;
+      color: rgb(255, 255, 255);
+      font-size: 13px;
       font-weight: 500;
-      transition: color 0.18s;
       white-space: nowrap;
       position: relative;
       overflow: hidden;
@@ -272,33 +290,19 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       width: 100%;
       text-align: left;
+      transition: color 0.18s, background 0.22s;
+      margin-bottom: 1px;
     }
 
-    /* The arc bubble */
-    .nav-item::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: -100%;
-      transform: translateY(-50%);
-      width: 220%;
-      height: 220%;
-      border-radius: 50%;
-      background: var(--sb-hover);
-      transition: left 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
-      opacity: 0;
-      pointer-events: none;
+    .nav-item:hover {
+      background: rgba(199, 11, 11, 0.39);
+      color: #fff;
     }
 
-    .nav-item:hover::before {
-      left: -55%;
-      opacity: 1;
-    }
-
-    .nav-item.active::before {
-      left: -55%;
-      opacity: 1;
-      background: var(--sb-active);
+    .nav-item.active {
+      background: rgba(199, 11, 11, 0.39);
+      color: #fff;
+      font-weight: 700;
     }
 
     /* right-edge active pill */
@@ -306,28 +310,19 @@
       content: '';
       position: absolute;
       right: 0;
-      top: 20%;
-      bottom: 20%;
-      width: 3.5px;
-      background: rgba(255, 255, 255, 0.8);
+      top: 18%;
+      bottom: 18%;
+      width: 3px;
+      background: rgba(255, 255, 255, 0.85);
       border-radius: 3px 0 0 3px;
-    }
-
-    .nav-item:hover {
-      color: var(--sb-text-on);
-    }
-
-    .nav-item.active {
-      color: var(--sb-text-on);
-      font-weight: 600;
     }
 
     .nav-icon {
       width: 17px;
       height: 17px;
       flex-shrink: 0;
-      opacity: 0.72;
-      transition: opacity 0.18s, margin 0.3s;
+      opacity: 0.7;
+      transition: opacity 0.18s;
     }
 
     .nav-item:hover .nav-icon,
@@ -345,7 +340,7 @@
       width: 13px;
       height: 13px;
       flex-shrink: 0;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.45);
       transition: transform 0.22s, opacity 0.25s;
     }
 
@@ -373,140 +368,92 @@
     .sub-item {
       display: flex;
       align-items: center;
-      padding: 8px 14px 8px 42px;
-      border-radius: 8px;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.58);
+      padding: 8px 14px 8px 40px;
+      border-radius: 50px 8px 8px 50px;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.55);
       text-decoration: none;
-      transition: color 0.15s;
+      transition: color 0.15s, background 0.18s;
       white-space: nowrap;
       font-weight: 500;
       position: relative;
-      overflow: hidden;
-    }
-
-    /* arc on sub-items too */
-    .sub-item::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: -80%;
-      transform: translateY(-50%);
-      width: 180%;
-      height: 200%;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.07);
-      transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s;
-      opacity: 0;
-    }
-
-    .sub-item:hover::before {
-      left: -20%;
-      opacity: 1;
+      margin-bottom: 1px;
     }
 
     .sub-item:hover {
       color: #fff;
+      background: rgba(255, 255, 255, 0.12);
     }
 
     .sub-item.active {
       color: #fff;
-      font-weight: 600;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.14);
     }
 
     .sub-dot {
       position: absolute;
-      left: 24px;
+      left: 22px;
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.38);
+      background: rgba(255, 255, 255, 0.3);
       transition: background 0.15s;
     }
 
     .sub-item:hover .sub-dot,
     .sub-item.active .sub-dot {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.85);
     }
 
-    /* ── User strip ── */
-    .sidebar-user {
+    /* ── Sidebar bottom strip ── */
+    .sidebar-bottom {
       flex-shrink: 0;
-      border-top: 1px solid var(--sb-div);
-      padding: 14px 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: var(--sb-user-bg);
-      overflow: hidden;
-      transition: padding 0.3s, background 0.35s;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.12);
     }
 
-    .user-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1.5px solid rgba(255, 255, 255, 0.32);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 13px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .online-dot {
-      position: absolute;
-      bottom: 1px;
-      right: 1px;
-      width: 9px;
-      height: 9px;
-      background: #4ade80;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .user-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-    }
-
-    .user-role {
-      font-size: 10.5px;
-      color: rgba(255, 255, 255, 0.48);
-      white-space: nowrap;
-      margin-top: 1px;
-    }
-
-    /* Dark-mode toggle button inside sidebar */
-    .dm-toggle-btn {
-      margin-left: auto;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
+    .sb-bottom-icon {
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
-      border: none;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: background 0.18s;
-      color: rgba(255, 255, 255, 0.8);
+      transition: background 0.15s;
+      color: rgba(255, 255, 255, 0.7);
+      flex-shrink: 0;
     }
 
-    .dm-toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.22);
+    .sb-bottom-icon:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
     }
 
-    .dm-toggle-btn svg {
-      width: 15px;
-      height: 15px;
+    .sb-bottom-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .sb-version {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.28);
+      font-weight: 600;
+      margin-left: auto;
+      white-space: nowrap;
+      transition: opacity 0.25s;
+    }
+
+    #sidebar.collapsed .sb-version,
+    #sidebar.collapsed .sidebar-bottom .sb-bottom-icon:not(:first-child) {
+      display: none;
     }
 
     /* ════════════════════════════
@@ -516,9 +463,9 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       z-index: 39;
-      backdrop-filter: blur(3px);
+      backdrop-filter: blur(4px);
     }
 
     #sidebarOverlay.show {
@@ -526,7 +473,7 @@
     }
 
     /* ════════════════════════════
-       TOP NAV
+       TOP NAV — RED
     ════════════════════════════ */
     #topNav {
       position: fixed;
@@ -534,28 +481,17 @@
       left: var(--sidebar-w);
       right: 0;
       height: var(--topbar-h);
-      background: var(--surface);
-      border-bottom: 1px solid var(--red-border);
+      background: linear-gradient(90deg, #571616, #7f1d1d);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
       z-index: 30;
       display: flex;
       align-items: center;
-      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s, border-color 0.35s;
-      box-shadow: 0 1px 16px rgba(192, 32, 47, 0.05);
-    }
-
-    /* slim red top line */
-    #topNav::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--red-dark) 0%, var(--red) 60%, rgba(220, 100, 112, 0.4) 100%);
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 20px rgba(140, 17, 30, 0.4);
     }
 
     #topNav.sidebar-collapsed {
-      left: 70px;
+      left: 66px;
     }
 
     @media (max-width:1023px) {
@@ -569,7 +505,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 0 22px;
+      padding: 0 20px;
       gap: 12px;
     }
 
@@ -582,50 +518,55 @@
     .topnav-right {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 2px;
     }
 
-    /* hamburger / desktop toggle */
+    /* ── Arrow-style hamburger (arrow sticks on panel edge) ── */
     .hamburger-btn {
       display: none;
-      background: none;
-      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       cursor: pointer;
-      color: var(--text-secondary);
-      padding: 8px;
+      color: #fff;
+      padding: 0;
+      width: 36px;
+      height: 36px;
       border-radius: 9px;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.15s;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .hamburger-btn:hover {
-      background: var(--red-pale);
-      color: var(--red);
+      background: rgba(255, 255, 255, 0.25);
     }
 
     @media (max-width:1023px) {
       .hamburger-btn {
         display: flex;
-        align-items: center;
-        justify-content: center;
       }
     }
 
+    /* Desktop toggle: arrow that points left/right */
     .desktop-toggle-btn {
       display: flex;
-      background: none;
-      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       cursor: pointer;
-      color: var(--text-secondary);
-      padding: 8px;
+      color: #fff;
+      padding: 0;
+      width: 36px;
+      height: 36px;
       border-radius: 9px;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.18s;
+      flex-shrink: 0;
     }
 
     .desktop-toggle-btn:hover {
-      background: var(--red-pale);
-      color: var(--red);
+      background: rgba(255, 255, 255, 0.25);
     }
 
     @media (max-width:1023px) {
@@ -634,24 +575,37 @@
       }
     }
 
+    /* Arrow icon SVGs inside toggle buttons */
+    .toggle-arrow {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s;
+    }
+
+    /* When collapsed, flip arrow direction */
+    .arrow-collapsed {
+      transform: rotate(180deg);
+    }
+
     /* breadcrumb */
     .breadcrumb {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12.5px;
-      color: var(--text-muted);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
       font-weight: 500;
-      margin-left: 4px;
+      margin-left: 2px;
     }
 
     .breadcrumb strong {
-      color: var(--text-primary);
+      color: #fff;
       font-weight: 700;
     }
 
     .breadcrumb .bc-sep {
-      color: var(--red-border);
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 15px;
     }
 
     /* clock */
@@ -661,9 +615,8 @@
       align-items: flex-end;
       padding-right: 16px;
       margin-right: 4px;
-      border-right: 1.5px solid var(--red-border);
+      border-right: 1.5px solid rgba(255, 255, 255, 0.2);
       gap: 1px;
-      transition: border-color 0.35s;
     }
 
     @media (min-width:768px) {
@@ -674,61 +627,63 @@
 
     .dt-time {
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
-      color: var(--red);
+      color: #fff;
       line-height: 1;
       letter-spacing: -0.01em;
     }
 
     .dt-date {
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
-    /* icon buttons */
+    /* icon buttons — white style */
     .icon-btn {
       position: relative;
-      background: none;
-      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       cursor: pointer;
-      color: var(--text-secondary);
-      padding: 9px;
+      color: rgba(255, 255, 255, 0.85);
+      padding: 8px;
       border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.15s, color 0.15s;
+      margin: 0 2px;
     }
 
     .icon-btn:hover {
-      background: var(--red-pale);
-      color: var(--red);
+      background: rgba(255, 255, 255, 0.22);
+      color: #fff;
     }
 
     .icon-btn svg {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
     }
 
     .badge {
       position: absolute;
-      top: 4px;
-      right: 4px;
+      top: 3px;
+      right: 3px;
       min-width: 16px;
       height: 16px;
-      background: var(--red);
+      background: #fff;
       border-radius: 8px;
-      color: #fff;
+      color: var(--red);
       font-size: 9px;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0 3px;
-      border: 2px solid var(--surface);
+      border: 2px solid rgba(192, 32, 47, 0.6);
     }
 
     /* profile btn */
@@ -736,48 +691,50 @@
       display: flex;
       align-items: center;
       gap: 9px;
-      background: none;
-      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       cursor: pointer;
-      padding: 6px 10px 6px 6px;
-      border-radius: 11px;
+      padding: 5px 12px 5px 5px;
+      border-radius: 30px;
       transition: background 0.15s;
-      margin-left: 4px;
+      margin-left: 6px;
     }
 
     .profile-btn:hover {
-      background: var(--red-pale);
+      background: rgba(255, 255, 255, 0.22);
     }
 
     .profile-av {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      background: rgba(255, 255, 255, 0.22);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 800;
       position: relative;
+      flex-shrink: 0;
     }
 
     .profile-av .online {
       position: absolute;
       bottom: 0;
       right: 0;
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       background: #22c55e;
       border-radius: 50%;
-      border: 2px solid var(--surface);
+      border: 2px solid #C0202F;
     }
 
     .profile-name {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
       display: none;
     }
 
@@ -790,18 +747,17 @@
     /* dropdowns */
     .dropdown-panel {
       position: absolute;
-      top: calc(100% + 8px);
+      top: calc(100% + 10px);
       right: 0;
       width: 310px;
-      background: var(--surface);
-      border: 1px solid var(--red-border);
+      background: #fff;
+      border: 1px solid #F0D8DA;
       border-radius: 14px;
-      box-shadow: 0 10px 40px rgba(192, 32, 47, 0.12), 0 2px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 12px 48px rgba(140, 17, 30, 0.18), 0 2px 10px rgba(0, 0, 0, 0.06);
       z-index: 100;
       overflow: hidden;
       display: none;
       animation: dropIn 0.18s ease;
-      transition: background 0.35s, border-color 0.35s;
     }
 
     .dropdown-panel.show {
@@ -809,7 +765,7 @@
     }
 
     .dropdown-panel.narrow {
-      width: 220px;
+      width: 230px;
     }
 
     @keyframes dropIn {
@@ -826,21 +782,21 @@
 
     .dp-header {
       padding: 12px 16px;
-      border-bottom: 1px solid var(--red-border);
+      border-bottom: 1px solid #F5E0E2;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--red-pale);
+      background: #FEF0F1;
     }
 
     .dp-header h4 {
       font-size: 13px;
       font-weight: 700;
-      color: var(--text-primary);
+      color: #1A0508;
     }
 
     .dp-header a {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--red);
       text-decoration: none;
       font-weight: 600;
@@ -860,13 +816,13 @@
       align-items: flex-start;
       gap: 11px;
       padding: 12px 16px;
-      border-bottom: 1px solid var(--red-pale);
+      border-bottom: 1px solid #FEF0F1;
       text-decoration: none;
       transition: background 0.12s;
     }
 
     .dp-item:hover {
-      background: var(--red-pale);
+      background: #FEF0F1;
     }
 
     .dp-item-icon {
@@ -890,14 +846,14 @@
 
     .dp-item-title {
       font-size: 13px;
-      color: var(--text-primary);
+      color: #1A0508;
       font-weight: 500;
       line-height: 1.35;
     }
 
     .dp-item-meta {
       font-size: 11px;
-      color: var(--text-muted);
+      color: #B08888;
       margin-top: 2px;
     }
 
@@ -912,7 +868,7 @@
 
     .dp-footer {
       padding: 11px 16px;
-      border-top: 1px solid var(--red-border);
+      border-top: 1px solid #F5E0E2;
       text-align: center;
     }
 
@@ -933,7 +889,7 @@
       gap: 11px;
       padding: 11px 16px;
       font-size: 13.5px;
-      color: var(--text-secondary);
+      color: #7A4A50;
       text-decoration: none;
       transition: background 0.12s, color 0.12s;
       cursor: pointer;
@@ -946,7 +902,7 @@
     }
 
     .profile-dp-item:hover {
-      background: var(--red-pale);
+      background: #FEF0F1;
       color: var(--red);
     }
 
@@ -994,7 +950,7 @@
     }
 
     #mainContent.sidebar-collapsed {
-      margin-left: 70px;
+      margin-left: 66px;
     }
 
     @media (max-width:1023px) {
@@ -1002,6 +958,19 @@
         margin-left: 0 !important;
         padding: 18px;
       }
+    }
+
+    /* ── Manage Services badge ── */
+    .nav-badge {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 1px 7px;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -1012,14 +981,20 @@
 
   <aside id="sidebar">
 
-    <!-- Brand -->
-    <div class="sidebar-brand">
-      <div class="logo-area" onclick="toggleDesktopSidebar()" title="Toggle sidebar">
-        <img src="{{ asset('build/assets/images/logo-pudho.jpg') }}" alt="PUDHO" class="logo-img"
-          onerror="this.src='https://via.placeholder.com/40x40/ffffff/C0202F?text=P'">
-        <div class="sidebar-brand-text">
-          <div class="brand-name"><span>LAGUNA</span> PUDHO</div>
-          <div class="brand-tagline">Urban Development & Housing</div>
+    <!-- Profile Area (replaces logo) -->
+    <div class="sidebar-profile-area">
+      <div class="profile-avatar-sb">
+        E
+        <span class="status-dot"></span>
+      </div>
+      <div class="user-info">
+        <div class="user-name-sb">Editor Name</div>
+        <div class="user-position">Content Editor</div>
+        <div class="profile-dept">
+          <span class="dept-badge">
+            <span class="dept-badge-dot"></span>
+            P.U.D.H.O - Laguna
+          </span>
         </div>
       </div>
     </div>
@@ -1163,6 +1138,7 @@
         </svg>
       </button>
       <div class="sub-menu {{ request()->routeIs('editor.settings.notifications','editor.settings.content-preferences','editor.settings.help-guide') ? 'open' : '' }}" id="settingsMenu">
+        <a href="{{ route('editor.settings.general-settings') }}" class="sub-item {{ request()->routeIs('editor.settings.general-settings') ? 'active' : '' }}"><span class="sub-dot"></span>General Settings</a>
         <a href="{{ route('editor.settings.notifications') }}" class="sub-item {{ request()->routeIs('editor.settings.notifications') ? 'active' : '' }}"><span class="sub-dot"></span>Notifications</a>
         <a href="{{ route('editor.settings.content-preferences') }}" class="sub-item {{ request()->routeIs('editor.settings.content-preferences') ? 'active' : '' }}"><span class="sub-dot"></span>Content Preferences</a>
         <a href="{{ route('editor.settings.help-guide') }}" class="sub-item {{ request()->routeIs('editor.settings.help-guide') ? 'active' : '' }}"><span class="sub-dot"></span>Help / User Guide</a>
@@ -1170,22 +1146,38 @@
 
     </nav>
 
+    <!-- Bottom strip -->
+    <div class="sidebar-bottom">
+      <div class="sb-bottom-icon" title="Dark mode" onclick="toggleDarkMode()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" id="dmIcon">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </div>
+      <span class="sb-version">PUDHO v2.0</span>
+    </div>
+
   </aside>
 
   <!-- ════ TOP NAV ════ -->
   <header id="topNav">
     <div class="topnav-inner">
       <div class="topnav-left">
+
+        <!-- Mobile hamburger -->
         <button class="hamburger-btn" onclick="openSidebar()" aria-label="Open menu">
-          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-        <button class="desktop-toggle-btn" onclick="toggleDesktopSidebar()" aria-label="Toggle sidebar">
+          <!-- arrow pointing right (into the panel) -->
           <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h10M4 18h16" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
           </svg>
         </button>
+
+        <!-- Desktop collapse/expand toggle — arrow pointing left to collapse, right to expand -->
+        <button class="desktop-toggle-btn" id="desktopToggleBtn" onclick="toggleDesktopSidebar()" aria-label="Toggle sidebar">
+          <svg class="toggle-arrow" id="toggleArrowIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
         <div class="breadcrumb">
           <span>PUDHO</span>
           <span class="bc-sep">›</span>
@@ -1294,9 +1286,10 @@
             <span class="profile-name">Editor</span>
           </button>
           <div class="dropdown-panel narrow" id="profilePanel">
-            <div style="padding:14px 16px 11px; border-bottom:1px solid var(--red-border);">
-              <div style="font-size:14px;font-weight:700;color:var(--text-primary)">Editor</div>
-              <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">editor@pudho-laguna.gov.ph</div>
+            <div style="padding:14px 16px 11px; border-bottom:1px solid #F5E0E2;">
+              <div style="font-size:14px;font-weight:700;color:#1A0508">Editor Name</div>
+              <div style="font-size:11px;color:#B08888;margin-top:1px">Content Editor · PUDHO</div>
+              <div style="font-size:11px;color:#B08888;margin-top:1px">editor@pudho-laguna.gov.ph</div>
             </div>
             <a href="#" class="profile-dp-item">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1311,7 +1304,7 @@
               </svg>
               Settings
             </a>
-            <div style="height:1px;background:var(--red-border);margin:4px 0"></div>
+            <div style="height:1px;background:#F5E0E2;margin:4px 0"></div>
             <a href="{{ route('welcome') }}" class="profile-dp-item danger">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -1339,6 +1332,16 @@
       document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
       document.getElementById('topNav').classList.toggle('sidebar-collapsed', sidebarCollapsed);
       document.getElementById('mainContent').classList.toggle('sidebar-collapsed', sidebarCollapsed);
+
+      // Flip the arrow icon direction
+      const arrowIcon = document.getElementById('toggleArrowIcon');
+      if (sidebarCollapsed) {
+        // Arrow pointing right = expand
+        arrowIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>';
+      } else {
+        // Arrow pointing left = collapse
+        arrowIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>';
+      }
     }
 
     function openSidebar() {
@@ -1352,6 +1355,7 @@
       document.getElementById('sidebarOverlay').classList.remove('show');
       document.body.style.overflow = '';
     }
+
     window.addEventListener('resize', () => {
       if (window.innerWidth >= 1024) closeSidebar();
     });
@@ -1377,6 +1381,7 @@
       document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
       if (!isOpen) panel.classList.add('show');
     }
+
     document.addEventListener('click', e => {
       if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('.dropdown-panel'))
         document.querySelectorAll('.dropdown-panel.show').forEach(p => p.classList.remove('show'));
@@ -1416,10 +1421,8 @@
       document.body.classList.toggle('dark-mode', on);
       const icon = document.getElementById('dmIcon');
       if (on) {
-        // sun icon
         icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
       } else {
-        // moon icon
         icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
       }
     }
