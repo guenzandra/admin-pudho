@@ -384,4 +384,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserDevice::class, 'user_id', 'user_id');
     }
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

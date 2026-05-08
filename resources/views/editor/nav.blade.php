@@ -988,8 +988,12 @@
         <span class="status-dot"></span>
       </div>
       <div class="user-info">
-        <div class="user-name-sb">Editor Name</div>
-        <div class="user-position">Content Editor</div>
+        <div class="user-name-sb">
+          {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+        </div>
+        <div class="user-position">
+          {{ Auth::user()->position ?: 'Content Editor' }}
+        </div>
         <div class="profile-dept">
           <span class="dept-badge">
             <span class="dept-badge-dot"></span>
@@ -1179,8 +1183,6 @@
         </button>
 
         <div class="breadcrumb">
-          <span>PUDHO</span>
-          <span class="bc-sep">›</span>
           <strong>@yield('title', 'Dashboard')</strong>
         </div>
       </div>
@@ -1287,9 +1289,24 @@
           </button>
           <div class="dropdown-panel narrow" id="profilePanel">
             <div style="padding:14px 16px 11px; border-bottom:1px solid #F5E0E2;">
-              <div style="font-size:14px;font-weight:700;color:#1A0508">Editor Name</div>
-              <div style="font-size:11px;color:#B08888;margin-top:1px">Content Editor · PUDHO</div>
-              <div style="font-size:11px;color:#B08888;margin-top:1px">editor@pudho-laguna.gov.ph</div>
+              <div style="font-size:14px;font-weight:700;color:#1A0508">
+                {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+              </div>
+              <div style="font-size:11px;color:#B08888;margin-top:1px">
+                @php
+                $roles = [
+                1 => 'Administrator',
+                2 => 'Editor',
+                3 => 'Staff',
+                4 => 'App User'
+                ];
+                $position = Auth::user()->position ?? $roles[Auth::user()->role_no] ?? 'Content Editor';
+                @endphp
+                {{ $position }}
+              </div>
+              <div style="font-size:11px;color:#B08888;margin-top:1px">
+                {{ Auth::user()->email }}
+              </div>
             </div>
             <a href="#" class="profile-dp-item">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
