@@ -3,6 +3,8 @@
 @section('title', 'Announcements')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
@@ -126,7 +128,6 @@
         height: 15px;
     }
 
-    /* Stats */
     .stats-row {
         display: flex;
         gap: 12px;
@@ -189,7 +190,6 @@
         font-weight: 500;
     }
 
-    /* Year/Month filter */
     .time-filter-wrap {
         background: var(--surface);
         border: 1px solid var(--red-border);
@@ -342,7 +342,6 @@
         gap: 7px;
         flex-wrap: wrap;
         padding: 0 16px 12px;
-        min-height: 0;
     }
 
     .filter-pill {
@@ -374,7 +373,6 @@
         height: 12px;
     }
 
-    /* Table */
     .table-wrap {
         background: var(--surface);
         border: 1px solid var(--red-border);
@@ -781,7 +779,6 @@
         color: var(--txt-3);
     }
 
-    /* MODALS */
     .modal-backdrop {
         position: fixed;
         inset: 0;
@@ -806,7 +803,8 @@
         background: #fff;
         border-radius: 18px;
         width: 100%;
-        box-shadow: 0 24px 64px rgba(192, 32, 47, .2), 0 4px 16px rgba(0, 0, 0, .08);
+        max-width: 860px;
+        box-shadow: 0 24px 64px rgba(192, 32, 47, .2);
         transform: translateY(20px) scale(.97);
         transition: transform .22s cubic-bezier(.34, 1.56, .64, 1);
         overflow: hidden;
@@ -866,11 +864,6 @@
         color: var(--red);
     }
 
-    .modal-close svg {
-        width: 16px;
-        height: 16px;
-    }
-
     .modal-body {
         padding: 22px;
         overflow-y: auto;
@@ -890,10 +883,6 @@
 
     .form-group {
         margin-bottom: 18px;
-    }
-
-    .form-group:last-child {
-        margin-bottom: 0;
     }
 
     .form-label {
@@ -923,7 +912,7 @@
         color: var(--txt-1);
         background: var(--bg);
         outline: none;
-        transition: border-color .15s, box-shadow .15s, background .15s;
+        transition: border-color .15s, box-shadow .15s;
     }
 
     .form-input:focus,
@@ -1105,18 +1094,12 @@
         color: var(--txt-2);
         font-size: 12px;
         font-weight: 700;
-        font-family: 'Sora', sans-serif;
         transition: all .1s;
     }
 
     .tb-btn:hover {
         background: var(--red-pale);
         color: var(--red);
-    }
-
-    .tb-btn svg {
-        width: 14px;
-        height: 14px;
     }
 
     .tb-sep {
@@ -1127,7 +1110,6 @@
         align-self: center;
     }
 
-    /* ══ FULL SCREEN PREVIEW ══ */
     #previewModalBg {
         z-index: 400;
         padding: 0;
@@ -1139,10 +1121,6 @@
         height: 100vh;
         max-height: 100vh;
         border-radius: 0;
-    }
-
-    #previewModalBg.show>.modal {
-        transform: none;
     }
 
     .preview-topbar {
@@ -1175,7 +1153,6 @@
         border: 1px solid rgba(192, 32, 47, .4);
         white-space: nowrap;
         text-transform: uppercase;
-        letter-spacing: .06em;
     }
 
     .preview-topbar-name {
@@ -1206,7 +1183,6 @@
         font-weight: 600;
         color: rgba(255, 255, 255, .45);
         cursor: pointer;
-        font-family: 'Sora', sans-serif;
         transition: all .12s;
     }
 
@@ -1219,11 +1195,6 @@
         background: rgba(192, 32, 47, .35);
         color: #fff;
         border-color: rgba(192, 32, 47, .7);
-    }
-
-    .device-btn:hover:not(.active) {
-        background: rgba(255, 255, 255, .07);
-        color: rgba(255, 255, 255, .75);
     }
 
     .preview-topbar-right {
@@ -1245,13 +1216,7 @@
         font-size: 12.5px;
         font-weight: 700;
         cursor: pointer;
-        font-family: 'Sora', sans-serif;
         transition: all .12s;
-        box-shadow: 0 2px 8px rgba(192, 32, 47, .45);
-    }
-
-    .pv-btn-pub:hover {
-        background: var(--red-dark);
     }
 
     .pv-btn-close {
@@ -1266,16 +1231,9 @@
         font-size: 12.5px;
         font-weight: 600;
         cursor: pointer;
-        font-family: 'Sora', sans-serif;
         transition: all .12s;
     }
 
-    .pv-btn-close:hover {
-        background: rgba(255, 255, 255, .13);
-        color: #fff;
-    }
-
-    /* Outer scroll area — dark chrome feel */
     .preview-scroll-area {
         flex: 1;
         overflow: auto;
@@ -1286,7 +1244,6 @@
         padding: 24px 24px 40px;
     }
 
-    /* Browser shell */
     .browser-shell {
         width: 100%;
         transition: max-width .3s cubic-bezier(.4, 0, .2, 1);
@@ -1338,12 +1295,6 @@
         text-overflow: ellipsis;
     }
 
-    .b-url-secure {
-        color: rgba(100, 255, 100, .5);
-        margin-right: 5px;
-    }
-
-    /* Actual page content inside browser */
     .browser-page {
         background: #fff;
         border-radius: 0 0 12px 12px;
@@ -1351,7 +1302,6 @@
         box-shadow: 0 28px 70px rgba(0, 0, 0, .5);
     }
 
-    /* Site nav */
     .pub-nav {
         background: linear-gradient(90deg, #8C111E, #C0202F);
         padding: 0 48px;
@@ -1421,11 +1371,6 @@
         border-bottom-color: rgba(255, 255, 255, .6);
     }
 
-    .pub-link:hover {
-        color: #fff;
-    }
-
-    /* Hero breadcrumb */
     .pub-breadcrumb {
         background: #FFF8F8;
         border-bottom: 1px solid var(--border);
@@ -1451,30 +1396,13 @@
         font-weight: 600;
     }
 
-    .pub-bc-sep {
-        color: var(--red-border);
-    }
-
-    /* Article */
     .pub-article {
         padding: 48px 48px 72px;
-    }
-
-    .pub-article.tablet {
-        padding: 36px 32px 56px;
-    }
-
-    .pub-article.mobile {
-        padding: 22px 16px 40px;
     }
 
     .pub-article-inner {
         max-width: 760px;
         margin: 0 auto;
-    }
-
-    .pub-article-inner.tablet {
-        max-width: 100%;
     }
 
     .pub-cat {
@@ -1486,7 +1414,6 @@
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: .08em;
         margin-bottom: 14px;
     }
 
@@ -1496,14 +1423,6 @@
         color: var(--txt-1);
         line-height: 1.28;
         margin-bottom: 12px;
-    }
-
-    .pub-title.tablet {
-        font-size: 26px;
-    }
-
-    .pub-title.mobile {
-        font-size: 21px;
     }
 
     .pub-meta {
@@ -1518,39 +1437,12 @@
         margin-bottom: 28px;
     }
 
-    .pub-meta-item {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .pub-meta-item svg {
-        width: 13px;
-        height: 13px;
-    }
-
     .pub-feat-img {
         width: 100%;
         height: 400px;
         object-fit: cover;
         border-radius: 12px;
         margin-bottom: 32px;
-        display: block;
-        background: linear-gradient(135deg, var(--red-pale2), var(--red-border));
-    }
-
-    .pub-feat-img.tablet {
-        height: 280px;
-    }
-
-    .pub-feat-img.mobile {
-        height: 200px;
-        border-radius: 8px;
-        margin-bottom: 22px;
-    }
-
-    .pub-feat-img.hidden {
-        display: none;
     }
 
     .pub-body {
@@ -1559,44 +1451,16 @@
         line-height: 1.85;
     }
 
-    .pub-body.mobile {
-        font-size: 14.5px;
-    }
-
-    .pub-body p {
-        margin-bottom: 18px;
-    }
-
-    /* Related strip */
     .pub-related {
         background: var(--bg);
         border-top: 1px solid var(--border);
         padding: 32px 48px;
     }
 
-    .pub-related.tablet {
-        padding: 24px 32px;
-    }
-
-    .pub-related.mobile {
-        padding: 20px 16px;
-    }
-
-    .pub-related-title {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--txt-1);
-        margin-bottom: 16px;
-    }
-
     .pub-related-cards {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-    }
-
-    .pub-related-cards.mobile {
-        grid-template-columns: 1fr;
     }
 
     .pub-related-card {
@@ -1606,20 +1470,6 @@
         border: 1px solid var(--red-border);
     }
 
-    .pub-related-card-title {
-        font-size: 12.5px;
-        font-weight: 600;
-        color: var(--txt-1);
-        line-height: 1.4;
-        margin-bottom: 4px;
-    }
-
-    .pub-related-card-meta {
-        font-size: 11px;
-        color: var(--txt-3);
-    }
-
-    /* Site footer */
     .pub-footer {
         background: #110204;
         padding: 20px 48px;
@@ -1630,16 +1480,11 @@
         flex-wrap: wrap;
     }
 
-    .pub-footer.mobile {
-        padding: 16px;
-    }
-
     .pub-footer-text {
         font-size: 11px;
         color: rgba(255, 255, 255, .28);
     }
 
-    /* Delete modal */
     .delete-modal-icon {
         width: 56px;
         height: 56px;
@@ -1677,7 +1522,6 @@
         color: var(--txt-1);
     }
 
-    /* Toast */
     #toast-container {
         position: fixed;
         top: 20px;
@@ -1705,7 +1549,6 @@
         color: var(--txt-1);
         pointer-events: auto;
         animation: toastIn .28s cubic-bezier(.34, 1.56, .64, 1) forwards;
-        font-family: 'Sora', sans-serif;
     }
 
     .toast.hiding {
@@ -1720,11 +1563,6 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-    }
-
-    .toast-icon svg {
-        width: 16px;
-        height: 16px;
     }
 
     .toast.success .toast-icon {
@@ -1748,13 +1586,6 @@
         border: none;
         cursor: pointer;
         color: var(--txt-3);
-        padding: 0;
-        flex-shrink: 0;
-    }
-
-    .toast-close svg {
-        width: 14px;
-        height: 14px;
     }
 
     @keyframes toastIn {
@@ -1776,7 +1607,6 @@
         }
     }
 
-    /* Loading */
     .loading-overlay {
         position: fixed;
         inset: 0;
@@ -1811,7 +1641,6 @@
         }
     }
 
-    /* FAB */
     #help-fab {
         position: fixed;
         bottom: 28px;
@@ -1828,39 +1657,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform .2s, box-shadow .2s;
+        transition: transform .2s;
     }
 
     #help-fab:hover {
         transform: scale(1.1) rotate(10deg);
-        box-shadow: 0 6px 24px rgba(192, 32, 47, .5);
-    }
-
-    #help-fab svg {
-        width: 22px;
-        height: 22px;
-    }
-
-    .help-pulse {
-        position: absolute;
-        inset: -4px;
-        border-radius: 50%;
-        border: 2px solid rgba(192, 32, 47, .35);
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: .6
-        }
-
-        50% {
-            transform: scale(1.18);
-            opacity: 0
-        }
     }
 
     .help-step {
@@ -1868,10 +1669,6 @@
         gap: 16px;
         padding: 18px 0;
         border-bottom: 1px solid var(--red-border);
-    }
-
-    .help-step:last-child {
-        border-bottom: none;
     }
 
     .help-step-num {
@@ -1886,20 +1683,6 @@
         justify-content: center;
         font-size: 13px;
         font-weight: 700;
-        font-family: 'JetBrains Mono', monospace;
-    }
-
-    .help-step-title {
-        font-size: 13.5px;
-        font-weight: 700;
-        color: var(--txt-1);
-        margin-bottom: 4px;
-    }
-
-    .help-step-desc {
-        font-size: 12.5px;
-        color: var(--txt-3);
-        line-height: 1.55;
     }
 
     .help-tip {
@@ -1909,18 +1692,11 @@
         border-radius: 10px;
         border-left: 3px solid var(--red);
         font-size: 12.5px;
-        color: var(--txt-2);
-        line-height: 1.5;
-    }
-
-    .help-tip strong {
-        color: var(--red);
     }
 
     #fContent:empty::before {
         content: 'Write your announcement content here…';
         color: var(--txt-3);
-        pointer-events: none;
     }
 </style>
 
@@ -1929,7 +1705,6 @@
     <div class="spinner"></div>
 </div>
 
-<!-- Header -->
 <div class="page-header">
     <div>
         <h1 class="page-title">Announcements</h1>
@@ -1937,19 +1712,18 @@
     </div>
     <div class="header-actions">
         <button class="btn-ghost" onclick="exportData()">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>Export
         </button>
         <button class="btn-primary" onclick="openCreateModal()">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
             </svg>New Announcement
         </button>
     </div>
 </div>
 
-<!-- Stats (clickable) -->
 <div class="stats-row">
     <div class="stat-card active-stat" id="statAll" onclick="filterByStatus('')">
         <div class="stat-icon" style="background:#FFF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
@@ -1989,7 +1763,6 @@
     </div>
 </div>
 
-<!-- Year / Month / Search filter block -->
 <div class="time-filter-wrap">
     <div class="year-tabs-bar" id="yearTabsBar">
         <button class="year-tab-all active" data-year="" onclick="setYear('',this)">All Years</button>
@@ -2011,7 +1784,7 @@
             </select>
         </div>
         <button class="btn-ghost" onclick="clearFilters()" style="flex-shrink:0;">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>Clear
         </button>
@@ -2019,7 +1792,6 @@
     <div class="filter-pills" id="filterPills"></div>
 </div>
 
-<!-- Table -->
 <div class="table-wrap">
     <div class="table-head">
         <div class="table-head-title" id="tableHeadTitle">All Announcements</div>
@@ -2051,13 +1823,12 @@
     </div>
 </div>
 
-
-<!-- ═══ CREATE/EDIT MODAL ═══ -->
+<!-- CREATE/EDIT MODAL -->
 <div class="modal-backdrop" id="createModalBg">
     <div class="modal modal-lg">
         <div class="modal-header">
             <h3 id="createModalTitle">New Announcement</h3>
-            <button class="modal-close" onclick="closeCreateModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="modal-close" onclick="closeCreateModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg></button>
         </div>
@@ -2070,18 +1841,18 @@
             <div class="form-group">
                 <label class="form-label">Content <span class="req">*</span></label>
                 <div class="rich-toolbar">
-                    <button class="tb-btn" title="Bold" onclick="fmt('bold')"><b>B</b></button>
-                    <button class="tb-btn" title="Italic" onclick="fmt('italic')"><i>I</i></button>
-                    <button class="tb-btn" title="Underline" onclick="fmt('underline')"><u>U</u></button>
+                    <button class="tb-btn" type="button" onclick="fmt('bold')"><b>B</b></button>
+                    <button class="tb-btn" type="button" onclick="fmt('italic')"><i>I</i></button>
+                    <button class="tb-btn" type="button" onclick="fmt('underline')"><u>U</u></button>
                     <div class="tb-sep"></div>
-                    <button class="tb-btn" title="Bullet list" onclick="fmt('insertUnorderedList')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button class="tb-btn" type="button" onclick="fmt('insertUnorderedList')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg></button>
-                    <button class="tb-btn" title="Clear format" onclick="fmt('removeFormat')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button class="tb-btn" type="button" onclick="fmt('removeFormat')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg></button>
                 </div>
-                <div id="fContent" contenteditable="true" class="form-textarea" style="min-height:130px;outline:none;border-radius:0 0 9px 9px;border:1.5px solid var(--border);padding:10px 13px;font-family:'Sora',sans-serif;font-size:13.5px;line-height:1.6;background:var(--bg);transition:border-color .15s,box-shadow .15s;"></div>
+                <div id="fContent" contenteditable="true" class="form-textarea" style="min-height:130px;outline:none;border-radius:0 0 9px 9px;border:1.5px solid var(--border);padding:10px 13px;font-family:'Sora',sans-serif;font-size:13.5px;line-height:1.6;background:var(--bg);"></div>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -2115,74 +1886,36 @@
                     </div>
                     <div class="form-group" style="margin-bottom:0">
                         <label class="form-label">Author</label>
-                        <input type="text" id="fAuthor" class="form-input" value="Editor" placeholder="Author name">
+                        <input type="text" id="fAuthor" class="form-input" value="{{ Auth::user()->name ?? 'Editor' }}" placeholder="Author name">
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <button class="btn-ghost" onclick="closeCreateModal()">Cancel</button>
-            <button class="btn-ghost" onclick="openPreviewFromForm()" style="color:#7c3aed;border-color:#e9d5ff;background:#f5f3ff;">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                Preview
-            </button>
-            <button class="btn-primary" id="savBtn" onclick="saveAnnouncement()">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>Save Announcement
-            </button>
+            <button class="btn-ghost" onclick="openPreviewFromForm()" style="color:#7c3aed;border-color:#e9d5ff;background:#f5f3ff;">Preview</button>
+            <button class="btn-primary" id="savBtn" onclick="saveAnnouncement()">Save Announcement</button>
         </div>
     </div>
 </div>
 
-
-<!-- ═══ FULL-SCREEN PREVIEW MODAL ═══ -->
+<!-- PREVIEW MODAL -->
 <div class="modal-backdrop" id="previewModalBg">
     <div class="modal" style="border-radius:0;max-width:100%;width:100%;height:100vh;max-height:100vh;">
-        <!-- Dark topbar -->
         <div class="preview-topbar">
-            <div class="preview-topbar-left">
-                <span class="preview-topbar-badge">Preview</span>
-                <span class="preview-topbar-name" id="pvName">Announcement Title</span>
-            </div>
+            <div class="preview-topbar-left"><span class="preview-topbar-badge">Preview</span><span class="preview-topbar-name" id="pvName">Announcement Title</span></div>
             <div class="preview-device-group">
-                <button class="device-btn active" id="devDesktop" onclick="setDevice('desktop')">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>Desktop
-                </button>
-                <button class="device-btn" id="devTablet" onclick="setDevice('tablet')">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>Tablet
-                </button>
-                <button class="device-btn" id="devMobile" onclick="setDevice('mobile')">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>Mobile
-                </button>
+                <button class="device-btn active" onclick="setDevice('desktop')">Desktop</button>
+                <button class="device-btn" onclick="setDevice('tablet')">Tablet</button>
+                <button class="device-btn" onclick="setDevice('mobile')">Mobile</button>
             </div>
             <div class="preview-topbar-right">
-                <button class="pv-btn-pub" onclick="closePreviewAndPublish()">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                    </svg>Publish Now
-                </button>
-                <button class="pv-btn-close" onclick="closePreviewModal()">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                    </svg>Close
-                </button>
+                <button class="pv-btn-pub" onclick="closePreviewAndPublish()">Publish Now</button>
+                <button class="pv-btn-close" onclick="closePreviewModal()">Close</button>
             </div>
         </div>
-
-        <!-- Dark scroll area with browser shell -->
         <div class="preview-scroll-area">
             <div class="browser-shell desktop" id="browserShell">
-                <!-- Browser chrome -->
                 <div class="browser-chrome-bar">
                     <div class="b-dots">
                         <div class="b-dot" style="background:#ff5f57"></div>
@@ -2191,102 +1924,70 @@
                     </div>
                     <div class="b-url"><span class="b-url-secure">🔒</span><span id="pvUrl">pudho-laguna.gov.ph/announcements/…</span></div>
                 </div>
-                <!-- Full page -->
                 <div class="browser-page">
-                    <!-- Site nav -->
                     <div class="pub-nav" id="pvNav">
-                        <div class="pub-logo">
-                            <img class="pub-logo-img" src="{{ asset('build/assets/images/logo-pudho.jpg') }}" onerror="this.src='https://via.placeholder.com/34/fff/C0202F?text=P'" alt="PUDHO">
+                        <div class="pub-logo"><img class="pub-logo-img" src="{{ asset('build/assets/images/logo-pudho.jpg') }}" onerror="this.src='https://via.placeholder.com/34/fff/C0202F?text=P'">
                             <div>
                                 <div class="pub-logo-text">LAGUNA PUDHO</div>
                                 <div class="pub-logo-sub">Urban Development & Housing</div>
                             </div>
                         </div>
-                        <div class="pub-links" id="pvLinks">
-                            <a class="pub-link" href="#">Home</a>
-                            <a class="pub-link active" href="#">Announcements</a>
-                            <a class="pub-link" href="#">Services</a>
-                            <a class="pub-link" href="#">About</a>
-                            <a class="pub-link" href="#">Contact</a>
-                        </div>
+                        <div class="pub-links" id="pvLinks"><a class="pub-link" href="#">Home</a><a class="pub-link active" href="#">Announcements</a><a class="pub-link" href="#">Services</a><a class="pub-link" href="#">About</a><a class="pub-link" href="#">Contact</a></div>
                     </div>
-                    <!-- Breadcrumb -->
-                    <div class="pub-breadcrumb" id="pvBreadcrumb">
-                        <a class="pub-bc-link" href="#">Home</a><span class="pub-bc-sep">›</span>
-                        <a class="pub-bc-link" href="#">Announcements</a><span class="pub-bc-sep">›</span>
-                        <span id="pvBcTitle" style="color:var(--txt-3)">Loading…</span>
-                    </div>
-                    <!-- Article -->
+                    <div class="pub-breadcrumb" id="pvBreadcrumb"><a class="pub-bc-link" href="#">Home</a><span class="pub-bc-sep">›</span><a class="pub-bc-link" href="#">Announcements</a><span class="pub-bc-sep">›</span><span id="pvBcTitle" style="color:var(--txt-3)">Loading…</span></div>
                     <div class="pub-article" id="pvArticle">
                         <div class="pub-article-inner" id="pvArticleInner">
                             <span class="pub-cat">Announcement</span>
                             <h1 class="pub-title" id="pvTitle">Announcement Title</h1>
                             <div class="pub-meta">
-                                <div class="pub-meta-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="pub-meta-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="13" height="13">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg><span id="pvAuthor">Editor</span></div>
-                                <div class="pub-meta-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="pub-meta-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="13" height="13">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg><span id="pvDate">March 10, 2026</span></div>
-                                <div class="pub-meta-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                    </svg>PUDHO Laguna</div>
                             </div>
-                            <img id="pvFeatImg" class="pub-feat-img" src="" alt="Featured image">
+                            <img id="pvFeatImg" class="pub-feat-img" src="" alt="Featured image" style="display:none;">
                             <div class="pub-body" id="pvBody">
                                 <p>Your announcement content will appear here.</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Related announcements strip -->
                     <div class="pub-related" id="pvRelated">
                         <div class="pub-related-title">More Announcements</div>
                         <div class="pub-related-cards" id="pvRelatedCards"></div>
                     </div>
-                    <!-- Footer -->
-                    <div class="pub-footer" id="pvFooter">
-                        <span class="pub-footer-text">© 2026 PUDHO Laguna — Province of Laguna Urban Development & Housing Office</span>
-                        <span class="pub-footer-text">All rights reserved.</span>
-                    </div>
+                    <div class="pub-footer" id="pvFooter"><span class="pub-footer-text">© 2026 PUDHO Laguna — Province of Laguna Urban Development & Housing Office</span><span class="pub-footer-text">All rights reserved.</span></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- ═══ DELETE MODAL ═══ -->
+<!-- DELETE MODAL -->
 <div class="modal-backdrop" id="deleteModalBg">
     <div class="modal modal-sm">
         <div class="modal-header">
-            <h3>Delete Announcement</h3><button class="modal-close" onclick="closeDeleteModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3>Delete Announcement</h3><button class="modal-close" onclick="closeDeleteModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg></button>
         </div>
         <div class="modal-body" style="text-align:center;padding:28px 24px;">
-            <div class="delete-modal-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="delete-modal-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="26" height="26">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg></div>
             <div class="delete-modal-title">Are you sure?</div>
             <div class="delete-modal-sub">Permanently delete<br><span class="delete-modal-name" id="deleteTargetName">"Announcement"</span>?<br>This cannot be undone.</div>
         </div>
-        <div class="modal-footer" style="justify-content:center;gap:12px;">
-            <button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button>
-            <button class="btn-primary" onclick="confirmDelete()" style="background:#dc2626;box-shadow:0 2px 10px rgba(220,38,38,.25);">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>Yes, Delete
-            </button>
-        </div>
+        <div class="modal-footer" style="justify-content:center;gap:12px;"><button class="btn-ghost" onclick="closeDeleteModal()">Cancel</button><button class="btn-primary" onclick="confirmDelete()" style="background:#dc2626;">Yes, Delete</button></div>
     </div>
 </div>
 
-
-<!-- ═══ HELP MODAL ═══ -->
+<!-- HELP MODAL -->
 <div class="modal-backdrop" id="helpModalBg">
     <div class="modal modal-md">
         <div class="modal-header">
-            <h3>How to Use Announcements</h3><button class="modal-close" onclick="closeHelpModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3>How to Use Announcements</h3><button class="modal-close" onclick="closeHelpModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg></button>
         </div>
@@ -2295,148 +1996,35 @@
                 <div class="help-step-num">1</div>
                 <div>
                     <div class="help-step-title">Create a New Announcement</div>
-                    <div class="help-step-desc">Click <strong>New Announcement</strong> top-right. Fill in title, content (use toolbar for formatting), optional image, status, and author.</div>
+                    <div class="help-step-desc">Click <strong>New Announcement</strong> top-right. Fill in title, content, optional image, status, and author.</div>
                 </div>
             </div>
             <div class="help-step">
                 <div class="help-step-num">2</div>
                 <div>
                     <div class="help-step-title">Set the Status</div>
-                    <div class="help-step-desc"><strong>Draft</strong> saves privately. <strong>Published</strong> goes live instantly. <strong>Scheduled</strong> lets you set a future publish date and time.</div>
+                    <div class="help-step-desc"><strong>Draft</strong> saves privately. <strong>Published</strong> goes live instantly. <strong>Scheduled</strong> lets you set a future publish date.</div>
                 </div>
             </div>
             <div class="help-step">
                 <div class="help-step-num">3</div>
                 <div>
                     <div class="help-step-title">Full-Screen Preview</div>
-                    <div class="help-step-desc">Click <strong>Preview</strong> to open a full-screen simulation of the public page — exactly as visitors see it, with Desktop, Tablet, and Mobile views. Use <strong>Publish Now</strong> directly from the preview.</div>
+                    <div class="help-step-desc">Click <strong>Preview</strong> to see exactly how it looks on Desktop, Tablet, and Mobile views.</div>
                 </div>
             </div>
-            <div class="help-step">
-                <div class="help-step-num">4</div>
-                <div>
-                    <div class="help-step-title">Hover for Row Actions</div>
-                    <div class="help-step-desc">Hover any table row to reveal <strong>Edit</strong>, <strong>Preview</strong>, <strong>Publish/Unpublish</strong>, and <strong>Delete</strong> buttons beneath the title.</div>
-                </div>
-            </div>
-            <div class="help-step">
-                <div class="help-step-num">5</div>
-                <div>
-                    <div class="help-step-title">Filter by Year &amp; Month</div>
-                    <div class="help-step-desc">Click a <strong>year tab</strong> to show only that year's announcements — month chips appear for finer filtering. Click any <strong>stat card</strong> to filter by status instantly.</div>
-                </div>
-            </div>
-            <div class="help-tip"><strong>Tip:</strong> Always preview on mobile before publishing — images that look great on desktop may need adjusting on smaller screens.</div>
+            <div class="help-tip"><strong>Tip:</strong> Always preview on mobile before publishing.</div>
         </div>
         <div class="modal-footer"><button class="btn-primary" onclick="closeHelpModal()">Got it!</button></div>
     </div>
 </div>
 
-<button id="help-fab" onclick="openHelpModal()">
-    <div class="help-pulse"></div>
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<button id="help-fab" onclick="openHelpModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-</button>
-
+    </svg></button>
 
 <script>
     const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const MONTHS_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-    const allData = [{
-            id: 1,
-            title: 'Office Holiday Schedule Update',
-            desc: 'Important announcement regarding office hours during holidays',
-            dateObj: new Date('2026-03-02'),
-            status: 'published',
-            author: 'John Doe',
-            img: ''
-        },
-        {
-            id: 2,
-            title: 'New Housing Policy Implementation',
-            desc: 'Updates to the housing application process',
-            dateObj: new Date('2026-03-01'),
-            status: 'draft',
-            author: 'Jane Smith',
-            img: ''
-        },
-        {
-            id: 3,
-            title: 'System Maintenance Notice',
-            desc: 'Scheduled maintenance for online services',
-            dateObj: new Date('2026-02-28'),
-            status: 'scheduled',
-            author: 'Mike Johnson',
-            img: ''
-        },
-        {
-            id: 4,
-            title: 'Community Relocation Program Update',
-            desc: 'Phase 2 of the urban resettlement project',
-            dateObj: new Date('2026-02-15'),
-            status: 'published',
-            author: 'Maria Cruz',
-            img: ''
-        },
-        {
-            id: 5,
-            title: 'PUDHO Annual Report 2025 Released',
-            desc: 'Full report now available for download',
-            dateObj: new Date('2025-12-10'),
-            status: 'published',
-            author: 'John Doe',
-            img: ''
-        },
-        {
-            id: 6,
-            title: 'Budget Consultation Meeting Notice',
-            desc: 'Public consultation on housing budget allocation',
-            dateObj: new Date('2025-11-05'),
-            status: 'draft',
-            author: 'Ana Reyes',
-            img: ''
-        },
-        {
-            id: 7,
-            title: 'New District Office Opening – Calamba',
-            desc: 'Opening of the 4th District satellite office',
-            dateObj: new Date('2025-10-20'),
-            status: 'scheduled',
-            author: 'Ben Santos',
-            img: ''
-        },
-        {
-            id: 8,
-            title: 'Emergency Housing Assistance Program',
-            desc: 'Assistance for families affected by Typhoon Rosita',
-            dateObj: new Date('2025-09-08'),
-            status: 'published',
-            author: 'Maria Cruz',
-            img: ''
-        },
-        {
-            id: 9,
-            title: 'Q3 Performance Review Published',
-            desc: 'Third quarter accomplishments and key metrics',
-            dateObj: new Date('2024-09-30'),
-            status: 'published',
-            author: 'John Doe',
-            img: ''
-        },
-        {
-            id: 10,
-            title: 'PUDHO 2024 Work Plan Released',
-            desc: 'Annual work plan and priority projects',
-            dateObj: new Date('2024-01-15'),
-            status: 'published',
-            author: 'Ana Reyes',
-            img: ''
-        },
-    ];
-
-    let filteredData = [...allData];
     let currentPage = 1,
         perPage = 6,
         deleteTarget = null,
@@ -2446,12 +2034,95 @@
         activeMonth = '',
         activeStatus = '',
         uploadedImg = '';
+    let currentFilters = {
+        page: 1,
+        per_page: 6,
+        sort_dir: 'desc',
+        year: '',
+        month: '',
+        status: '',
+        search: ''
+    };
+    let announcements = [],
+        stats = {},
+        years = [],
+        totalItems = 0,
+        lastPage = 1;
+    let editId = null;
 
-    // ── Year tabs ──
+    function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function showToast(type, msg) {
+        const container = document.getElementById('toast-container');
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ';
+        t.innerHTML = `<div class="toast-icon">${icon}</div><span>${msg}</span><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+        container.appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+    }
+
+    function showLoading() {
+        document.getElementById('loadingOverlay').classList.add('show');
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingOverlay').classList.remove('show');
+    }
+
+    function showModal(id) {
+        document.getElementById(id).classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideModal(id) {
+        document.getElementById(id).classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function updateStats() {
+        document.getElementById('svTotal').textContent = stats.total || 0;
+        document.getElementById('svPub').textContent = stats.published || 0;
+        document.getElementById('svDra').textContent = stats.draft || 0;
+        document.getElementById('svSch').textContent = stats.scheduled || 0;
+    }
+
+    function renderPagination() {
+        if (lastPage <= 1) {
+            document.getElementById('paginationBtns').innerHTML = '';
+            return;
+        }
+        let h = `<button class="pag-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+        for (let i = 1; i <= lastPage; i++) {
+            if (lastPage > 7 && i > 2 && i < lastPage - 1 && Math.abs(i - currentPage) > 1) {
+                if (i === 3 || i === lastPage - 2) h += `<button class="pag-btn" disabled>…</button>`;
+                continue;
+            }
+            h += `<button class="pag-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+        }
+        h += `<button class="pag-btn" onclick="goPage(${currentPage+1})" ${currentPage===lastPage?'disabled':''}>›</button>`;
+        document.getElementById('paginationBtns').innerHTML = h;
+        document.getElementById('paginationInfo').innerHTML = `Showing <strong>${(currentPage-1)*perPage+1}</strong>–<strong>${Math.min(currentPage*perPage, totalItems)}</strong> of <strong>${totalItems}</strong>`;
+    }
+
+    function goPage(page) {
+        if (page < 1 || page > lastPage) return;
+        currentFilters.page = page;
+        loadAnnouncements();
+    }
+
     function buildYearTabs() {
-        const years = [...new Set(allData.map(a => a.dateObj.getFullYear()))].sort((a, b) => b - a);
         const bar = document.getElementById('yearTabsBar');
-        bar.querySelectorAll('.year-tab').forEach(e => e.remove());
+        document.querySelectorAll('#yearTabsBar .year-tab').forEach(e => e.remove());
         years.forEach(y => {
             const b = document.createElement('button');
             b.className = 'year-tab';
@@ -2467,6 +2138,7 @@
         activeMonth = '';
         document.querySelectorAll('#yearTabsBar [data-year]').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
+        document.querySelector('[data-year=""]')?.classList.remove('active');
         buildMonthChips(year);
         applyFilters();
     }
@@ -2477,16 +2149,13 @@
             bar.style.display = 'none';
             return;
         }
-        const months = new Set(allData.filter(a => a.dateObj.getFullYear() === Number(year)).map(a => a.dateObj.getMonth()));
         bar.style.display = 'flex';
         bar.innerHTML = `<button class="month-chip active" data-month="" onclick="setMonth('',this)">All Months</button>`;
         MONTHS.forEach((m, i) => {
-            const has = months.has(i);
             const b = document.createElement('button');
-            b.className = 'month-chip' + (has ? ' has-data' : '');
+            b.className = 'month-chip';
             b.dataset.month = i;
-            b.style.opacity = has ? '1' : '.4';
-            b.innerHTML = has ? `${m}<span class="dot-ind"></span>` : m;
+            b.textContent = m;
             b.onclick = () => setMonth(String(i), b);
             bar.appendChild(b);
         });
@@ -2499,7 +2168,6 @@
         applyFilters();
     }
 
-    // ── Stat card filter ──
     function filterByStatus(s) {
         activeStatus = s;
         document.getElementById('filterStatus').value = s;
@@ -2514,7 +2182,6 @@
         applyFilters();
     }
 
-    // ── Filter ──
     let ft;
 
     function debounceFilter() {
@@ -2523,91 +2190,18 @@
     }
 
     function applyFilters() {
-        const search = document.getElementById('filterSearch').value.toLowerCase();
-        const status = document.getElementById('filterStatus').value;
-        activeStatus = status;
-
-        filteredData = allData.filter(a => {
-            if (search && !a.title.toLowerCase().includes(search) && !a.author.toLowerCase().includes(search)) return false;
-            if (status && a.status !== status) return false;
-            if (activeYear && a.dateObj.getFullYear() !== Number(activeYear)) return false;
-            if (activeMonth !== '' && a.dateObj.getMonth() !== Number(activeMonth)) return false;
-            return true;
-        }).sort((a, b) => sortDir === 'desc' ? b.dateObj - a.dateObj : a.dateObj - b.dateObj);
-
-        currentPage = 1;
-        updateStats();
-        renderPills(search, status);
-        updateHeadTitle();
-        renderTable();
+        currentFilters = {
+            page: 1,
+            per_page: perPage,
+            sort_dir: sortDir,
+            year: activeYear,
+            month: activeMonth !== '' ? activeMonth : '',
+            status: activeStatus,
+            search: document.getElementById('filterSearch').value
+        };
+        loadAnnouncements();
     }
 
-    function updateStats() {
-        document.getElementById('svTotal').textContent = allData.length;
-        document.getElementById('svPub').textContent = allData.filter(a => a.status === 'published').length;
-        document.getElementById('svDra').textContent = allData.filter(a => a.status === 'draft').length;
-        document.getElementById('svSch').textContent = allData.filter(a => a.status === 'scheduled').length;
-    }
-
-    function updateHeadTitle() {
-        let t = 'All Announcements';
-        if (activeYear) {
-            t = activeYear;
-            if (activeMonth !== '') t += ` · ${MONTHS[Number(activeMonth)]}`;
-        }
-        if (activeStatus) t += ' — ' + activeStatus.charAt(0).toUpperCase() + activeStatus.slice(1);
-        document.getElementById('tableHeadTitle').textContent = t;
-    }
-
-    function renderPills(search, status) {
-        let h = '';
-        if (activeYear) h += pill(`Year: ${activeYear}`, 'clearYear()');
-        if (activeMonth !== '') h += pill(`Month: ${MONTHS[Number(activeMonth)]}`, 'clearMonth()');
-        if (search) h += pill(`Search: "${search}"`, 'clearSearch()');
-        if (status) h += pill(`Status: ${status}`, 'clearStatus()');
-        document.getElementById('filterPills').innerHTML = h;
-    }
-
-    function pill(label, fn) {
-        return `<span class="filter-pill">${label}<button onclick="${fn}"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button></span>`;
-    }
-
-    function clearYear() {
-        activeYear = '';
-        activeMonth = '';
-        document.querySelector('[data-year=""].year-tab-all').classList.add('active');
-        document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
-        document.getElementById('monthChipsBar').style.display = 'none';
-        applyFilters();
-    }
-
-    function clearMonth() {
-        activeMonth = '';
-        document.querySelector('[data-month=""]').classList.add('active');
-        applyFilters();
-    }
-
-    function clearSearch() {
-        document.getElementById('filterSearch').value = '';
-        applyFilters();
-    }
-
-    function clearStatus() {
-        filterByStatus('');
-    }
-
-    function clearFilters() {
-        document.getElementById('filterSearch').value = '';
-        activeYear = '';
-        activeMonth = '';
-        activeStatus = '';
-        document.querySelector('[data-year=""].year-tab-all').classList.add('active');
-        document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
-        document.getElementById('monthChipsBar').style.display = 'none';
-        filterByStatus('');
-    }
-
-    // ── Sort ──
     function toggleSort() {
         sortDir = sortDir === 'desc' ? 'asc' : 'desc';
         const th = document.getElementById('thDate');
@@ -2615,96 +2209,126 @@
         applyFilters();
     }
 
-    // ── Render table ──
     function renderTable() {
         const tbody = document.getElementById('announcementsBody');
-        const start = (currentPage - 1) * perPage;
-        const page = filteredData.slice(start, start + perPage);
         const empty = document.getElementById('emptyState');
         const tbl = document.getElementById('announcementsTable');
 
-        if (!filteredData.length) {
+        if (!announcements || announcements.length === 0) {
             empty.style.display = 'block';
             tbl.style.display = 'none';
             document.getElementById('paginationWrap').style.display = 'none';
             document.getElementById('resultsCount').textContent = 'No results';
             return;
         }
+
         empty.style.display = 'none';
         tbl.style.display = '';
         document.getElementById('paginationWrap').style.display = '';
-        document.getElementById('resultsCount').innerHTML = `Showing <strong>${start+1}–${Math.min(start+perPage,filteredData.length)}</strong> of <strong>${filteredData.length}</strong>`;
+        const start = (currentPage - 1) * perPage;
+        document.getElementById('resultsCount').innerHTML = `Showing <strong>${start+1}–${Math.min(start+perPage, totalItems)}</strong> of <strong>${totalItems}</strong>`;
 
-        tbody.innerHTML = page.map(a => {
-            const d = a.dateObj;
-            const thumb = a.img || `https://via.placeholder.com/48x48/FFECEE/C0202F?text=${encodeURIComponent(a.title[0])}`;
-            return `
-    <tr>
-      <td class="title-cell">
-        <div class="title-cell-inner">
-          <img class="row-thumb" src="${thumb}" alt="">
-          <div class="row-title-wrap">
-            <div class="row-title">${a.title}</div>
-            <div class="row-desc">${a.desc}</div>
-          </div>
-        </div>
-        <div class="row-actions">
-          <button class="row-action-btn edit" onclick="openEditModal(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17.25V21h3.75l9.06-9.06-3.75-3.75L3 17.25z"/></svg>Edit</button>
-          <div class="action-sep"></div>
-          <button class="row-action-btn preview-btn" onclick="openPreviewFromRow(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Preview</button>
-          <div class="action-sep"></div>
-          ${a.status==='published'
-            ?`<button class="row-action-btn unpublish" onclick="toggleStatus(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>Unpublish</button>`
-            :`<button class="row-action-btn publish" onclick="toggleStatus(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Publish</button>`
-          }
-          <div class="action-sep"></div>
-          <button class="row-action-btn delete" onclick="openDeleteModal(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button>
-        </div>
-      </td>
-      <td class="cell-pad">
-        <div class="date-main">${d.getDate()} ${MONTHS[d.getMonth()]}</div>
-        <div class="date-sub">${d.getFullYear()}</div>
-      </td>
-      <td class="cell-pad"><span class="badge ${a.status}">${a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span></td>
-      <td class="cell-pad">${a.author}</td>
-    </tr>`;
-        }).join('');
-        renderPagination();
-    }
-
-    function renderPagination() {
-        const total = filteredData.length,
-            pages = Math.ceil(total / perPage);
-        const s = (currentPage - 1) * perPage;
-        document.getElementById('paginationInfo').innerHTML = `Showing <strong>${s+1}</strong>–<strong>${Math.min(s+perPage,total)}</strong> of <strong>${total}</strong>`;
-        let h = `<button class="pag-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-        for (let i = 1; i <= pages; i++) {
-            if (pages > 7 && i > 2 && i < pages - 1 && Math.abs(i - currentPage) > 1) {
-                if (i === 3 || i === pages - 2) h += `<button class="pag-btn" disabled>…</button>`;
-                continue;
+        let html = '';
+        for (let a of announcements) {
+            let dateObj = new Date(a.dateObj);
+            if (isNaN(dateObj.getTime())) {
+                dateObj = new Date();
             }
-            h += `<button class="pag-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+            const day = dateObj.getDate();
+            const month = MONTHS[dateObj.getMonth()];
+            const year = dateObj.getFullYear();
+            const thumb = a.img || `https://via.placeholder.com/48x48/FFECEE/C0202F?text=${encodeURIComponent(a.title ? a.title.charAt(0) : '?')}`;
+            let statusClass = a.status;
+            let statusText = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+
+            html += `
+            <tr>
+                <td class="title-cell">
+                    <div class="title-cell-inner">
+                        <img class="row-thumb" src="${thumb}" alt="">
+                        <div class="row-title-wrap">
+                            <div class="row-title">${escapeHtml(a.title)}</div>
+                            <div class="row-desc">${escapeHtml(a.desc)}</div>
+                        </div>
+                    </div>
+                    <div class="row-actions">
+                        <button class="row-action-btn edit" onclick="openEditModal(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17.25V21h3.75l9.06-9.06-3.75-3.75L3 17.25z"/></svg>Edit
+                        </button>
+                        <div class="action-sep"></div>
+                        <button class="row-action-btn preview-btn" onclick="openPreviewFromRow(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Preview
+                        </button>
+                        <div class="action-sep"></div>
+                        ${a.status === 'published' 
+                            ? `<button class="row-action-btn unpublish" onclick="toggleStatus(${a.id})">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>Unpublish
+                            </button>`
+                            : `<button class="row-action-btn publish" onclick="toggleStatus(${a.id})">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Publish
+                            </button>`
+                        }
+                        <div class="action-sep"></div>
+                        <button class="row-action-btn delete" onclick="openDeleteModal(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete
+                        </button>
+                    </div>
+                </td>
+                <td class="cell-pad">
+                    <div class="date-main">${day} ${month}</div>
+                    <div class="date-sub">${year}</div>
+                </td>
+                <td class="cell-pad"><span class="badge ${statusClass}">${statusText}</span></td>
+                <td class="cell-pad">${escapeHtml(a.author)}</td>
+            </tr>`;
         }
-        h += `<button class="pag-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages||!pages?'disabled':''}>›</button>`;
-        document.getElementById('paginationBtns').innerHTML = h;
+        tbody.innerHTML = html;
     }
 
-    function goPage(p) {
-        const pages = Math.ceil(filteredData.length / perPage);
-        if (p < 1 || p > pages) return;
-        currentPage = p;
-        renderTable();
+    async function loadAnnouncements() {
+        showLoading();
+        try {
+            const params = new URLSearchParams(currentFilters);
+            const response = await fetch(`/editor/announcements/data?${params.toString()}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                announcements = result.data;
+                stats = result.stats;
+                years = result.years;
+                currentPage = result.current_page;
+                lastPage = result.last_page;
+                totalItems = result.total;
+
+                updateStats();
+                buildYearTabs();
+                renderTable();
+                renderPagination();
+            } else {
+                showToast('error', 'Failed to load announcements');
+            }
+        } catch (error) {
+            console.error('Error loading announcements:', error);
+            showToast('error', 'Failed to load announcements: ' + error.message);
+        } finally {
+            hideLoading();
+        }
     }
 
-    // ── Create / Edit ──
     function openCreateModal() {
-        editTarget = null;
+        editId = null;
+        uploadedImg = '';
         document.getElementById('createModalTitle').textContent = 'New Announcement';
         document.getElementById('savBtn').innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Save Announcement';
         document.getElementById('fTitle').value = '';
         document.getElementById('fContent').innerHTML = '';
         document.getElementById('fStatus').value = 'draft';
-        document.getElementById('fAuthor').value = 'Editor';
+        document.getElementById('fAuthor').value = '{{ Auth::user()->name ?? "Editor" }}';
         document.getElementById('fSchedule').value = '';
         document.getElementById('titleCount').textContent = '0 / 120';
         document.getElementById('scheduleField').classList.remove('show');
@@ -2712,21 +2336,41 @@
         showModal('createModalBg');
     }
 
-    function openEditModal(id) {
-        const a = allData.find(x => x.id === id);
-        if (!a) return;
-        editTarget = id;
-        document.getElementById('createModalTitle').textContent = 'Edit Announcement';
-        document.getElementById('savBtn').innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Update Announcement';
-        document.getElementById('fTitle').value = a.title;
-        document.getElementById('fContent').innerHTML = a.desc;
-        document.getElementById('fStatus').value = a.status;
-        document.getElementById('fAuthor').value = a.author;
-        document.getElementById('scheduleField').classList.toggle('show', a.status === 'scheduled');
-        uploadedImg = a.img || '';
-        resetImgUpload();
-        updateCharCount(document.getElementById('fTitle'), 'titleCount', 120);
-        showModal('createModalBg');
+    async function openEditModal(id) {
+        try {
+            showLoading();
+            const response = await fetch(`/editor/announcements/${id}`, {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                const a = result.data;
+                editId = id;
+                document.getElementById('createModalTitle').textContent = 'Edit Announcement';
+                document.getElementById('savBtn').innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Update Announcement';
+                document.getElementById('fTitle').value = a.title;
+                document.getElementById('fContent').innerHTML = a.content;
+                document.getElementById('fStatus').value = a.status;
+                document.getElementById('fAuthor').value = a.author;
+                document.getElementById('scheduleField').classList.toggle('show', a.status === 'scheduled');
+                if (a.scheduled_date) document.getElementById('fSchedule').value = a.scheduled_date.slice(0, 16);
+                uploadedImg = a.img || '';
+                resetImgUpload();
+                if (uploadedImg) {
+                    document.getElementById('fImagePreview').src = uploadedImg;
+                    document.getElementById('uploadZone').classList.add('has-image');
+                }
+                updateCharCount(document.getElementById('fTitle'), 'titleCount', 120);
+                showModal('createModalBg');
+            }
+        } catch (error) {
+            console.error(error);
+            showToast('error', 'Failed to load announcement');
+        } finally {
+            hideLoading();
+        }
     }
 
     function closeCreateModal() {
@@ -2737,60 +2381,137 @@
         document.getElementById('scheduleField').classList.toggle('show', document.getElementById('fStatus').value === 'scheduled');
     }
 
-    function saveAnnouncement() {
+    async function saveAnnouncement() {
         const title = document.getElementById('fTitle').value.trim();
-        const content = document.getElementById('fContent').innerText.trim();
-        if (!title) {
-            showToast('error', 'Title is required.');
-            return;
-        }
-        if (!content) {
-            showToast('error', 'Content cannot be empty.');
+        const content = document.getElementById('fContent').innerHTML.trim();
+        if (!title || !content) {
+            showToast('error', 'Title and content are required.');
             return;
         }
         showLoading();
-        setTimeout(() => {
-            hideLoading();
-            const status = document.getElementById('fStatus').value;
-            const author = document.getElementById('fAuthor').value || 'Editor';
-            const htmlContent = document.getElementById('fContent').innerHTML;
-            if (editTarget) {
-                const a = allData.find(x => x.id === editTarget);
-                if (a) {
-                    a.title = title;
-                    a.desc = content.substring(0, 70) + '…';
-                    a.status = status;
-                    a.author = author;
-                    a.img = uploadedImg;
-                    a._html = htmlContent;
-                }
-                showToast('success', 'Announcement updated.');
-            } else {
-                allData.unshift({
-                    id: Date.now(),
-                    title,
-                    desc: content.substring(0, 70) + '…',
-                    dateObj: new Date(),
-                    status,
-                    author,
-                    img: uploadedImg,
-                    _html: htmlContent
-                });
-                showToast('success', 'Announcement created!');
+        try {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('status', document.getElementById('fStatus').value);
+            formData.append('author', document.getElementById('fAuthor').value);
+            if (document.getElementById('fStatus').value === 'scheduled') {
+                formData.append('scheduled_date', document.getElementById('fSchedule').value);
             }
-            buildYearTabs();
-            applyFilters();
-            closeCreateModal();
-        }, 800);
+            const fileInput = document.getElementById('fImage');
+            if (fileInput.files[0]) {
+                formData.append('image', fileInput.files[0]);
+            } else if (uploadedImg && uploadedImg.startsWith('data:')) {
+                formData.append('image_data', uploadedImg);
+            }
+
+            let response;
+            if (editId) {
+                formData.append('_method', 'PUT');
+                response = await fetch(`/editor/announcements/${editId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': getCSRFToken()
+                    },
+                    body: formData
+                });
+            } else {
+                response = await fetch('/editor/announcements', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': getCSRFToken()
+                    },
+                    body: formData
+                });
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                showToast('success', result.message);
+                closeCreateModal();
+                loadAnnouncements();
+            } else {
+                showToast('error', result.message || 'Failed to save');
+            }
+        } catch (error) {
+            console.error(error);
+            showToast('error', 'Failed to save announcement');
+        } finally {
+            hideLoading();
+        }
     }
 
-    // ── Preview ──
+    async function toggleStatus(id) {
+        showLoading();
+        try {
+            const response = await fetch(`/editor/announcements/${id}/toggle-status`, {
+                method: 'PATCH',
+                headers: {
+                    'X-CSRF-TOKEN': getCSRFToken(),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                showToast('success', result.message);
+                loadAnnouncements();
+            } else {
+                showToast('error', 'Failed to toggle status');
+            }
+        } catch (error) {
+            console.error(error);
+            showToast('error', 'Failed to toggle status');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    function openDeleteModal(id) {
+        deleteTarget = id;
+        const a = announcements.find(x => x.id === id);
+        if (a) document.getElementById('deleteTargetName').textContent = `"${a.title}"`;
+        showModal('deleteModalBg');
+    }
+
+    function closeDeleteModal() {
+        hideModal('deleteModalBg');
+        deleteTarget = null;
+    }
+
+    async function confirmDelete() {
+        if (!deleteTarget) return;
+        showLoading();
+        closeDeleteModal();
+        try {
+            const response = await fetch(`/editor/announcements/${deleteTarget}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': getCSRFToken(),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                showToast('success', result.message);
+                loadAnnouncements();
+            } else {
+                showToast('error', 'Failed to delete');
+            }
+        } catch (error) {
+            console.error(error);
+            showToast('error', 'Failed to delete');
+        } finally {
+            hideLoading();
+            deleteTarget = null;
+        }
+    }
+
     function buildPreview(a, isForm) {
         const title = isForm ? document.getElementById('fTitle').value.trim() : a.title;
-        const body = isForm ? document.getElementById('fContent').innerHTML : (a._html || `<p>${a.desc}</p>`);
+        const body = isForm ? document.getElementById('fContent').innerHTML : a.content;
         const author = isForm ? document.getElementById('fAuthor').value.trim() : a.author;
-        const img = isForm ? uploadedImg : (a.img || '');
-        const d = isForm ? new Date() : a.dateObj;
+        const img = isForm ? uploadedImg : a.img;
+        const d = isForm ? new Date() : new Date(a.dateObj);
         const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
         document.getElementById('pvName').textContent = title || 'Untitled';
@@ -2808,33 +2529,37 @@
         const imgEl = document.getElementById('pvFeatImg');
         if (img) {
             imgEl.src = img;
-            imgEl.classList.remove('hidden');
+            imgEl.style.display = 'block';
         } else {
-            imgEl.src = '';
-            imgEl.classList.add('hidden');
+            imgEl.style.display = 'none';
         }
 
-        // Related announcements
-        const related = allData.filter(x => x.id !== (isForm ? -1 : a.id) && x.status === 'published').slice(0, 3);
+        const related = announcements.filter(x => x.id !== (isForm ? -1 : a.id)).slice(0, 3);
         document.getElementById('pvRelatedCards').innerHTML = related.map(r => `
-    <div class="pub-related-card">
-      <div class="pub-related-card-title">${r.title}</div>
-      <div class="pub-related-card-meta">${r.dateObj.getDate()} ${MONTHS[r.dateObj.getMonth()]} ${r.dateObj.getFullYear()}</div>
-    </div>`).join('');
+            <div class="pub-related-card">
+                <div class="pub-related-card-title">${escapeHtml(r.title)}</div>
+                <div class="pub-related-card-meta">${new Date(r.dateObj).getDate()} ${MONTHS[new Date(r.dateObj).getMonth()]} ${new Date(r.dateObj).getFullYear()}</div>
+            </div>
+        `).join('');
     }
 
     function openPreviewFromForm() {
+        if (!document.getElementById('fTitle').value.trim()) {
+            showToast('error', 'Please enter a title first');
+            return;
+        }
         buildPreview(null, true);
         setDevice('desktop');
         showModal('previewModalBg');
     }
 
     function openPreviewFromRow(id) {
-        const a = allData.find(x => x.id === id);
-        if (!a) return;
-        buildPreview(a, false);
-        setDevice('desktop');
-        showModal('previewModalBg');
+        const a = announcements.find(x => x.id === id);
+        if (a) {
+            buildPreview(a, false);
+            setDevice('desktop');
+            showModal('previewModalBg');
+        }
     }
 
     function closePreviewModal() {
@@ -2849,12 +2574,8 @@
     }
 
     function setDevice(d) {
-        ['desktop', 'tablet', 'mobile'].forEach(x => {
-            document.getElementById('dev' + x.charAt(0).toUpperCase() + x.slice(1)).classList.toggle('active', x === d);
-        });
         const shell = document.getElementById('browserShell');
         shell.className = 'browser-shell ' + d;
-
         const isM = d === 'mobile',
             isT = d === 'tablet';
         document.getElementById('pvNav').className = 'pub-nav' + (isM ? ' mobile' : isT ? ' tablet' : '');
@@ -2863,64 +2584,12 @@
         document.getElementById('pvArticle').className = 'pub-article' + (isM ? ' mobile' : isT ? ' tablet' : '');
         document.getElementById('pvArticleInner').className = 'pub-article-inner' + (isT ? ' tablet' : '');
         document.getElementById('pvTitle').className = 'pub-title' + (isM ? ' mobile' : isT ? ' tablet' : '');
-        document.getElementById('pvFeatImg').className = 'pub-feat-img' + (document.getElementById('pvFeatImg').classList.contains('hidden') ? ' hidden' : '') + (isM ? ' mobile' : isT ? ' tablet' : '');
+        const img = document.getElementById('pvFeatImg');
+        if (img) img.className = 'pub-feat-img' + (img.style.display === 'none' ? ' hidden' : '') + (isM ? ' mobile' : isT ? ' tablet' : '');
         document.getElementById('pvBody').className = 'pub-body' + (isM ? ' mobile' : '');
         document.getElementById('pvRelated').className = 'pub-related' + (isM ? ' mobile' : isT ? ' tablet' : '');
         document.getElementById('pvRelatedCards').className = 'pub-related-cards' + (isM ? ' mobile' : '');
         document.getElementById('pvFooter').className = 'pub-footer' + (isM ? ' mobile' : '');
-    }
-
-    // ── Toggle status ──
-    function toggleStatus(id) {
-        const a = allData.find(x => x.id === id);
-        if (!a) return;
-        showLoading();
-        setTimeout(() => {
-            hideLoading();
-            a.status = a.status === 'published' ? 'draft' : 'published';
-            applyFilters();
-            showToast('success', `Announcement ${a.status==='published'?'published':'unpublished'}.`);
-        }, 600);
-    }
-
-    // ── Delete ──
-    function openDeleteModal(id) {
-        deleteTarget = id;
-        const a = allData.find(x => x.id === id);
-        document.getElementById('deleteTargetName').textContent = `"${a?a.title:''}"`;
-        showModal('deleteModalBg');
-    }
-
-    function closeDeleteModal() {
-        hideModal('deleteModalBg');
-        deleteTarget = null;
-    }
-
-    function confirmDelete() {
-        if (!deleteTarget) return;
-        showLoading();
-        closeDeleteModal();
-        setTimeout(() => {
-            hideLoading();
-            const idx = allData.findIndex(x => x.id === deleteTarget);
-            if (idx > -1) allData.splice(idx, 1);
-            deleteTarget = null;
-            buildYearTabs();
-            applyFilters();
-            showToast('success', 'Announcement deleted.');
-        }, 700);
-    }
-
-    function exportData() {
-        showToast('info', 'Export — connect to your Laravel controller endpoint.');
-    }
-
-    function openHelpModal() {
-        showModal('helpModalBg');
-    }
-
-    function closeHelpModal() {
-        hideModal('helpModalBg');
     }
 
     function previewImageUpload(e) {
@@ -2939,6 +2608,7 @@
         document.getElementById('fImage').value = '';
         document.getElementById('fImagePreview').src = '';
         document.getElementById('uploadZone').classList.remove('has-image');
+        uploadedImg = '';
     }
 
     function fmt(cmd) {
@@ -2953,16 +2623,30 @@
         c.className = 'char-counter' + (l >= max ? ' over' : l > max * .85 ? ' warn' : '');
     }
 
-    // ── Modal helpers ──
-    function showModal(id) {
-        document.getElementById(id).classList.add('show');
-        document.body.style.overflow = 'hidden';
+    function clearFilters() {
+        document.getElementById('filterSearch').value = '';
+        activeYear = '';
+        activeMonth = '';
+        activeStatus = '';
+        document.querySelector('[data-year=""]')?.classList.add('active');
+        document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('monthChipsBar').style.display = 'none';
+        filterByStatus('');
     }
 
-    function hideModal(id) {
-        document.getElementById(id).classList.remove('show');
-        document.body.style.overflow = '';
+    function exportData() {
+        showToast('info', 'Export feature coming soon.');
     }
+
+    function openHelpModal() {
+        showModal('helpModalBg');
+    }
+
+    function closeHelpModal() {
+        hideModal('helpModalBg');
+    }
+
+    // Event Listeners
     document.querySelectorAll('.modal-backdrop').forEach(bg => {
         bg.addEventListener('click', e => {
             if (e.target === bg && bg.id !== 'previewModalBg' && bg.id !== 'createModalBg') {
@@ -2972,50 +2656,17 @@
         });
     });
 
-    // Focus fix for contenteditable
-    document.getElementById('fContent').addEventListener('focus', function() {
+    document.getElementById('fContent')?.addEventListener('focus', function() {
         this.style.borderColor = 'var(--red)';
-        this.style.boxShadow = '0 0 0 3px rgba(192,32,47,.08)';
         this.style.background = '#fff';
     });
-    document.getElementById('fContent').addEventListener('blur', function() {
+
+    document.getElementById('fContent')?.addEventListener('blur', function() {
         this.style.borderColor = 'var(--border)';
-        this.style.boxShadow = 'none';
         this.style.background = 'var(--bg)';
     });
 
-    // ── Toast ──
-    const ICONS = {
-        success: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>',
-        error: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>',
-        info: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
-    };
-
-    function showToast(type, msg) {
-        const t = document.createElement('div');
-        t.className = `toast ${type}`;
-        t.innerHTML = `<div class="toast-icon">${ICONS[type]}</div><span>${msg}</span><button class="toast-close" onclick="dismissToast(this.parentElement)"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
-        document.getElementById('toast-container').appendChild(t);
-        setTimeout(() => dismissToast(t), 4000);
-    }
-
-    function dismissToast(t) {
-        if (!t || t.classList.contains('hiding')) return;
-        t.classList.add('hiding');
-        setTimeout(() => t.remove(), 220);
-    }
-
-    function showLoading() {
-        document.getElementById('loadingOverlay').classList.add('show');
-    }
-
-    function hideLoading() {
-        document.getElementById('loadingOverlay').classList.remove('show');
-    }
-
-    // ── Init ──
-    buildYearTabs();
-    updateStats();
-    applyFilters();
+    // Initialize
+    loadAnnouncements();
 </script>
 @endsection

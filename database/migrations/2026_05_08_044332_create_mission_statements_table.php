@@ -7,16 +7,12 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('news_articles', function (Blueprint $table) {
+        Schema::create('mission_statements', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('excerpt');
             $table->longText('content');
-            $table->unsignedBigInteger('author_id'); // Changed from string to foreign key
-            $table->string('category');
-            $table->json('tags')->nullable();
-            $table->string('image')->nullable();
-            $table->date('date');
+            $table->unsignedBigInteger('author_id');
+            $table->timestamp('published_at')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             // Foreign key to users table
@@ -27,13 +23,13 @@ return new class extends Migration {
 
             // Indexes
             $table->index('author_id');
-            $table->index('category');
-            $table->index('date');
+            $table->index('is_active');
+            $table->index('created_at');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('news_articles');
+        Schema::dropIfExists('mission_statements');
     }
 };

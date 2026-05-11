@@ -388,4 +388,9 @@ class User extends Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class, 'author_id', 'user_id');
+    }
 }

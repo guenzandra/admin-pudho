@@ -1,3 +1,4 @@
+<!--database/migrations/2026_05_08_044252_create_announcements_table.php-->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -7,16 +8,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('news_articles', function (Blueprint $table) {
+        Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('excerpt');
             $table->longText('content');
-            $table->unsignedBigInteger('author_id'); // Changed from string to foreign key
-            $table->string('category');
-            $table->json('tags')->nullable();
             $table->string('image')->nullable();
-            $table->date('date');
+            $table->enum('status', ['draft', 'published', 'scheduled'])->default('draft');
+            $table->unsignedBigInteger('author_id');
+            $table->dateTime('scheduled_date')->nullable();
+            $table->dateTime('published_at')->nullable();
             $table->timestamps();
 
             // Foreign key to users table
@@ -25,15 +25,17 @@ return new class extends Migration {
                 ->on('users')
                 ->onDelete('cascade');
 
-            // Indexes
+            // Indexes for better performance
+            $table->index('status');
             $table->index('author_id');
-            $table->index('category');
-            $table->index('date');
+            $table->index('scheduled_date');
+            $table->index('published_at');
+            $table->index(['status', 'published_at']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('news_articles');
+        Schema::dropIfExists('announcements');
     }
 };

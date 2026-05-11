@@ -11,6 +11,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Editor\EditorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\Editor\AnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -305,6 +306,17 @@ Route::prefix('editor')->name('editor.')->middleware(['auth'])->group(function (
     Route::get('/settings/general-settings', function () {
         return view('editor.settings.general-settings');
     })->name('settings.general-settings');
+});
+
+// Editor Announcement Routes
+Route::middleware(['auth'])->prefix('editor')->group(function () {
+    Route::get('/announcements', [AnnouncementController::class, 'index'])->name('editor.announcements');
+    Route::get('/announcements/data', [AnnouncementController::class, 'getData'])->name('editor.announcements.data');
+    Route::get('/announcements/{id}', [AnnouncementController::class, 'show'])->name('editor.announcements.show');
+    Route::post('/announcements', [AnnouncementController::class, 'store'])->name('editor.announcements.store');
+    Route::put('/announcements/{id}', [AnnouncementController::class, 'update'])->name('editor.announcements.update');
+    Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy'])->name('editor.announcements.destroy');
+    Route::patch('/announcements/{id}/toggle-status', [AnnouncementController::class, 'toggleStatus'])->name('editor.announcements.toggle-status');
 });
 
 /*
