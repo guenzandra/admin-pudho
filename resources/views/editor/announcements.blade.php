@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
+    /* Your existing CSS remains the same */
     :root {
         --red: #C0202F;
         --red-dark: #8C111E;
@@ -39,6 +40,7 @@
         font-family: 'Sora', sans-serif;
     }
 
+    /* Keep all your existing styles here */
     .page-header {
         display: flex;
         align-items: flex-start;
@@ -1714,18 +1716,20 @@
         <button class="btn-ghost" onclick="exportData()">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>Export
+            </svg>
+            Export
         </button>
         <button class="btn-primary" onclick="openCreateModal()">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-            </svg>New Announcement
+            </svg>
+            New Announcement
         </button>
     </div>
 </div>
 
 <div class="stats-row">
-    <div class="stat-card active-stat" id="statAll" onclick="filterByStatus('')">
+    <div class="stat-card" id="statAll" onclick="filterByStatus('')">
         <div class="stat-icon" style="background:#FFF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
             </svg></div>
@@ -1765,15 +1769,15 @@
 
 <div class="time-filter-wrap">
     <div class="year-tabs-bar" id="yearTabsBar">
-        <button class="year-tab-all active" data-year="" onclick="setYear('',this)">All Years</button>
+        <button class="year-tab-all active" data-year="" onclick="setYearFilter('')">All Years</button>
     </div>
-    <div class="month-chips-bar" id="monthChipsBar" style="display:none;"></div>
+    <div class="month-chips-bar" id="monthChipsBar"></div>
     <div class="filter-row">
         <div class="search-wrap">
             <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input type="text" id="filterSearch" class="filter-input" placeholder="Search by title or author…" oninput="debounceFilter()">
+            <input type="text" id="filterSearch" class="filter-input" placeholder="Search by title or author…" onkeyup="debounceFilter()">
         </div>
         <div style="min-width:150px;">
             <select id="filterStatus" class="filter-select" onchange="applyFilters()">
@@ -1783,10 +1787,11 @@
                 <option value="scheduled">Scheduled</option>
             </select>
         </div>
-        <button class="btn-ghost" onclick="clearFilters()" style="flex-shrink:0;">
+        <button class="btn-ghost" onclick="clearAllFilters()" style="flex-shrink:0;">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>Clear
+            </svg>
+            Clear
         </button>
     </div>
     <div class="filter-pills" id="filterPills"></div>
@@ -1802,7 +1807,7 @@
             <thead>
                 <tr>
                     <th style="width:44%">Title</th>
-                    <th class="sortable sort-desc" id="thDate" onclick="toggleSort()">Date Posted<span class="sort-icon"></span></th>
+                    <th class="sortable" id="thDate" onclick="toggleSort()">Date Posted<span class="sort-icon"></span></th>
                     <th>Status</th>
                     <th>Author</th>
                 </tr>
@@ -1841,14 +1846,14 @@
             <div class="form-group">
                 <label class="form-label">Content <span class="req">*</span></label>
                 <div class="rich-toolbar">
-                    <button class="tb-btn" type="button" onclick="fmt('bold')"><b>B</b></button>
-                    <button class="tb-btn" type="button" onclick="fmt('italic')"><i>I</i></button>
-                    <button class="tb-btn" type="button" onclick="fmt('underline')"><u>U</u></button>
+                    <button class="tb-btn" type="button" onclick="formatText('bold')"><b>B</b></button>
+                    <button class="tb-btn" type="button" onclick="formatText('italic')"><i>I</i></button>
+                    <button class="tb-btn" type="button" onclick="formatText('underline')"><u>U</u></button>
                     <div class="tb-sep"></div>
-                    <button class="tb-btn" type="button" onclick="fmt('insertUnorderedList')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
+                    <button class="tb-btn" type="button" onclick="formatText('insertUnorderedList')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg></button>
-                    <button class="tb-btn" type="button" onclick="fmt('removeFormat')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
+                    <button class="tb-btn" type="button" onclick="formatText('removeFormat')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg></button>
                 </div>
@@ -1886,7 +1891,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom:0">
                         <label class="form-label">Author</label>
-                        <input type="text" id="fAuthor" class="form-input" value="{{ Auth::user()->name ?? 'Editor' }}" placeholder="Author name">
+                        <input type="text" id="fAuthor" class="form-input" value="{{ Auth::user()->first_name ?? 'Editor' }}" placeholder="Author name">
                     </div>
                 </div>
             </div>
@@ -2024,36 +2029,21 @@
     </svg></button>
 
 <script>
-    const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    let currentPage = 1,
-        perPage = 6,
-        deleteTarget = null,
-        editTarget = null;
-    let sortDir = 'desc',
-        activeYear = '',
-        activeMonth = '',
-        activeStatus = '',
-        uploadedImg = '';
+    // Global variables
+    let currentPage = 1;
+    let currentSort = 'desc';
     let currentFilters = {
-        page: 1,
-        per_page: 6,
-        sort_dir: 'desc',
+        status: '',
         year: '',
         month: '',
-        status: '',
         search: ''
     };
-    let announcements = [],
-        stats = {},
-        years = [],
-        totalItems = 0,
-        lastPage = 1;
+    let allAnnouncements = [];
+    let deleteId = null;
     let editId = null;
+    let debounceTimer;
 
-    function getCSRFToken() {
-        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    }
-
+    // Helper functions
     function escapeHtml(text) {
         if (!text) return '';
         const div = document.createElement('div');
@@ -2065,10 +2055,12 @@
         const container = document.getElementById('toast-container');
         const t = document.createElement('div');
         t.className = `toast ${type}`;
-        const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ';
-        t.innerHTML = `<div class="toast-icon">${icon}</div><span>${msg}</span><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+        t.innerHTML = `<div class="toast-icon">${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}</div><span>${msg}</span><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
         container.appendChild(t);
-        setTimeout(() => t.remove(), 4000);
+        setTimeout(() => {
+            t.classList.add('hiding');
+            setTimeout(() => t.remove(), 300);
+        }, 4000);
     }
 
     function showLoading() {
@@ -2089,160 +2081,247 @@
         document.body.style.overflow = '';
     }
 
-    function updateStats() {
-        document.getElementById('svTotal').textContent = stats.total || 0;
-        document.getElementById('svPub').textContent = stats.published || 0;
-        document.getElementById('svDra').textContent = stats.draft || 0;
-        document.getElementById('svSch').textContent = stats.scheduled || 0;
+    function getCSRFToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     }
 
-    function renderPagination() {
-        if (lastPage <= 1) {
-            document.getElementById('paginationBtns').innerHTML = '';
-            return;
-        }
-        let h = `<button class="pag-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-        for (let i = 1; i <= lastPage; i++) {
-            if (lastPage > 7 && i > 2 && i < lastPage - 1 && Math.abs(i - currentPage) > 1) {
-                if (i === 3 || i === lastPage - 2) h += `<button class="pag-btn" disabled>…</button>`;
-                continue;
+    // Load announcements from API
+    async function loadAnnouncements() {
+        showLoading();
+        try {
+            const response = await fetch('/editor/announcements/data', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                allAnnouncements = result.data;
+
+                // Update stats
+                document.getElementById('svTotal').textContent = result.stats.total;
+                document.getElementById('svPub').textContent = result.stats.published;
+                document.getElementById('svDra').textContent = result.stats.draft;
+                document.getElementById('svSch').textContent = result.stats.scheduled;
+
+                // Build year filter
+                buildYearFilter();
+
+                // Apply current filters
+                applyFilters();
+            } else {
+                showToast('error', 'Failed to load announcements');
             }
-            h += `<button class="pag-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('error', 'Failed to load announcements');
+        } finally {
+            hideLoading();
         }
-        h += `<button class="pag-btn" onclick="goPage(${currentPage+1})" ${currentPage===lastPage?'disabled':''}>›</button>`;
-        document.getElementById('paginationBtns').innerHTML = h;
-        document.getElementById('paginationInfo').innerHTML = `Showing <strong>${(currentPage-1)*perPage+1}</strong>–<strong>${Math.min(currentPage*perPage, totalItems)}</strong> of <strong>${totalItems}</strong>`;
     }
 
-    function goPage(page) {
-        if (page < 1 || page > lastPage) return;
-        currentFilters.page = page;
-        loadAnnouncements();
-    }
+    // Build year filter from data
+    function buildYearFilter() {
+        const years = [...new Set(allAnnouncements.map(a => new Date(a.dateObj).getFullYear()))].sort((a, b) => b - a);
+        const yearBar = document.getElementById('yearTabsBar');
+        const allBtn = yearBar.querySelector('.year-tab-all');
 
-    function buildYearTabs() {
-        const bar = document.getElementById('yearTabsBar');
-        document.querySelectorAll('#yearTabsBar .year-tab').forEach(e => e.remove());
-        years.forEach(y => {
-            const b = document.createElement('button');
-            b.className = 'year-tab';
-            b.dataset.year = y;
-            b.textContent = y;
-            b.onclick = () => setYear(String(y), b);
-            bar.appendChild(b);
+        // Clear existing years
+        const existingYears = yearBar.querySelectorAll('.year-tab:not(.year-tab-all)');
+        existingYears.forEach(btn => btn.remove());
+
+        // Add year buttons
+        years.forEach(year => {
+            const btn = document.createElement('button');
+            btn.className = 'year-tab';
+            if (currentFilters.year == year) btn.classList.add('active');
+            btn.textContent = year;
+            btn.onclick = () => setYearFilter(year);
+            yearBar.appendChild(btn);
         });
+
+        // Update All Years button active state
+        if (!currentFilters.year) {
+            allBtn.classList.add('active');
+        } else {
+            allBtn.classList.remove('active');
+        }
     }
 
-    function setYear(year, el) {
-        activeYear = year;
-        activeMonth = '';
-        document.querySelectorAll('#yearTabsBar [data-year]').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        document.querySelector('[data-year=""]')?.classList.remove('active');
-        buildMonthChips(year);
-        applyFilters();
-    }
-
-    function buildMonthChips(year) {
-        const bar = document.getElementById('monthChipsBar');
-        if (!year) {
-            bar.style.display = 'none';
+    // Build month filter
+    function buildMonthFilter() {
+        if (!currentFilters.year) {
+            document.getElementById('monthChipsBar').style.display = 'none';
             return;
         }
-        bar.style.display = 'flex';
-        bar.innerHTML = `<button class="month-chip active" data-month="" onclick="setMonth('',this)">All Months</button>`;
-        MONTHS.forEach((m, i) => {
-            const b = document.createElement('button');
-            b.className = 'month-chip';
-            b.dataset.month = i;
-            b.textContent = m;
-            b.onclick = () => setMonth(String(i), b);
-            bar.appendChild(b);
+
+        document.getElementById('monthChipsBar').style.display = 'flex';
+        const monthBar = document.getElementById('monthChipsBar');
+        monthBar.innerHTML = '';
+
+        const months = allAnnouncements
+            .filter(a => new Date(a.dateObj).getFullYear() == currentFilters.year)
+            .map(a => new Date(a.dateObj).getMonth())
+            .filter((v, i, a) => a.indexOf(v) === i)
+            .sort((a, b) => a - b);
+
+        months.forEach(month => {
+            const chip = document.createElement('button');
+            chip.className = 'month-chip';
+            if (currentFilters.month == month) chip.classList.add('active');
+            chip.innerHTML = `<span class="dot-ind"></span>${getMonthName(month)}`;
+            chip.onclick = () => setMonthFilter(month);
+            monthBar.appendChild(chip);
         });
+
+        if (months.length === 0) {
+            const noneMsg = document.createElement('div');
+            noneMsg.textContent = 'No announcements for this year';
+            noneMsg.style.padding = '5px 14px';
+            noneMsg.style.color = 'var(--txt-3)';
+            monthBar.appendChild(noneMsg);
+        }
     }
 
-    function setMonth(month, el) {
-        activeMonth = month;
-        document.querySelectorAll('#monthChipsBar .month-chip').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
+    function getMonthName(month) {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return months[month];
+    }
+
+    // Filter functions
+    function filterByStatus(status) {
+        currentFilters.status = status;
+        document.getElementById('filterStatus').value = status;
+        currentPage = 1;
+        applyFilters();
+        updateActiveStatCard(status);
+    }
+
+    function updateActiveStatCard(status) {
+        const cards = ['statAll', 'statPub', 'statDra', 'statSch'];
+        cards.forEach(card => {
+            document.getElementById(card).classList.remove('active-stat');
+        });
+
+        if (!status) {
+            document.getElementById('statAll').classList.add('active-stat');
+        } else if (status === 'published') {
+            document.getElementById('statPub').classList.add('active-stat');
+        } else if (status === 'draft') {
+            document.getElementById('statDra').classList.add('active-stat');
+        } else if (status === 'scheduled') {
+            document.getElementById('statSch').classList.add('active-stat');
+        }
+    }
+
+    function setYearFilter(year) {
+        currentFilters.year = year;
+        currentFilters.month = '';
+        currentPage = 1;
+        buildYearFilter();
+        buildMonthFilter();
         applyFilters();
     }
 
-    function filterByStatus(s) {
-        activeStatus = s;
-        document.getElementById('filterStatus').value = s;
-        ['statAll', 'statPub', 'statDra', 'statSch'].forEach(id => document.getElementById(id).classList.remove('active-stat'));
-        const m = {
-            '': 'statAll',
-            'published': 'statPub',
-            'draft': 'statDra',
-            'scheduled': 'statSch'
-        };
-        document.getElementById(m[s]).classList.add('active-stat');
+    function setMonthFilter(month) {
+        currentFilters.month = month;
+        currentPage = 1;
+        buildMonthFilter();
         applyFilters();
-    }
-
-    let ft;
-
-    function debounceFilter() {
-        clearTimeout(ft);
-        ft = setTimeout(applyFilters, 300);
-    }
-
-    function applyFilters() {
-        currentFilters = {
-            page: 1,
-            per_page: perPage,
-            sort_dir: sortDir,
-            year: activeYear,
-            month: activeMonth !== '' ? activeMonth : '',
-            status: activeStatus,
-            search: document.getElementById('filterSearch').value
-        };
-        loadAnnouncements();
     }
 
     function toggleSort() {
-        sortDir = sortDir === 'desc' ? 'asc' : 'desc';
+        currentSort = currentSort === 'desc' ? 'asc' : 'desc';
         const th = document.getElementById('thDate');
-        th.className = 'sortable ' + (sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+        th.classList.remove('sort-asc', 'sort-desc');
+        th.classList.add(currentSort === 'desc' ? 'sort-desc' : 'sort-asc');
         applyFilters();
     }
 
-    function renderTable() {
-        const tbody = document.getElementById('announcementsBody');
-        const empty = document.getElementById('emptyState');
-        const tbl = document.getElementById('announcementsTable');
+    function applyFilters() {
+        // Get filter values
+        currentFilters.status = document.getElementById('filterStatus').value;
+        currentFilters.search = document.getElementById('filterSearch').value;
 
-        if (!announcements || announcements.length === 0) {
-            empty.style.display = 'block';
-            tbl.style.display = 'none';
-            document.getElementById('paginationWrap').style.display = 'none';
-            document.getElementById('resultsCount').textContent = 'No results';
+        // Apply filters to data
+        let filtered = [...allAnnouncements];
+
+        // Status filter
+        if (currentFilters.status) {
+            filtered = filtered.filter(a => a.status === currentFilters.status);
+        }
+
+        // Year filter
+        if (currentFilters.year) {
+            filtered = filtered.filter(a => new Date(a.dateObj).getFullYear() == currentFilters.year);
+        }
+
+        // Month filter
+        if (currentFilters.month !== '') {
+            filtered = filtered.filter(a => new Date(a.dateObj).getMonth() == currentFilters.month);
+        }
+
+        // Search filter
+        if (currentFilters.search) {
+            const searchLower = currentFilters.search.toLowerCase();
+            filtered = filtered.filter(a =>
+                a.title.toLowerCase().includes(searchLower) ||
+                a.author.toLowerCase().includes(searchLower)
+            );
+        }
+
+        // Sort
+        filtered.sort((a, b) => {
+            const dateA = new Date(a.dateObj);
+            const dateB = new Date(b.dateObj);
+            return currentSort === 'desc' ? dateB - dateA : dateA - dateB;
+        });
+
+        // Render table
+        renderTable(filtered);
+        updateFilterPills();
+    }
+
+    function renderTable(announcements) {
+        const tbody = document.getElementById('announcementsBody');
+        const emptyState = document.getElementById('emptyState');
+        const table = document.getElementById('announcementsTable');
+        const pagination = document.getElementById('paginationWrap');
+
+        if (announcements.length === 0) {
+            emptyState.style.display = 'block';
+            table.style.display = 'none';
+            pagination.style.display = 'none';
+            document.getElementById('resultsCount').innerHTML = 'Showing <strong>0</strong> of <strong>0</strong>';
             return;
         }
 
-        empty.style.display = 'none';
-        tbl.style.display = '';
-        document.getElementById('paginationWrap').style.display = '';
-        const start = (currentPage - 1) * perPage;
-        document.getElementById('resultsCount').innerHTML = `Showing <strong>${start+1}–${Math.min(start+perPage, totalItems)}</strong> of <strong>${totalItems}</strong>`;
+        emptyState.style.display = 'none';
+        table.style.display = '';
+        pagination.style.display = '';
 
-        let html = '';
-        for (let a of announcements) {
-            let dateObj = new Date(a.dateObj);
-            if (isNaN(dateObj.getTime())) {
-                dateObj = new Date();
-            }
-            const day = dateObj.getDate();
-            const month = MONTHS[dateObj.getMonth()];
-            const year = dateObj.getFullYear();
-            const thumb = a.img || `https://via.placeholder.com/48x48/FFECEE/C0202F?text=${encodeURIComponent(a.title ? a.title.charAt(0) : '?')}`;
-            let statusClass = a.status;
-            let statusText = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+        // Pagination
+        const itemsPerPage = 10;
+        const totalPages = Math.ceil(announcements.length / itemsPerPage);
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = announcements.slice(start, end);
 
-            html += `
-            <tr>
+        // Update results count
+        document.getElementById('resultsCount').innerHTML = `Showing <strong>${start + 1}–${Math.min(end, announcements.length)}</strong> of <strong>${announcements.length}</strong>`;
+
+        // Render rows
+        tbody.innerHTML = '';
+        pageItems.forEach(a => {
+            const row = tbody.insertRow();
+            const dateObj = new Date(a.dateObj);
+            const statusClass = a.status;
+            const statusText = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+            const thumb = a.img || `https://via.placeholder.com/48x48/FFECEE/C0202F?text=${a.title.charAt(0)}`;
+
+            row.innerHTML = `
                 <td class="title-cell">
                     <div class="title-cell-inner">
                         <img class="row-thumb" src="${thumb}" alt="">
@@ -2252,190 +2331,372 @@
                         </div>
                     </div>
                     <div class="row-actions">
-                        <button class="row-action-btn edit" onclick="openEditModal(${a.id})">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17.25V21h3.75l9.06-9.06-3.75-3.75L3 17.25z"/></svg>Edit
-                        </button>
-                        <div class="action-sep"></div>
-                        <button class="row-action-btn preview-btn" onclick="openPreviewFromRow(${a.id})">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Preview
-                        </button>
-                        <div class="action-sep"></div>
-                        ${a.status === 'published' 
-                            ? `<button class="row-action-btn unpublish" onclick="toggleStatus(${a.id})">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>Unpublish
-                            </button>`
-                            : `<button class="row-action-btn publish" onclick="toggleStatus(${a.id})">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Publish
-                            </button>`
-                        }
-                        <div class="action-sep"></div>
-                        <button class="row-action-btn delete" onclick="openDeleteModal(${a.id})">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete
-                        </button>
+                        <button class="row-action-btn edit" onclick="openEditModal(${a.id})">✏️ Edit</button>
+                        <button class="row-action-btn preview-btn" onclick="openPreviewModal(${a.id})">👁️ Preview</button>
+                        ${a.status === 'published' ? '<button class="row-action-btn unpublish" onclick="toggleStatus(' + a.id + ')">📄 Unpublish</button>' : '<button class="row-action-btn publish" onclick="toggleStatus(' + a.id + ')">✅ Publish</button>'}
+                        <button class="row-action-btn delete" onclick="openDeleteModal(${a.id}, \'${escapeHtml(a.title)}\')">🗑️ Delete</button>
                     </div>
                 </td>
                 <td class="cell-pad">
-                    <div class="date-main">${day} ${month}</div>
-                    <div class="date-sub">${year}</div>
+                    <div class="date-main">${dateObj.getDate()} ${getMonthName(dateObj.getMonth())}</div>
+                    <div class="date-sub">${dateObj.getFullYear()}</div>
                 </td>
                 <td class="cell-pad"><span class="badge ${statusClass}">${statusText}</span></td>
                 <td class="cell-pad">${escapeHtml(a.author)}</td>
-            </tr>`;
-        }
-        tbody.innerHTML = html;
+            `;
+        });
+
+        // Render pagination
+        renderPagination(currentPage, totalPages);
     }
 
-    async function loadAnnouncements() {
+    function renderPagination(current, total) {
+        const container = document.getElementById('paginationBtns');
+        container.innerHTML = '';
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pag-btn';
+        prevBtn.textContent = '←';
+        prevBtn.disabled = current === 1;
+        prevBtn.onclick = () => {
+            if (current > 1) {
+                currentPage--;
+                applyFilters();
+            }
+        };
+        container.appendChild(prevBtn);
+
+        // Page numbers
+        const startPage = Math.max(1, current - 2);
+        const endPage = Math.min(total, current + 2);
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = 'pag-btn';
+            if (i === current) pageBtn.classList.add('active');
+            pageBtn.textContent = i;
+            pageBtn.onclick = () => {
+                currentPage = i;
+                applyFilters();
+            };
+            container.appendChild(pageBtn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pag-btn';
+        nextBtn.textContent = '→';
+        nextBtn.disabled = current === total;
+        nextBtn.onclick = () => {
+            if (current < total) {
+                currentPage++;
+                applyFilters();
+            }
+        };
+        container.appendChild(nextBtn);
+
+        // Update pagination info
+        document.getElementById('paginationInfo').innerHTML = `Page ${current} of ${total}`;
+    }
+
+    function updateFilterPills() {
+        const pillsContainer = document.getElementById('filterPills');
+        pillsContainer.innerHTML = '';
+
+        const activeFilters = [];
+
+        if (currentFilters.status) {
+            activeFilters.push({
+                label: `Status: ${currentFilters.status}`,
+                type: 'status'
+            });
+        }
+        if (currentFilters.year) {
+            activeFilters.push({
+                label: `Year: ${currentFilters.year}`,
+                type: 'year'
+            });
+        }
+        if (currentFilters.month !== '') {
+            activeFilters.push({
+                label: `Month: ${getMonthName(currentFilters.month)}`,
+                type: 'month'
+            });
+        }
+        if (currentFilters.search) {
+            activeFilters.push({
+                label: `Search: ${currentFilters.search}`,
+                type: 'search'
+            });
+        }
+
+        if (activeFilters.length === 0) {
+            pillsContainer.style.display = 'none';
+            return;
+        }
+
+        pillsContainer.style.display = 'flex';
+        activeFilters.forEach(filter => {
+            const pill = document.createElement('div');
+            pill.className = 'filter-pill';
+            pill.innerHTML = `
+                ${filter.label}
+                <button onclick="removeFilter('${filter.type}')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            pillsContainer.appendChild(pill);
+        });
+    }
+
+    function removeFilter(type) {
+        switch (type) {
+            case 'status':
+                currentFilters.status = '';
+                document.getElementById('filterStatus').value = '';
+                updateActiveStatCard('');
+                break;
+            case 'year':
+                currentFilters.year = '';
+                buildYearFilter();
+                buildMonthFilter();
+                break;
+            case 'month':
+                currentFilters.month = '';
+                buildMonthFilter();
+                break;
+            case 'search':
+                currentFilters.search = '';
+                document.getElementById('filterSearch').value = '';
+                break;
+        }
+        currentPage = 1;
+        applyFilters();
+    }
+
+    function clearAllFilters() {
+        currentFilters = {
+            status: '',
+            year: '',
+            month: '',
+            search: ''
+        };
+        document.getElementById('filterStatus').value = '';
+        document.getElementById('filterSearch').value = '';
+        currentPage = 1;
+        updateActiveStatCard('');
+        buildYearFilter();
+        buildMonthFilter();
+        applyFilters();
+    }
+
+    function debounceFilter() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            currentPage = 1;
+            applyFilters();
+        }, 500);
+    }
+
+    // Modal functions
+    function openCreateModal() {
+        editId = null;
+        document.getElementById('createModalTitle').textContent = 'New Announcement';
+        document.getElementById('fTitle').value = '';
+        document.getElementById('fContent').innerHTML = '';
+        document.getElementById('fAuthor').value = '{{ Auth::user()->first_name ?? '
+        Editor ' }}';
+        document.getElementById('fStatus').value = 'draft';
+        document.getElementById('fSchedule').value = '';
+        document.getElementById('scheduleField').classList.remove('show');
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.classList.remove('has-image');
+        document.getElementById('fImagePreview').src = '';
+        document.getElementById('fImage').value = '';
+        updateCharCount(document.getElementById('fTitle'), 'titleCount', 120);
+        showModal('createModalBg');
+    }
+
+    function closeCreateModal() {
+        hideModal('createModalBg');
+        editId = null;
+    }
+
+    async function openEditModal(id) {
         showLoading();
         try {
-            const params = new URLSearchParams(currentFilters);
-            const response = await fetch(`/editor/announcements/data?${params.toString()}`, {
+            const response = await fetch(`/editor/announcements/${id}`, {
                 headers: {
                     'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             });
             const result = await response.json();
-
             if (result.success) {
-                announcements = result.data;
-                stats = result.stats;
-                years = result.years;
-                currentPage = result.current_page;
-                lastPage = result.last_page;
-                totalItems = result.total;
-
-                updateStats();
-                buildYearTabs();
-                renderTable();
-                renderPagination();
-            } else {
-                showToast('error', 'Failed to load announcements');
-            }
-        } catch (error) {
-            console.error('Error loading announcements:', error);
-            showToast('error', 'Failed to load announcements: ' + error.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
-    function openCreateModal() {
-        editId = null;
-        uploadedImg = '';
-        document.getElementById('createModalTitle').textContent = 'New Announcement';
-        document.getElementById('savBtn').innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Save Announcement';
-        document.getElementById('fTitle').value = '';
-        document.getElementById('fContent').innerHTML = '';
-        document.getElementById('fStatus').value = 'draft';
-        document.getElementById('fAuthor').value = '{{ Auth::user()->name ?? "Editor" }}';
-        document.getElementById('fSchedule').value = '';
-        document.getElementById('titleCount').textContent = '0 / 120';
-        document.getElementById('scheduleField').classList.remove('show');
-        resetImgUpload();
-        showModal('createModalBg');
-    }
-
-    async function openEditModal(id) {
-        try {
-            showLoading();
-            const response = await fetch(`/editor/announcements/${id}`, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            const result = await response.json();
-            if (result.success) {
-                const a = result.data;
                 editId = id;
                 document.getElementById('createModalTitle').textContent = 'Edit Announcement';
-                document.getElementById('savBtn').innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Update Announcement';
-                document.getElementById('fTitle').value = a.title;
-                document.getElementById('fContent').innerHTML = a.content;
-                document.getElementById('fStatus').value = a.status;
-                document.getElementById('fAuthor').value = a.author;
-                document.getElementById('scheduleField').classList.toggle('show', a.status === 'scheduled');
-                if (a.scheduled_date) document.getElementById('fSchedule').value = a.scheduled_date.slice(0, 16);
-                uploadedImg = a.img || '';
-                resetImgUpload();
-                if (uploadedImg) {
-                    document.getElementById('fImagePreview').src = uploadedImg;
-                    document.getElementById('uploadZone').classList.add('has-image');
+                document.getElementById('fTitle').value = result.data.title;
+                document.getElementById('fContent').innerHTML = result.data.content;
+                document.getElementById('fAuthor').value = result.data.author;
+                document.getElementById('fStatus').value = result.data.status;
+
+                // Handle schedule date - check multiple possible field names
+                let scheduleDate = result.data.scheduled_at || result.data.scheduled_date || result.data.publish_date;
+                if (scheduleDate) {
+                    const date = new Date(scheduleDate);
+                    if (!isNaN(date.getTime())) {
+                        // Format as YYYY-MM-DDThh:mm for datetime-local input
+                        const formattedDate = date.toISOString().slice(0, 16);
+                        document.getElementById('fSchedule').value = formattedDate;
+                    }
                 }
+
+                // Show/hide schedule field based on status
+                if (result.data.status === 'scheduled') {
+                    const scheduleField = document.getElementById('scheduleField');
+                    scheduleField.classList.add('show');
+
+                    // Set min date to tomorrow for editing
+                    const tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    tomorrow.setMinutes(0);
+                    document.getElementById('fSchedule').min = tomorrow.toISOString().slice(0, 16);
+                } else {
+                    document.getElementById('scheduleField').classList.remove('show');
+                }
+
+                // Handle image
+                const imagePath = result.data.image_path || result.data.img;
+                if (imagePath) {
+                    const uploadZone = document.getElementById('uploadZone');
+                    uploadZone.classList.add('has-image');
+                    document.getElementById('fImagePreview').src = imagePath;
+                }
+
                 updateCharCount(document.getElementById('fTitle'), 'titleCount', 120);
                 showModal('createModalBg');
+            } else {
+                showToast('error', 'Failed to load announcement');
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error loading announcement:', error);
             showToast('error', 'Failed to load announcement');
         } finally {
             hideLoading();
         }
     }
 
-    function closeCreateModal() {
-        hideModal('createModalBg');
-    }
-
-    function onStatusChange() {
-        document.getElementById('scheduleField').classList.toggle('show', document.getElementById('fStatus').value === 'scheduled');
-    }
-
     async function saveAnnouncement() {
         const title = document.getElementById('fTitle').value.trim();
-        const content = document.getElementById('fContent').innerHTML.trim();
+        const content = document.getElementById('fContent').innerHTML;
+        const author = document.getElementById('fAuthor').value.trim();
+        const status = document.getElementById('fStatus').value;
+        const schedule = document.getElementById('fSchedule').value;
+
+        // Validation
         if (!title || !content) {
-            showToast('error', 'Title and content are required.');
+            showToast('error', 'Please fill in title and content');
             return;
         }
-        showLoading();
-        try {
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('content', content);
-            formData.append('status', document.getElementById('fStatus').value);
-            formData.append('author', document.getElementById('fAuthor').value);
-            if (document.getElementById('fStatus').value === 'scheduled') {
-                formData.append('scheduled_date', document.getElementById('fSchedule').value);
-            }
-            const fileInput = document.getElementById('fImage');
-            if (fileInput.files[0]) {
-                formData.append('image', fileInput.files[0]);
-            } else if (uploadedImg && uploadedImg.startsWith('data:')) {
-                formData.append('image_data', uploadedImg);
+
+        // Validate schedule date for scheduled status
+        if (status === 'scheduled') {
+            if (!schedule) {
+                showToast('error', 'Please set a publish date and time for scheduled announcements');
+                return;
             }
 
-            let response;
-            if (editId) {
-                formData.append('_method', 'PUT');
-                response = await fetch(`/editor/announcements/${editId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': getCSRFToken()
-                    },
-                    body: formData
-                });
-            } else {
-                response = await fetch('/editor/announcements', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': getCSRFToken()
-                    },
-                    body: formData
-                });
+            // Validate schedule date is in the future
+            const scheduleDate = new Date(schedule);
+            const now = new Date();
+            if (scheduleDate <= now) {
+                showToast('error', 'Schedule date must be in the future');
+                return;
             }
+        }
+
+        showLoading();
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('author', author);
+        formData.append('status', status);
+
+        // IMPORTANT: Add the scheduled date with the correct field name
+        // Try both possible field names that your backend might expect
+        if (status === 'scheduled' && schedule) {
+            formData.append('scheduled_date', schedule); // Try this first
+            formData.append('scheduled_at', schedule); // Also send as backup
+            formData.append('publish_date', schedule); // Another common name
+        }
+
+        // Handle image upload
+        const imageFile = document.getElementById('fImage').files[0];
+        if (imageFile) {
+            // Validate image size (5MB max)
+            if (imageFile.size > 5 * 1024 * 1024) {
+                showToast('error', 'Image size must be less than 5MB');
+                hideLoading();
+                return;
+            }
+
+            // Validate image type
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+            if (!validTypes.includes(imageFile.type)) {
+                showToast('error', 'Please upload JPEG, PNG, or WEBP images only');
+                hideLoading();
+                return;
+            }
+
+            formData.append('image', imageFile);
+        }
+
+        // Add method spoofing for PUT request when editing
+        if (editId) {
+            formData.append('_method', 'PUT');
+        }
+
+        const url = editId ? `/editor/announcements/${editId}` : '/editor/announcements';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST', // Always use POST, with _method for PUT
+                headers: {
+                    'X-CSRF-TOKEN': getCSRFToken(),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
 
             const result = await response.json();
-            if (result.success) {
-                showToast('success', result.message);
+
+            if (response.ok && result.success) {
+                showToast('success', result.message || 'Announcement saved successfully');
                 closeCreateModal();
-                loadAnnouncements();
+                await loadAnnouncements();
             } else {
-                showToast('error', result.message || 'Failed to save');
+                // Handle validation errors
+                if (result.errors) {
+                    const errorMessages = Object.values(result.errors).flat();
+                    showToast('error', errorMessages[0] || 'Failed to save announcement');
+                } else if (result.message) {
+                    showToast('error', result.message);
+                } else {
+                    showToast('error', 'Failed to save announcement');
+                }
+
+                // Log the full response for debugging
+                console.error('Save error response:', result);
             }
         } catch (error) {
-            console.error(error);
-            showToast('error', 'Failed to save announcement');
+            console.error('Save error:', error);
+            showToast('error', 'Network error. Please try again.');
         } finally {
             hideLoading();
         }
@@ -2448,116 +2709,87 @@
                 method: 'PATCH',
                 headers: {
                     'X-CSRF-TOKEN': getCSRFToken(),
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             });
             const result = await response.json();
             if (result.success) {
                 showToast('success', result.message);
-                loadAnnouncements();
+                await loadAnnouncements();
             } else {
-                showToast('error', 'Failed to toggle status');
+                showToast('error', result.message || 'Failed to toggle status');
             }
         } catch (error) {
-            console.error(error);
             showToast('error', 'Failed to toggle status');
         } finally {
             hideLoading();
         }
     }
 
-    function openDeleteModal(id) {
-        deleteTarget = id;
-        const a = announcements.find(x => x.id === id);
-        if (a) document.getElementById('deleteTargetName').textContent = `"${a.title}"`;
+    function openDeleteModal(id, title) {
+        deleteId = id;
+        document.getElementById('deleteTargetName').textContent = `"${title}"`;
         showModal('deleteModalBg');
     }
 
     function closeDeleteModal() {
         hideModal('deleteModalBg');
-        deleteTarget = null;
+        deleteId = null;
     }
 
     async function confirmDelete() {
-        if (!deleteTarget) return;
+        if (!deleteId) return;
         showLoading();
-        closeDeleteModal();
         try {
-            const response = await fetch(`/editor/announcements/${deleteTarget}`, {
+            const response = await fetch(`/editor/announcements/${deleteId}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': getCSRFToken(),
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             });
             const result = await response.json();
             if (result.success) {
                 showToast('success', result.message);
-                loadAnnouncements();
+                closeDeleteModal();
+                await loadAnnouncements();
             } else {
-                showToast('error', 'Failed to delete');
+                showToast('error', result.message || 'Failed to delete');
             }
         } catch (error) {
-            console.error(error);
             showToast('error', 'Failed to delete');
         } finally {
             hideLoading();
-            deleteTarget = null;
+            deleteId = null;
         }
     }
 
-    function buildPreview(a, isForm) {
-        const title = isForm ? document.getElementById('fTitle').value.trim() : a.title;
-        const body = isForm ? document.getElementById('fContent').innerHTML : a.content;
-        const author = isForm ? document.getElementById('fAuthor').value.trim() : a.author;
-        const img = isForm ? uploadedImg : a.img;
-        const d = isForm ? new Date() : new Date(a.dateObj);
-        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    function openPreviewModal(id) {
+        const announcement = allAnnouncements.find(a => a.id === id);
+        if (announcement) {
+            document.getElementById('pvName').textContent = announcement.title;
+            document.getElementById('pvTitle').textContent = announcement.title;
+            document.getElementById('pvBody').innerHTML = announcement.content;
+            document.getElementById('pvAuthor').textContent = announcement.author;
+            document.getElementById('pvBcTitle').textContent = announcement.title;
 
-        document.getElementById('pvName').textContent = title || 'Untitled';
-        document.getElementById('pvBcTitle').textContent = title || 'Untitled';
-        document.getElementById('pvTitle').textContent = title || 'Announcement Title';
-        document.getElementById('pvAuthor').textContent = author || 'Editor';
-        document.getElementById('pvDate').textContent = d.toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
-        });
-        document.getElementById('pvUrl').textContent = `pudho-laguna.gov.ph/announcements/${slug}`;
-        document.getElementById('pvBody').innerHTML = body || '<p>No content provided.</p>';
+            const dateObj = new Date(announcement.dateObj);
+            document.getElementById('pvDate').textContent = dateObj.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
 
-        const imgEl = document.getElementById('pvFeatImg');
-        if (img) {
-            imgEl.src = img;
-            imgEl.style.display = 'block';
-        } else {
-            imgEl.style.display = 'none';
-        }
+            if (announcement.img) {
+                const img = document.getElementById('pvFeatImg');
+                img.src = announcement.img;
+                img.style.display = 'block';
+            } else {
+                document.getElementById('pvFeatImg').style.display = 'none';
+            }
 
-        const related = announcements.filter(x => x.id !== (isForm ? -1 : a.id)).slice(0, 3);
-        document.getElementById('pvRelatedCards').innerHTML = related.map(r => `
-            <div class="pub-related-card">
-                <div class="pub-related-card-title">${escapeHtml(r.title)}</div>
-                <div class="pub-related-card-meta">${new Date(r.dateObj).getDate()} ${MONTHS[new Date(r.dateObj).getMonth()]} ${new Date(r.dateObj).getFullYear()}</div>
-            </div>
-        `).join('');
-    }
-
-    function openPreviewFromForm() {
-        if (!document.getElementById('fTitle').value.trim()) {
-            showToast('error', 'Please enter a title first');
-            return;
-        }
-        buildPreview(null, true);
-        setDevice('desktop');
-        showModal('previewModalBg');
-    }
-
-    function openPreviewFromRow(id) {
-        const a = announcements.find(x => x.id === id);
-        if (a) {
-            buildPreview(a, false);
-            setDevice('desktop');
             showModal('previewModalBg');
         }
     }
@@ -2566,76 +2798,121 @@
         hideModal('previewModalBg');
     }
 
+    function setDevice(device) {
+        const shell = document.getElementById('browserShell');
+        shell.className = `browser-shell ${device}`;
+
+        // Update active state
+        document.querySelectorAll('.device-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent.toLowerCase().includes(device)) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    function openPreviewFromForm() {
+        const title = document.getElementById('fTitle').value;
+        const content = document.getElementById('fContent').innerHTML;
+        const author = document.getElementById('fAuthor').value;
+
+        if (!title || !content) {
+            showToast('error', 'Please fill in title and content first');
+            return;
+        }
+
+        document.getElementById('pvName').textContent = title;
+        document.getElementById('pvTitle').textContent = title;
+        document.getElementById('pvBody').innerHTML = content;
+        document.getElementById('pvAuthor').textContent = author;
+        document.getElementById('pvBcTitle').textContent = title;
+        document.getElementById('pvDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const imagePreview = document.getElementById('fImagePreview');
+        if (imagePreview.src) {
+            document.getElementById('pvFeatImg').src = imagePreview.src;
+            document.getElementById('pvFeatImg').style.display = 'block';
+        } else {
+            document.getElementById('pvFeatImg').style.display = 'none';
+        }
+
+        showModal('previewModalBg');
+    }
+
     function closePreviewAndPublish() {
         closePreviewModal();
-        document.getElementById('fStatus').value = 'published';
-        document.getElementById('scheduleField').classList.remove('show');
-        showToast('info', 'Status set to Published. Click Save when ready.');
+        if (editId) {
+            document.getElementById('fStatus').value = 'published';
+            saveAnnouncement();
+        } else {
+            document.getElementById('fStatus').value = 'published';
+            saveAnnouncement();
+        }
     }
 
-    function setDevice(d) {
-        const shell = document.getElementById('browserShell');
-        shell.className = 'browser-shell ' + d;
-        const isM = d === 'mobile',
-            isT = d === 'tablet';
-        document.getElementById('pvNav').className = 'pub-nav' + (isM ? ' mobile' : isT ? ' tablet' : '');
-        document.getElementById('pvLinks').className = 'pub-links' + (isM ? ' hidden' : '');
-        document.getElementById('pvBreadcrumb').className = 'pub-breadcrumb' + (isM ? ' mobile' : isT ? ' tablet' : '');
-        document.getElementById('pvArticle').className = 'pub-article' + (isM ? ' mobile' : isT ? ' tablet' : '');
-        document.getElementById('pvArticleInner').className = 'pub-article-inner' + (isT ? ' tablet' : '');
-        document.getElementById('pvTitle').className = 'pub-title' + (isM ? ' mobile' : isT ? ' tablet' : '');
-        const img = document.getElementById('pvFeatImg');
-        if (img) img.className = 'pub-feat-img' + (img.style.display === 'none' ? ' hidden' : '') + (isM ? ' mobile' : isT ? ' tablet' : '');
-        document.getElementById('pvBody').className = 'pub-body' + (isM ? ' mobile' : '');
-        document.getElementById('pvRelated').className = 'pub-related' + (isM ? ' mobile' : isT ? ' tablet' : '');
-        document.getElementById('pvRelatedCards').className = 'pub-related-cards' + (isM ? ' mobile' : '');
-        document.getElementById('pvFooter').className = 'pub-footer' + (isM ? ' mobile' : '');
+    function onStatusChange() {
+        const status = document.getElementById('fStatus').value;
+        const scheduleField = document.getElementById('scheduleField');
+        const scheduleInput = document.getElementById('fSchedule');
+
+        if (status === 'scheduled') {
+            scheduleField.classList.add('show');
+
+            // Set minimum date to tomorrow at current hour
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setMinutes(0);
+            const minDateTime = tomorrow.toISOString().slice(0, 16);
+            scheduleInput.min = minDateTime;
+
+            // If no value set, suggest tomorrow at 9 AM
+            if (!scheduleInput.value) {
+                tomorrow.setHours(9, 0, 0);
+                scheduleInput.value = tomorrow.toISOString().slice(0, 16);
+            }
+        } else {
+            scheduleField.classList.remove('show');
+            // Don't clear the value, just hide it - preserve in case they switch back
+        }
     }
 
-    function previewImageUpload(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const r = new FileReader();
-        r.onload = ev => {
-            uploadedImg = ev.target.result;
-            document.getElementById('fImagePreview').src = ev.target.result;
-            document.getElementById('uploadZone').classList.add('has-image');
-        };
-        r.readAsDataURL(file);
-    }
-
-    function resetImgUpload() {
-        document.getElementById('fImage').value = '';
-        document.getElementById('fImagePreview').src = '';
-        document.getElementById('uploadZone').classList.remove('has-image');
-        uploadedImg = '';
-    }
-
-    function fmt(cmd) {
+    function formatText(command) {
+        document.execCommand(command, false, null);
         document.getElementById('fContent').focus();
-        document.execCommand(cmd, false, null);
     }
 
-    function updateCharCount(el, id, max) {
-        const l = el.value.length;
-        const c = document.getElementById(id);
-        c.textContent = `${l} / ${max}`;
-        c.className = 'char-counter' + (l >= max ? ' over' : l > max * .85 ? ' warn' : '');
+    function updateCharCount(input, counterId, max) {
+        const count = input.value.length;
+        const counter = document.getElementById(counterId);
+        counter.textContent = `${count} / ${max}`;
+        if (count > max) {
+            counter.classList.add('over');
+        } else if (count > max * 0.9) {
+            counter.classList.add('warn');
+        } else {
+            counter.classList.remove('warn', 'over');
+        }
     }
 
-    function clearFilters() {
-        document.getElementById('filterSearch').value = '';
-        activeYear = '';
-        activeMonth = '';
-        activeStatus = '';
-        document.querySelector('[data-year=""]')?.classList.add('active');
-        document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
-        document.getElementById('monthChipsBar').style.display = 'none';
-        filterByStatus('');
+    function previewImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadZone = document.getElementById('uploadZone');
+                uploadZone.classList.add('has-image');
+                document.getElementById('fImagePreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     function exportData() {
-        showToast('info', 'Export feature coming soon.');
+        showToast('info', 'Export feature will be available soon');
     }
 
     function openHelpModal() {
@@ -2646,27 +2923,13 @@
         hideModal('helpModalBg');
     }
 
-    // Event Listeners
-    document.querySelectorAll('.modal-backdrop').forEach(bg => {
-        bg.addEventListener('click', e => {
-            if (e.target === bg && bg.id !== 'previewModalBg' && bg.id !== 'createModalBg') {
-                bg.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        });
-    });
-
-    document.getElementById('fContent')?.addEventListener('focus', function() {
-        this.style.borderColor = 'var(--red)';
-        this.style.background = '#fff';
-    });
-
-    document.getElementById('fContent')?.addEventListener('blur', function() {
-        this.style.borderColor = 'var(--border)';
-        this.style.background = 'var(--bg)';
-    });
-
     // Initialize
-    loadAnnouncements();
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAnnouncements();
+
+        // Initialize sort icon
+        const th = document.getElementById('thDate');
+        th.classList.add('sort-desc');
+    });
 </script>
 @endsection

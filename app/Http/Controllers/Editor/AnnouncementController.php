@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Editor;
 use App\Models\User;
 use App\Http\Controllers\Controller;
@@ -50,10 +49,9 @@ class AnnouncementController extends Controller
 
     // Transform data for frontend
     $announcementsData = $announcements->map(function ($item) {
-      // Manually get author name
       $authorName = 'Unknown';
       if ($item->author_id) {
-        $author = User::find($item->author_id);
+        $author = \App\Models\User::find($item->author_id);
         if ($author) {
           $authorName = $author->first_name . ' ' . $author->last_name;
         }

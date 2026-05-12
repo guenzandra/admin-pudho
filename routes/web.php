@@ -234,9 +234,9 @@ Route::prefix('editor')->name('editor.')->middleware(['auth'])->group(function (
     })->name('editorDashboard');
     Route::get('/editor_dashboard', [EditorController::class, 'dashboard'])->name('editor_dashboard.direct');
 
-    Route::get('/announcements', function () {
-        return view('editor.announcements');
-    })->name('announcements');
+    // Route::get('/announcements', function () {
+    //     return view('editor.announcements');
+    // })->name('announcements');
 
     Route::get('/news', function () {
         return view('editor.news');
