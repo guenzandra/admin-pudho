@@ -6,71 +6,236 @@
 <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12">
     
     <!-- Hero Banner -->
-    <section class="relative bg-gray-200 rounded-2xl overflow-hidden aspect-[21/7] group">
-        <div class="absolute inset-0 flex items-center justify-center bg-gray-300">
-            <div class="text-center text-gray-500">
-                <i class="fa-solid fa-image text-5xl mb-3 opacity-30"></i>
-                <p class="text-sm font-bold uppercase tracking-widest">PUDHO Photo Banner</p>
+    @php
+        $heroSlides = collect($heroSlides ?? [
+            [
+                'eyebrow' => 'Welcome to Laguna PUDHO',
+                'headline' => 'Building sustainable urban communities for better living',
+                'description' => 'Transforming provincial urban development through inclusive planning, housing support, and community-centered services.',
+                'button_text' => 'Learn More',
+                'button_url' => route('iabout'),
+                'bg_class' => 'bg-[radial-gradient(circle_at_center,_rgba(248,113,113,0.6),_rgba(153,27,27,0.9))]',
+                'eyebrow_class' => 'text-red-200',
+                'image' => 'resources/slide1.jpg',
+            ],
+            [
+                'eyebrow' => 'Service Excellence',
+                'headline' => 'Committed to efficient and responsive public service',
+                'description' => 'Providing clear guidance, timely assistance, and meaningful urban development initiatives for local communities.',
+                'button_text' => 'Learn More',
+                'button_url' => route('iabout'),
+                'bg_class' => 'bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.6),_rgba(30,58,138,0.9))]',
+                'eyebrow_class' => 'text-sky-200',
+                'image' => 'resources/slide2.jpg',
+            ],
+            [
+                'eyebrow' => 'Community Driven',
+                'headline' => 'Supporting inclusive growth and stronger neighborhoods',
+                'description' => 'Driving local progress with sustainable housing, urban design, and neighborhood revitalization.',
+                'button_text' => 'Learn More',
+                'button_url' => route('iabout'),
+                'bg_class' => 'bg-[radial-gradient(circle_at_center,_rgba(34,197,94,0.6),_rgba(4,120,87,0.9))]',
+                'eyebrow_class' => 'text-emerald-200',
+                'image' => 'resources/slide3.jpg',
+            ],
+        ])->map(function ($slide) {
+            return [
+                'eyebrow' => data_get($slide, 'eyebrow', data_get($slide, 'title', '')),
+                'headline' => data_get($slide, 'headline', ''),
+                'description' => data_get($slide, 'description', ''),
+                'button_text' => data_get($slide, 'button_text', data_get($slide, 'button_label', 'Learn More')),
+                'button_url' => data_get($slide, 'button_url', data_get($slide, 'button_link', route('iabout'))),
+                'bg_class' => data_get($slide, 'bg_class', 'bg-[radial-gradient(circle_at_center,_rgba(248,113,113,0.6),_rgba(153,27,27,0.9))]'),
+                'eyebrow_class' => data_get($slide, 'eyebrow_class', 'text-red-200'),
+                'image' => data_get($slide, 'image', 'resources/slide1.jpg'),
+            ];
+        })->all();
+    @endphp
+
+    <section class="relative bg-gray-900 rounded-2xl overflow-hidden aspect-[21/7]">
+        <div class="absolute inset-0 bg-black/40"></div>
+
+        <div class="relative h-full overflow-hidden">
+            <div id="heroSlider" class="flex h-full transition-transform duration-700" style="transform: translateX(0%);">
+                @foreach($heroSlides as $slide)
+                <div class="min-w-full h-full">
+                    <img src="{{ asset($slide['image']) }}" class="w-full h-full object-cover" alt="{{ $slide['headline'] }}">
+                </div>
+                @endforeach
             </div>
         </div>
-        
-        <!-- Slider Controls -->
-        <button class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 p-2 rounded-full text-white transition-all opacity-0 group-hover:opacity-100">
+
+        <button id="heroPrev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 p-2 rounded-full text-white transition-all shadow-lg shadow-black/20">
             <i class="fa-solid fa-chevron-left"></i>
         </button>
-        <button class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 p-2 rounded-full text-white transition-all opacity-0 group-hover:opacity-100">
+        <button id="heroNext" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 p-2 rounded-full text-white transition-all shadow-lg shadow-black/20">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
-        
-        <!-- Dots -->
+
         <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            <div class="h-2 w-2 rounded-full bg-red-500"></div>
-            <div class="h-2 w-2 rounded-full bg-gray-400"></div>
-            <div class="h-2 w-2 rounded-full bg-gray-400"></div>
+            @foreach($heroSlides as $index => $slide)
+            <button data-index="{{ $index }}" class="hero-dot h-3 w-3 rounded-full {{ $index === 0 ? 'bg-white/90' : 'bg-white/40' }} ring-white hover:bg-white/80"></button>
+            @endforeach
         </div>
     </section>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slider = document.getElementById('heroSlider');
+            const dots = Array.from(document.querySelectorAll('.hero-dot'));
+            const prevBtn = document.getElementById('heroPrev');
+            const nextBtn = document.getElementById('heroNext');
+            if (!slider || dots.length === 0 || !prevBtn || !nextBtn) {
+                return;
+            }
+
+            let currentIndex = 0;
+            const slideCount = dots.length;
+
+            function updateSlider(index) {
+                currentIndex = (index + slideCount) % slideCount;
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('bg-white/90', idx === currentIndex);
+                    dot.classList.toggle('bg-white/40', idx !== currentIndex);
+                });
+            }
+
+            prevBtn.addEventListener('click', () => updateSlider(currentIndex - 1));
+            nextBtn.addEventListener('click', () => updateSlider(currentIndex + 1));
+            dots.forEach(dot => dot.addEventListener('click', () => updateSlider(parseInt(dot.dataset.index, 10))));
+
+            updateSlider(0);
+            let autoSlide = setInterval(() => updateSlider(currentIndex + 1), 6000);
+            [prevBtn, nextBtn, ...dots].forEach(item => item.addEventListener('click', () => {
+                clearInterval(autoSlide);
+                autoSlide = setInterval(() => updateSlider(currentIndex + 1), 6000);
+            }));
+        });
+    </script>
+
     <!-- Announcement & Latest News -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         <!-- Announcement -->
-        <div class="lg:col-span-2 space-y-4">
+        <div class="lg:col-span-2 space-y-4 h-full">
             <div class="flex items-center gap-4">
                 <h2 class="text-xs font-bold text-gray-900 uppercase tracking-widest bg-gray-200 px-3 py-1 rounded">Announcement</h2>
                 <div class="h-px bg-red-200 flex-grow"></div>
             </div>
-            <div class="bg-gray-100 rounded-xl aspect-video flex items-center justify-center border border-gray-200">
-                <i class="fa-solid fa-image text-6xl text-gray-300"></i>
+            <div class="bg-gray-100 rounded-xl overflow-hidden border border-gray-200 h-full">
+                <img src="{{ Vite::asset('resources/images/announcement-1.png') }}" alt="Announcement" class="w-full h-full object-cover">
             </div>
         </div>
 
         <!-- Latest News -->
-        <div class="space-y-4">
+        <div class="space-y-4 h-full">
             <div class="flex items-center gap-4">
                 <h2 class="text-xs font-bold text-gray-900 uppercase tracking-widest bg-gray-200 px-3 py-1 rounded">Latest News</h2>
                 <div class="h-px bg-red-200 flex-grow"></div>
             </div>
-            <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-4 h-full flex flex-col">
                 <div class="flex justify-end">
                     <button class="text-[10px] font-bold text-gray-600 uppercase tracking-widest border border-gray-300 px-4 py-1.5 rounded-full hover:bg-gray-50 transition-colors">View all</button>
                 </div>
                 
                 <!-- News Items -->
-                @foreach(range(1, 4) as $i)
-                <div class="flex gap-4 group cursor-pointer">
-                    <div class="h-20 w-20 bg-gray-100 rounded-lg shrink-0 flex items-center justify-center border border-gray-200 group-hover:border-red-200 transition-colors">
-                        <i class="fa-solid fa-image text-xl text-gray-300"></i>
+                @php
+                    $articles = [
+                        [
+                            'id' => 1,
+                            'title' => 'Likhang Sining: Simbolo ng Pag-ibig at Dakilang Layunin',
+                            'description' => 'Ano nga ba para sa inyo ang kahulugan ng tunay na pag-ibig? Marahil ang pag-ibig sa kapwa ay siyang pinakadakilang...',
+                            'excerpt' => 'Ano nga ba para sa inyo ang kahulugan ng tunay na pag-ibig? Marahil ang pag-ibig sa kapwa ay siyang pinakadakilang...',
+                            'date' => 'February 14, 2026',
+                            'author' => 'PUDHO Staff',
+                            'category' => 'Community',
+                            'tags' => ['#AkayniGobActionCenter', '#GobyernongMaySolusyon', '#GobSolAragones', '#SOLidLaguna', '#pudholaguna'],
+                            'content' => 'Ano nga ba para sa inyo ang kahulugan ng tunay na pag-ibig? Marahil ang pag-ibig sa kapwa ay siyang pinakadakilang demonstrasyon ng pagmamahal, hindi nasusukat kusa mo itong maipapahiwatig at mararamdaman.
+
+Sa obra maestra na ipinagkaloob ni Architect Al Casabuena sa ating Provincial Urban Development and Housing Action Officer Mamerto A. Punio ay dama ang dakilang layunin ng pag-ibig sa kapwa na maisakatuparan ang dalawang program proposals sa ilalim ng Gobyernong May Solusyon, ang Ten-Year Sustainable Resettlement Program for Informal Settlers Families (ISF\'s) at Akay Pabahay na inklusibo ang 24 na munisipalidad at 6 na siyudad sa ating mahal na lalawigan.
+
+Sa ganitong pagkilala, tunay po na patuloy itong tatanawin at magiging inspirasyon upang maabot ang mga minimithing abot kayang pabahay para sa mga Lagunenses.
+
+"𝓜𝓪𝔂 𝓜𝓪𝓵𝓪𝓼𝓪𝓴𝓲𝓽, 𝓐𝓴𝓼𝔂𝓸𝓷 𝓪𝓽 𝓟𝓪𝓷𝓲𝓷𝓲𝓷𝓭𝓲𝓰𝓪𝓷: 𝓣𝓪𝓽𝓪𝓴 𝓷𝓰 𝓲𝓼𝓪𝓷𝓰 𝓖𝓸𝓫𝔂𝓮𝓻𝓷𝓸𝓷𝓰 𝓶𝓪𝔂 𝓢𝓸𝓵𝓾𝓼𝔂𝓸𝓷!"',
+                            'url' => '#',
+                            'image' => '/news/article-1.jpg',
+                        ],
+                        [
+                            'id' => 2,
+                            'title' => 'Serbisyong May Malasakit: Programang Pabahay para sa mga ISF ng Bayan ng Pangil',
+                            'description' => 'Isinagawa nitong Pebrero 11, 2026, sa opisina ng Punong Bayan ng Pangil ang courtesy visit sa pangunguna ni G. Mamerto A. Punio, Action Officer for Urban Development and Housing...',
+                            'excerpt' => 'Isinagawa nitong Pebrero 11, 2026, sa opisina ng Punong Bayan ng Pangil ang courtesy visit sa pangunguna ni G. Mamerto A. Punio, Action Officer for Urban Development and Housing...',
+                            'date' => 'February 11, 2026',
+                            'author' => 'PUDHO Staff',
+                            'category' => 'Housing',
+                            'tags' => ['#AkayniGobActionCenter', '#GobyernongMaySolusyon', '#GobSolAragones', '#SOLidLaguna', '#pudholaguna'],
+                            'content' => 'Isinagawa nitong Pebrero 11, 2026, sa opisina ng Punong Bayan ng Pangil ang courtesy visit sa pangunguna ni G. Mamerto A. Punio, Action Officer for Urban Development and Housing, kasama sina G. Zolan T. Bernardino, District IV-B Housing Coordinator, at Bb. Maria Susan M. Pascual, District IV-B Technical. Malugod ang naging pagtanggap ng mga opisyal ng Pamahalaang Bayan ng Pangil sa pangunguna ni Kgg. Gerald A. Aritao, Punong Bayan, kasama sina G. Eugene Reniva, Municipal Administrator, Engr. Vinzon David Valois, Bb. Judelie Dalit, at Bb. May Cosico.
+
+Sa isinagawang talakayan, inilahad ang mga pangunahing programa ng Gobyernong May Solusyon, kabilang ang Akay Pabahay Program at ang 10-Year Sustainable Resettlement Program for Informal Settler Families (ISF). Layunin ng mga programang ito na magbigay ng agarang tulong sa pabahay at pangmatagalang solusyon sa paninirahan ng mga informal settlers sa pamamagitan ng maayos at planadong resettlement. Natalakay din ang pagsasagawa ng pagpupulong ng Local Housing Board na ang layunin ay upang mapalakas ang suporta at koordinasyon sa implementasyon ng mga programang pabahay sa lokal na antas.
+
+"𝓜𝓪𝓵𝓪𝓼𝓪𝓴𝓲𝓽, 𝓐𝓴𝓼𝔂𝓸𝓷 𝓪𝓽 𝓟𝓪𝓷𝓲𝓷𝓲𝓷𝓭𝓲𝓰𝓪𝓷: 𝓣𝓪𝓽𝓪𝓴 𝓷𝓰 𝓲𝓼𝓪𝓷𝓰 𝓖𝓸𝓫𝔂𝓮𝓻𝓷𝓸𝓷𝓰 𝓶𝓪𝔂 𝓢𝓸𝓵𝓾𝓼𝔂𝓸𝓷!"',
+                            'url' => '#',
+                            'image' => '/news/article-2.jpg',
+                        ],
+                        [
+                            'id' => 3,
+                            'title' => 'Tuluy-Tuloy na Ugnayan, Tiyak na Pabahay!',
+                            'description' => 'Ang palagiang koordinasyon at malinaw na komunikasyon sa pagitan ng mga ahensya sa pabahay, tulad ng National Housing Authority (NHA) Region IV-A – Laguna District Office at ng...',
+                            'excerpt' => 'Ang palagiang koordinasyon at malinaw na komunikasyon sa pagitan ng mga ahensya sa pabahay, tulad ng National Housing Authority (NHA) Region IV-A – Laguna District Office at ng...',
+                            'date' => 'February 5, 2026',
+                            'author' => 'PUDHO Staff',
+                            'category' => 'Housing',
+                            'tags' => ['#AkayniGobActionCenter', '#GobyernongMaySolusyon', '#GobSolAragones', '#SOLidLaguna'],
+                            'content' => 'Ang palagiang koordinasyon at malinaw na komunikasyon sa pagitan ng mga ahensya sa pabahay, tulad ng National Housing Authority (NHA) Region IV-A – Laguna District Office at ng City Urban Development and Housing Affairs Office (CUDHAO), siyudad ng Cabuyao ay mahalagang pundasyon sa matagumpay na pagpapatupad ng dalawang pangunahing programa ng Gobyernong May Solusyon sa Lalawigan ng Laguna: ang Akay Pabahay at ang Ten-Year Sustainable Resettlement Program for Informal Settlers.
+
+Sa tulong ng Housing Coordinators na sina Floi Daniel C. Barrientos, miyembro ng Technical and Special Project Unit at Crispina L. Manrique, Presidente ng HOA Federation sa Cabuyao, pinangunahan ni Action Officer Mamerto A. Punio, nitong Pebrero 3, 2026 ay mas malinaw at organisadong naiparating ang mahahalagang program proposals para sa pabahay ng ating mga kababayan.
+
+Lubos ang aming pasasalamat sa patuloy at bukas na suporta ng NHA Region IV-A at ng City Urban Development and Housing Affairs Office, sa pamumuno ni Engr. Nathaniel F. Dela, RMEE, OIC CUDHAO, kasama si Senior Administrative Assistant II, HOA Focal Person Rhea A. Jastillana, sa kanilang walang sawang pakikiisa para sa iisang layunin— matiyak ang ligtas, maayos, at pangmatagalang pabahay para sa bawat pamilyang Lagunense. Sa sama-samang pagkilos, ang pabahay ay hindi na pangarap—kundi isang realidad.
+
+"𝓜𝓪𝓵𝓪𝓼𝓪𝓴𝓲𝓽, 𝓐𝓴𝓼𝔂𝓸𝓷 𝓪𝓽 𝓟𝓪𝓷𝓲𝓷𝓲𝓷𝓭𝓲𝓰𝓪𝓷: 𝓣𝓪𝓽𝓪𝓴 𝓷𝓰 𝓲𝓼𝓪𝓷𝓰 𝓖𝓸𝓫𝔂𝓮𝓻𝓷𝓸𝓷𝓰 𝓶𝓪𝔂 𝓢𝓸𝓵𝓾𝓼𝔂𝓸𝓷!"',
+                            'url' => '#',
+                            'image' => '/news/article-3.jpg',
+                        ],
+                        [
+                            'id' => 4,
+                            'title' => 'SA CABUYAO NA ANG SUSUNOD NA HAKBANG MO!',
+                            'description' => 'Hindi na lamang dating bayan ang Lungsod ng Cabuyao, ito na ngayon ay isang FIRST-CLASS CITY, ang pinakabagong sentro ng industriya ng pabahay sa CALABARZON...',
+                            'excerpt' => 'Hindi na lamang dating bayan ang Lungsod ng Cabuyao, ito na ngayon ay isang FIRST-CLASS CITY, ang pinakabagong sentro ng industriya ng pabahay sa CALABARZON...',
+                            'date' => 'January 28, 2026',
+                            'author' => 'PUDHO Staff',
+                            'category' => 'Development',
+                            'tags' => ['#AkayniGobActionCenter', '#GobyernongMaySolusyon', '#GobSolAragones', '#SOLidLaguna'],
+                            'content' => 'Hindi na lamang dating bayan ang Lungsod ng Cabuyao, ito na ngayon ay isang FIRST-CLASS CITY, ang pinakabagong sentro ng industriya ng pabahay sa CALABARZON, puno ng mga oportunidad, trabaho at abot-kayang tahanan!
+
+Kaakibat ng patuloy na pag-unlad, ang social responsibility alinsunod dito ang Provincial Urban Development and Housing Office ay magalang na nagtungo sa City Hall ng Cabuyao nitong Pebrero 3, 2026, para sa "courtesy visit" at malugod na napa-unlakan ni Vice Mayor James Onofre D. Batallones sa ngalan ni Mayor Dennis Felipe C. Hain kasama ang lahat ng bumubuo ng Sangguniang Panglungsod ng Cabuyao.
+
+Sa malayang talakayan, nailahad ng ating Action Officer Mamerto A. Punio kaakay sina Housing Coordinators Floi Daniel C. Barrientos Technical and Special Project Unit member, at Gng. Crispina L. Manrique, Presidente ng Homeowners Federation ng Cabuyao, ang flagship programs ng Gobyernong May Solusyon ang Akay Pabahay at Ten-Year Sustainable Resettlement Program for Informal Settler Families (ISF) at magalang din na hiniling na ito ay maipaliwanag sa susunod na schedule ng Housing Board ng siyudad.
+
+Sa lahat ng ito, patunay na ang Cabuyao ay hindi lamang umaasenso bilang lungsod, ito rin ay isang lugar na tunay na nag-aalaga sa kinabukasan ng kanyang mamamayan.
+
+"𝓜𝓪𝔂 𝓜𝓪𝓵𝓪𝓼𝓪𝓴𝓲𝓽, 𝓐𝓴𝓼𝔂𝓸𝓷 𝓪𝓽 𝓟𝓪𝓷𝓲𝓷𝓲𝓷𝓭𝓲𝓰𝓪𝓷: 𝓣𝓪𝓽𝓪𝓴 𝓷𝓰 𝓲𝓼𝓪𝓷𝓰 𝓖𝓸𝓫𝔂𝓮𝓻𝓷𝓸𝓷𝓰 𝓶𝓪𝔂 𝓢𝓸𝓵𝓾𝓼𝔂𝓸𝓷!"',
+                            'url' => '#',
+                            'image' => '/news/article-4.jpg',
+                        ],
+                    ];
+                @endphp
+                    @foreach($articles as $article)
+                    <div class="flex gap-4 group cursor-pointer">
+                        <div class="h-20 w-20 bg-gray-100 rounded-lg shrink-0 flex items-center justify-center overflow-hidden border border-gray-200 group-hover:border-red-200 transition-colors">
+                            <img src="{{ $article['image'] }}" alt="{{ $article['title'] }}" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="text-sm font-bold text-gray-900 group-hover:text-red-900 transition-colors">{{ $article['title'] }}</h3>
+                            <p class="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">{{ $article['description'] }}</p>
+                            <a href="{{ $article['url'] }}" class="text-[10px] font-bold text-red-600 uppercase tracking-widest flex items-center gap-1 hover:gap-2 transition-all">
+                                Read Now
+                                <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                            </a>
+                        </div>
                     </div>
-                    <div class="space-y-1">
-                        <h3 class="text-sm font-bold text-gray-900 group-hover:text-red-900 transition-colors">Article Title</h3>
-                        <p class="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">small preview of the article here lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="text-[10px] font-bold text-red-600 uppercase tracking-widest flex items-center gap-1 hover:gap-2 transition-all">
-                            Read Now
-                            <i class="fa-solid fa-chevron-right text-[8px]"></i>
-                        </a>
-                    </div>
+                    @if(!$loop->last) <div class="h-px bg-gray-100"></div> @endif
+                    @endforeach
                 </div>
-                @if(!$loop->last) <div class="h-px bg-gray-100"></div> @endif
-                @endforeach
             </div>
         </div>
     </div>
@@ -126,13 +291,23 @@
     <!-- Affiliated Offices -->
     <section class="bg-gray-100 rounded-3xl p-10 border border-gray-200 space-y-10">
         <h2 class="text-xl font-extrabold text-gray-900 uppercase tracking-widest text-center">Affiliated Offices</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-            @foreach(range(1, 6) as $i)
-            <div class="bg-white rounded-xl h-24 flex items-center justify-center border border-gray-200 hover:border-red-200 transition-colors cursor-pointer group">
-                <i class="fa-solid fa-image text-3xl text-gray-200 group-hover:text-red-200 transition-colors"></i>
-            </div>
-            @endforeach
+         {{-- First row: 3 items --}}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        @foreach(range(1, 3) as $i)
+        <div class="bg-white rounded-xl h-24 flex items-center justify-center border border-gray-200 hover:border-red-200 transition-colors cursor-pointer group overflow-hidden">
+            <img src="{{ Vite::asset('resources/logos/logo-'.$i.'.png') }}" alt="Office Logo {{ $i }}" class="h-full w-full object-contain p-1 bg-white" />
         </div>
+        @endforeach
+    </div>
+
+    {{-- Second row: 2 items centered --}}
+    <div class="grid grid-cols-2 gap-6 md:w-2/3 mx-auto">
+        @foreach(range(4, 5) as $i)
+        <div class="bg-white rounded-xl h-24 flex items-center justify-center border border-gray-200 hover:border-red-200 transition-colors cursor-pointer group overflow-hidden">
+            <img src="{{ Vite::asset('resources/logos/logo-'.$i.'.png') }}" alt="Office Logo {{ $i }}" class="h-full w-full object-contain p-1 bg-white" />
+        </div>
+        @endforeach
+    </div>
     </section>
 
 </div>

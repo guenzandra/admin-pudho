@@ -15,8 +15,8 @@
 
     <!-- Category Filters -->
     <div class="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto" id="categoryFilters">
-        <button class="px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold uppercase tracking-widest bg-gray-900 text-white transition-all hover:bg-gray-800" data-category="all">All Categories</button>
-        @foreach(['Housing Programs', 'Registration', 'General', 'Support', 'Inspection', 'Training'] as $cat)
+        <button class="px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold uppercase tracking-widest bg-gray-900 text-white transition-all hover:bg-gray-800" data-category="all">All</button>
+        @foreach(['General', 'Registration', 'Support', 'Training'] as $cat)
         <button class="px-4 py-1.5 rounded-full border border-gray-200 text-[10px] font-bold uppercase tracking-widest bg-white text-gray-600 transition-all hover:border-red-200 hover:text-red-700" data-category="{{ Str::slug($cat) }}">{{ $cat }}</button>
         @endforeach
     </div>

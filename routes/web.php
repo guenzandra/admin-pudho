@@ -15,10 +15,18 @@ use App\Http\Controllers\Editor\AnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
-| Landing Page Routes
+| Web Routes
 |--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
 */
-Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/', function () {
+    return view('index.index');
+})->name('home');
 
 Route::get('/about', function () {
     return view('index.IPages.iabout');
@@ -32,7 +40,7 @@ Route::get('/citizens-charter', function () {
     return view('index.IPages.citizenscharter');
 })->name('citizenscharter');
 
-Route::get('/dforms', function () {
+Route::get('/downloadable-forms', function () {
     return view('index.IPages.dforms');
 })->name('dforms');
 
@@ -40,8 +48,25 @@ Route::get('/faqs', function () {
     return view('index.IPages.faqs');
 })->name('landing.faqs');
 
-Route::get('/news', [LandingController::class, 'news'])->name('landing.news');
-Route::get('/news/{id}', [LandingController::class, 'newsShow'])->name('landing.news.show');
+// News & Accomplishments
+Route::get('/news', function () {
+    // In a real app, you would fetch these from a database
+    $articles = [
+        [
+            'id' => 1,
+            'slug' => 'housing-program-milestone-2024',
+            'title' => 'PUDHO Reaches Major Milestone in 2024 Housing Program',
+            'excerpt' => 'The Provincial Urban Development and Housing Office has successfully awarded over 500 homelots to deserving families across the 4th district of Laguna this quarter.',
+            'content' => '<p>The Provincial Urban Development and Housing Office (PUDHO) is proud to announce a significant achievement in its mission to provide decent and affordable housing to Lagunenses. In the first half of 2024, the office has successfully facilitated the awarding of more than 500 homelots.</p>',
+            'date' => 'May 10, 2024',
+            'category' => 'Accomplishment',
+            'image' => 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop',
+            'author' => 'Office of the Governor'
+        ],
+        // Add more articles here...
+    ];
+    return view('index.IPages.news.index', compact('articles'));
+})->name('news.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -374,3 +399,16 @@ Route::get('/test-reports', function () {
 Route::fallback(function () {
     return redirect()->route('admin.login');
 });
+Route::get('/news/{slug}', function ($slug) {
+    // Fetch article by slug logic here
+    $article = [
+        'slug' => $slug,
+        'title' => 'Sample Article',
+        'content' => '<p>Article content goes here.</p>',
+        'category' => 'Category',
+        'date' => 'May 10, 2024',
+        'author' => 'Author',
+        'image' => 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop'
+    ];
+    return view('index.IPages.news.show', compact('article'));
+})->name('news.show');
