@@ -232,7 +232,7 @@
       <!-- ── COL 1: BRAND ── -->
       <div class="footer-brand">
         <div class="footer-logo-row">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Seal_of_Laguna.svg/1200px-Seal_of_Laguna.svg.png" class="footer-logo-img" alt="Laguna Logo"/>
+          <img src="{{ Vite::asset('resources/images/pudho-logo.png') }}" class="footer-logo-img" alt="Laguna Logo"/>
           <div class="footer-logo-text">
             <div class="name">Laguna</div>
             <div class="sub">Provincial Urban</div>
@@ -241,7 +241,7 @@
         </div>
 
         <p class="footer-desc">
-          Committed to providing accessible, efficient, and transparent government services to every Laguneño.
+          Committed to providing accessible, efficient, and transparent government services to every Lagunense.
         </p>
 
         <div class="footer-socials">
@@ -294,7 +294,7 @@
     <!-- BOTTOM BAR -->
     <div class="footer-bottom">
       <div class="footer-bottom-inner">
-        <p>&copy; 2025 Provincial Urban Development &amp; Housing Office – Laguna. All rights reserved.</p>
+        <p>&copy; 2026 Provincial Urban Development &amp; Housing Office – Province of Laguna. All rights reserved.</p>
         <a href="#">Privacy Policy</a>
       </div>
     </div>
