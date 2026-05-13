@@ -12,6 +12,8 @@ use App\Http\Controllers\Editor\EditorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Editor\AnnouncementController;
+use App\Http\Controllers\Editor\NewsArticleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -344,6 +346,14 @@ Route::middleware(['auth'])->prefix('editor')->group(function () {
     Route::patch('/announcements/{id}/toggle-status', [AnnouncementController::class, 'toggleStatus'])->name('editor.announcements.toggle-status');
 });
 
+// Editor News Article Routes
+Route::middleware(['auth'])->prefix('editor')->group(function () {
+    Route::get('/news', [NewsArticleController::class, 'index'])->name('editor.news');
+    Route::get('/news/data', [NewsArticleController::class, 'getData'])->name('editor.news.data');
+    Route::post('/news', [NewsArticleController::class, 'store'])->name('editor.news.store');
+    Route::put('/news/{id}', [NewsArticleController::class, 'update'])->name('editor.news.update');
+    Route::delete('/news/{id}', [NewsArticleController::class, 'destroy'])->name('editor.news.destroy');
+});
 /*
 |--------------------------------------------------------------------------
 | Legacy Routes
