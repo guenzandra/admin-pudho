@@ -108,7 +108,7 @@
             <div class="bg-gray-900 rounded-[2rem] p-8 text-white relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-red-600/20 blur-[50px] rounded-full"></div>
                 <div class="relative z-10 space-y-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Seal_of_Laguna.svg/1200px-Seal_of_Laguna.svg.png" alt="Seal" class="w-12 h-12 object-contain brightness-0 invert opacity-50">
+                    <img src="{{ Vite::asset('resources/images/pudho-logo.png') }}" alt="Seal" class="w-12 h-12 object-contain brightness-0 invert opacity-50">
                     <h3 class="text-lg font-black uppercase tracking-tight leading-tight">Provincial Urban Development & Housing Office</h3>
                     <p class="text-xs text-gray-400 leading-relaxed font-medium">Providing decent and affordable housing units for low-income Lagunenses since 1996.</p>
                     <a href="{{ route('iabout') }}" class="inline-flex py-3 px-6 bg-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-red-700 transition-all">About Our Office</a>
