@@ -422,3 +422,107 @@ Route::get('/news/{slug}', function ($slug) {
     ];
     return view('index.IPages.news.show', compact('article'));
 })->name('news.show');
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('index.index');
+})->name('home');
+
+Route::get('/about', function () {
+    return view('index.IPages.iabout');
+})->name('iabout');
+
+Route::get('/services', function () {
+    return view('index.IPages.iservices');
+})->name('iservices');
+
+Route::get('/citizens-charter', function () {
+    return view('index.IPages.citizenscharter');
+})->name('citizenscharter');
+
+Route::get('/downloadable-forms', function () {
+    return view('index.IPages.dforms');
+})->name('dforms');
+
+Route::get('/faqs', function () {
+    return view('index.IPages.faqs');
+})->name('faqs');
+
+Route::get('/faqs', function () {
+    return view('index.IPages.faqs');
+})->name('landing.faqs');
+
+// News & Accomplishments
+Route::get('/news', function () {
+    // In a real app, you would fetch these from a database
+    $articles = [
+        [
+            'id' => 1,
+            'slug' => 'housing-program-milestone-2024',
+            'title' => 'PUDHO Reaches Major Milestone in 2024 Housing Program',
+            'excerpt' => 'The Provincial Urban Development and Housing Office has successfully awarded over 500 homelots to deserving families across the 4th district of Laguna this quarter.',
+            'content' => '<p>The Provincial Urban Development and Housing Office (PUDHO) is proud to announce a significant achievement in its mission to provide decent and affordable housing to Lagunenses.</p>',
+            'date' => 'May 10, 2024',
+            'category' => 'Accomplishment',
+            'image' => 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop',
+            'author' => 'PUDHO Media'
+        ],
+        [
+            'id' => 2,
+            'slug' => 'urban-planning-summit-laguna',
+            'title' => 'Laguna Urban Planning Summit: Shaping Future Cities',
+            'excerpt' => 'Local government units and urban planners gathered to discuss sustainable development strategies for Laguna\'s rapidly growing urban areas.',
+            'date' => 'Apr 25, 2024',
+            'category' => 'Community',
+            'image' => 'https://images.unsplash.com/photo-1517732359359-61316527af7d?q=80&w=1000&auto=format&fit=crop',
+            'author' => 'Admin'
+        ],
+        [
+            'id' => 3,
+            'slug' => 'pabahay-project-phase-2-launch',
+            'title' => 'Phase 2 Launch of "Pabahay para sa Bayan" Project',
+            'excerpt' => 'The second phase of the provincial housing flagship program officially breaks ground in San Pablo City, aimed at providing homes for 300 additional families.',
+            'date' => 'Mar 12, 2024',
+            'category' => 'Housing',
+            'image' => 'https://images.unsplash.com/photo-1593011394396-85750873449e?q=80&w=1000&auto=format&fit=crop',
+            'author' => 'Housing Dept'
+        ],
+        [
+            'id' => 4,
+            'slug' => 'sustainable-communities-initiative',
+            'title' => 'Building Sustainable Communities Through Green Design',
+            'excerpt' => 'PUDHO partners with environmental groups to integrate solar energy and rainwater harvesting in new housing developments.',
+            'date' => 'Feb 28, 2024',
+            'category' => 'Initiative',
+            'image' => 'https://images.unsplash.com/photo-1473186578172-c141e6798ee4?q=80&w=1000&auto=format&fit=crop',
+            'author' => 'PUDHO Media'
+        ]
+    ];
+    return view('index.IPages.news.index', compact('articles'));
+})->name('news.index');
+
+Route::get('/news/{slug}', function ($slug) {
+    // Fetch article by slug logic here
+    $article = [
+        'slug' => $slug,
+        'title' => 'Sample Article',
+        'content' => '<p>Article content goes here.</p>',
+        'category' => 'Category',
+        'date' => 'May 10, 2024',
+        'author' => 'Author',
+        'image' => 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop'
+    ];
+    return view('index.IPages.news.show', compact('article'));
+})->name('news.show');
+

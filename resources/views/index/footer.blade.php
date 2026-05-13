@@ -1,301 +1,95 @@
-<style>
-    /* ══════════════════
-       FOOTER
-    ══════════════════ */
-    footer.main-footer {
-      background: #ffffff;
-      border-top: 3px solid #d1d5db;
-    }
+<footer class="bg-gray-50 pt-24 pb-12 overflow-hidden relative">
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+    
+    <div class="max-w-[1280px] mx-auto px-6 space-y-16">
+        <!-- Top Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            
+            <!-- Branding -->
+            <div class="lg:col-span-5 space-y-8">
+                <a href="{{ route('home') }}" class="flex items-center gap-4 group">
+                    <img src="{{ Vite::asset('resources/images/pudho-logo.png') }}" class="w-16 h-16 object-contain" alt="Laguna Seal" />
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-gray-900 uppercase tracking-tighter leading-none">PUDHO <span class="text-red-700">LAGUNA</span></span>
+                        <span class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] leading-relaxed">Provincial Urban Development & Housing Office</span>
+                    </div>
+                </a>
+                <p class="text-sm text-gray-500 font-medium leading-loose max-w-sm">
+                    Pioneering sustainable urban development and providing affordable housing solutions to empower every Lagunense family.
+                </p>
+                <div class="flex items-center gap-3">
+                    @foreach(['facebook-f',] as $icon)
+                    <a href="#" class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all shadow-sm">
+                        <i class="fab fa-{{ $icon }} text-sm"></i>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
 
-    .footer-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 48px 32px 36px;
-      display: grid;
-      grid-template-columns: 1.6fr 1.2fr 1fr;
-      gap: 48px;
-    }
+            <!-- Links Grid -->
+            <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
+                <!-- Navigation -->
+                <div class="space-y-6">
+                    <h3 class="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em]">Platform</h3>
+                    <ul class="space-y-4">
+                        <li><a href="{{ route('home') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Home</a></li>
+                        <li><a href="{{ route('iabout') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">About Us</a></li>
+                        <li><a href="{{ route('news.index') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Archive</a></li>
+                        <li><a href="{{ route('iservices') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Services</a></li>
+                    </ul>
+                </div>
 
-    /* ── SECTION HEADING ── */
-    .footer-col h2 {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #374151;
-      margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+                <!-- Resources -->
+                <div class="space-y-6">
+                    <h3 class="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em]">Resources</h3>
+                    <ul class="space-y-4">
+                        <li><a href="{{ route('dforms') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Forms</a></li>
+                        <li><a href="{{ route('citizenscharter') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Charter</a></li>
+                        <li><a href="{{ route('landing.faqs') }}" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Support</a></li>
+                        <li><a href="#" class="text-xs font-bold text-gray-500 hover:text-red-700 transition-colors uppercase tracking-widest">Transparency</a></li>
+                    </ul>
+                </div>
 
-    .footer-col h2 i {
-      color: #6b7280;
-      font-size: 11px;
-    }
-
-    /* ── COL 1: BRAND ── */
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .footer-logo-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .footer-logo-img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-    }
-
-    .footer-logo-text .name {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: #111827;
-      line-height: 1.2;
-    }
-
-    .footer-logo-text .sub {
-      font-size: 7.5px;
-      font-weight: 600;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-      color: #6b7280;
-      line-height: 1.6;
-    }
-
-    .footer-desc {
-      font-size: 12.5px;
-      color: #6b7280;
-      line-height: 1.8;
-      max-width: 290px;
-    }
-
-    .footer-socials {
-      display: flex;
-      gap: 8px;
-      margin-top: 2px;
-    }
-
-    .footer-socials a {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1.5px solid #d1d5db;
-      background: #f9fafb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #6b7280;
-      font-size: 13px;
-      text-decoration: none;
-      transition: background .18s, border-color .18s, color .18s;
-    }
-
-    .footer-socials a:hover {
-      background: #b91c1c;
-      border-color: #b91c1c;
-      color: #fff;
-    }
-
-    /* ── COL 2: CONTACT ── */
-    .contact-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 11px;
-    }
-
-    .contact-item .ci-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background: #f3f4f6;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .contact-item .ci-icon i {
-      font-size: 11px;
-      color: #4b5563;
-    }
-
-    .contact-item a {
-      font-size: 12.5px;
-      color: #4b5563;
-      text-decoration: none;
-      line-height: 1.6;
-      transition: color .17s;
-    }
-
-    .contact-item a:hover {
-      color: #b91c1c;
-    }
-
-    /* ── COL 3: QUICK LINKS ── */
-    .quick-links {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .quick-links a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-      color: #4b5563;
-      text-decoration: none;
-      transition: color .17s, gap .17s;
-    }
-
-    .quick-links a i {
-      font-size: 10px;
-      color: #9ca3af;
-      transition: color .17s, transform .17s;
-    }
-
-    .quick-links a:hover {
-      color: #b91c1c;
-      gap: 12px;
-    }
-
-    .quick-links a:hover i {
-      color: #b91c1c;
-      transform: translateX(2px);
-    }
-
-    /* ── BOTTOM BAR ── */
-    .footer-bottom {
-      background: #f3f4f6;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .footer-bottom-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 14px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .footer-bottom p,
-    .footer-bottom a {
-      font-size: 11.5px;
-      color: #9ca3af;
-      text-decoration: none;
-    }
-
-    .footer-bottom a:hover {
-      color: #b91c1c;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .footer-inner {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        padding: 36px 20px 28px;
-      }
-
-      .footer-bottom-inner {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-</style>
-
-<footer class="main-footer">
-    <div class="footer-inner">
-
-      <!-- ── COL 1: BRAND ── -->
-      <div class="footer-brand">
-        <div class="footer-logo-row">
-          <img src="{{ Vite::asset('resources/images/pudho-logo.png') }}" class="footer-logo-img" alt="Laguna Logo"/>
-          <div class="footer-logo-text">
-            <div class="name">Laguna</div>
-            <div class="sub">Provincial Urban</div>
-            <div class="sub">Development &amp; Housing Office</div>
-          </div>
+                <!-- Contact -->
+                <div class="space-y-6 col-span-2 md:col-span-1">
+                    <h3 class="text-[10px] font-black text-gray-900 uppercase tracking-[0.2em]">Contact</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <i class="fa-solid fa-map-pin text-red-600 mt-1"></i>
+                            <p class="text-[11px] font-bold text-gray-500 leading-relaxed uppercase tracking-tight">
+                                Provincial Capitol,<br>Santa Cruz, Laguna
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-phone text-red-600"></i>
+                            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-tight">(049) 501-0423</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <p class="footer-desc">
-          Committed to providing accessible, efficient, and transparent government services to every Lagunense.
-        </p>
-
-        <div class="footer-socials">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <!-- Bottom Bar -->
+        <div class="pt-12 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-center gap-6">
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    &copy; {{ date('Y') }} PUDHO - Province of Laguna. All rights reserved.
+                </p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">Privacy Policy</a>
+                <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+                <a href="#" class="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-gray-900">Terms of Service</a>
+                <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+                <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                   <!-- <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest">Network Live</span> -->
+                </div>
+            </div>
         </div>
-      </div>
-
-      <!-- ── COL 2: GET IN TOUCH ── -->
-      <div class="footer-col">
-        <h2><i class="fas fa-headset"></i> Get in Touch with Us</h2>
-        <div class="contact-list">
-
-          <div class="contact-item">
-            <div class="ci-icon"><i class="fas fa-location-dot"></i></div>
-            <a href="https://maps.google.com/?q=Provincial+Capitol+Santa+Cruz+Laguna" target="_blank">
-              Provincial Capitol, P. Guevarra St.<br>Santa Cruz, Laguna
-            </a>
-          </div>
-
-          <div class="contact-item">
-            <div class="ci-icon"><i class="fas fa-envelope"></i></div>
-            <a href="mailto:pudho@laguna.gov.ph">pudho@laguna.gov.ph</a>
-          </div>
-
-          <div class="contact-item">
-            <div class="ci-icon"><i class="fas fa-phone"></i></div>
-            <a href="tel:+63495010423">(049) 501-0423</a>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── COL 3: QUICK LINKS ── -->
-      <div class="footer-col">
-        <h2><i class="fas fa-link"></i> Quick Links</h2>
-        <div class="quick-links">
-          <a href="{{ route('home') }}"><i class="fas fa-chevron-right"></i> Home</a>
-          <a href="{{ route('iservices') }}"><i class="fas fa-chevron-right"></i> Our Services</a>
-          <a href="{{ route('iabout') }}"><i class="fas fa-chevron-right"></i> About Us</a>
-          <a href="{{ route('citizenscharter') }}"><i class="fas fa-chevron-right"></i> Citizen's Charter</a>
-          <a href="{{ route('landing.faqs') }}"><i class="fas fa-chevron-right"></i> FAQS</a>
-          <a href="{{ route('dforms') }}"><i class="fas fa-chevron-right"></i> Downloadable Forms</a>
-        </div>
-      </div>
-
     </div>
 
-    <!-- BOTTOM BAR -->
-    <div class="footer-bottom">
-      <div class="footer-bottom-inner">
-        <p>&copy; 2026 Provincial Urban Development &amp; Housing Office – Province of Laguna. All rights reserved.</p>
-        <a href="#">Privacy Policy</a>
-      </div>
-    </div>
+    <!-- Decorative Elements -->
+    <div class="absolute bottom-0 right-0 w-64 h-64 bg-red-600/5 blur-[100px] rounded-full translate-x-1/2 translate-y-1/2"></div>
 </footer>
+
