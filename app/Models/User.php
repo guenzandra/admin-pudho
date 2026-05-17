@@ -393,4 +393,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Announcement::class, 'author_id', 'user_id');
     }
+
+    public function visions()
+    {
+        return $this->hasMany(Vision::class, 'author_id', 'user_id');
+    }
+
+    public function missionStatements()
+    {
+        return $this->hasMany(MissionStatement::class, 'author_id', 'user_id');
+    }
+
+    public function coreValues()
+    {
+        return $this->hasMany(CoreValue::class, 'author_id', 'user_id');
+    }
 }
