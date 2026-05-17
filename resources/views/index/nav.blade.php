@@ -12,7 +12,7 @@
         <span class="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em] leading-relaxed">Provincial Urban Development & Housing Office</span>
       </div>
     </a>
-<!------>
+
     <!-- Desktop Navigation -->
     <div class="hidden lg:flex items-center gap-1">
       <a href="{{ route('home') }}" class="px-5 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-red-700 hover:bg-red-50 transition-all {{ request()->routeIs('home') ? 'bg-red-50 text-red-700' : '' }}">Home</a>

@@ -381,6 +381,40 @@
         border-radius: 14px;
         overflow: hidden;
         box-shadow: 0 2px 16px rgba(192, 32, 47, .06);
+        position: relative;
+    }
+
+    /* Table loading overlay */
+    .table-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, .8);
+        backdrop-filter: blur(2px);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .15s;
+        border-radius: 14px;
+    }
+
+    .table-loading.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .table-loading .spinner {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 3px solid var(--red-border);
+        border-top-color: var(--red);
+        animation: spin .7s linear infinite;
     }
 
     .table-head {
@@ -1609,103 +1643,14 @@
         }
     }
 
-    .loading-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(255, 255, 255, .7);
-        backdrop-filter: blur(2px);
-        z-index: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity .15s;
-    }
-
-    .loading-overlay.show {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .spinner {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        border: 3px solid var(--red-border);
-        border-top-color: var(--red);
-        animation: spin .7s linear infinite;
-    }
-
     @keyframes spin {
         to {
             transform: rotate(360deg);
         }
     }
-
-    #help-fab {
-        position: fixed;
-        bottom: 28px;
-        right: 28px;
-        z-index: 300;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--red), var(--red-dark));
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 18px rgba(192, 32, 47, .4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform .2s;
-    }
-
-    #help-fab:hover {
-        transform: scale(1.1) rotate(10deg);
-    }
-
-    .help-step {
-        display: flex;
-        gap: 16px;
-        padding: 18px 0;
-        border-bottom: 1px solid var(--red-border);
-    }
-
-    .help-step-num {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        flex-shrink: 0;
-        background: linear-gradient(135deg, var(--red), var(--red-dark));
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .help-tip {
-        margin-top: 14px;
-        padding: 12px 16px;
-        background: var(--red-pale);
-        border-radius: 10px;
-        border-left: 3px solid var(--red);
-        font-size: 12.5px;
-    }
-
-    #fContent:empty::before {
-        content: 'Write your announcement content here…';
-        color: var(--txt-3);
-    }
 </style>
 
 <div id="toast-container"></div>
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-</div>
 
 <div class="page-header">
     <div>
@@ -1777,7 +1722,7 @@
             <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input type="text" id="filterSearch" class="filter-input" placeholder="Search by title or author…" onkeyup="debounceFilter()">
+            <input type="text" id="filterSearch" class="filter-input" placeholder="Search by title or author…" oninput="handleSearchInput()">
         </div>
         <div style="min-width:150px;">
             <select id="filterStatus" class="filter-select" onchange="applyFilters()">
@@ -1797,7 +1742,10 @@
     <div class="filter-pills" id="filterPills"></div>
 </div>
 
-<div class="table-wrap">
+<div class="table-wrap" id="tableWrap">
+    <div class="table-loading" id="tableLoading">
+        <div class="spinner"></div>
+    </div>
     <div class="table-head">
         <div class="table-head-title" id="tableHeadTitle">All Announcements</div>
         <span class="results-count" id="resultsCount"></span>
@@ -1988,46 +1936,6 @@
     </div>
 </div>
 
-<!-- HELP MODAL -->
-<div class="modal-backdrop" id="helpModalBg">
-    <div class="modal modal-md">
-        <div class="modal-header">
-            <h3>How to Use Announcements</h3><button class="modal-close" onclick="closeHelpModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                </svg></button>
-        </div>
-        <div class="modal-body">
-            <div class="help-step">
-                <div class="help-step-num">1</div>
-                <div>
-                    <div class="help-step-title">Create a New Announcement</div>
-                    <div class="help-step-desc">Click <strong>New Announcement</strong> top-right. Fill in title, content, optional image, status, and author.</div>
-                </div>
-            </div>
-            <div class="help-step">
-                <div class="help-step-num">2</div>
-                <div>
-                    <div class="help-step-title">Set the Status</div>
-                    <div class="help-step-desc"><strong>Draft</strong> saves privately. <strong>Published</strong> goes live instantly. <strong>Scheduled</strong> lets you set a future publish date.</div>
-                </div>
-            </div>
-            <div class="help-step">
-                <div class="help-step-num">3</div>
-                <div>
-                    <div class="help-step-title">Full-Screen Preview</div>
-                    <div class="help-step-desc">Click <strong>Preview</strong> to see exactly how it looks on Desktop, Tablet, and Mobile views.</div>
-                </div>
-            </div>
-            <div class="help-tip"><strong>Tip:</strong> Always preview on mobile before publishing.</div>
-        </div>
-        <div class="modal-footer"><button class="btn-primary" onclick="closeHelpModal()">Got it!</button></div>
-    </div>
-</div>
-
-<button id="help-fab" onclick="openHelpModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg></button>
-
 <script>
     // Global variables
     let currentPage = 1;
@@ -2041,7 +1949,8 @@
     let allAnnouncements = [];
     let deleteId = null;
     let editId = null;
-    let debounceTimer;
+    let searchDebounceTimer;
+    const ITEMS_PER_PAGE = 5; // Limit to 5 items per page
 
     // Helper functions
     function escapeHtml(text) {
@@ -2063,12 +1972,12 @@
         }, 4000);
     }
 
-    function showLoading() {
-        document.getElementById('loadingOverlay').classList.add('show');
+    function showTableLoading() {
+        document.getElementById('tableLoading').classList.add('show');
     }
 
-    function hideLoading() {
-        document.getElementById('loadingOverlay').classList.remove('show');
+    function hideTableLoading() {
+        document.getElementById('tableLoading').classList.remove('show');
     }
 
     function showModal(id) {
@@ -2087,7 +1996,7 @@
 
     // Load announcements from API
     async function loadAnnouncements() {
-        showLoading();
+        showTableLoading();
         try {
             const response = await fetch('/editor/announcements/data', {
                 headers: {
@@ -2118,7 +2027,7 @@
             console.error('Error:', error);
             showToast('error', 'Failed to load announcements');
         } finally {
-            hideLoading();
+            hideTableLoading();
         }
     }
 
@@ -2279,7 +2188,7 @@
             return currentSort === 'desc' ? dateB - dateA : dateA - dateB;
         });
 
-        // Render table
+        // Render table with pagination
         renderTable(filtered);
         updateFilterPills();
     }
@@ -2302,11 +2211,19 @@
         table.style.display = '';
         pagination.style.display = '';
 
-        // Pagination
-        const itemsPerPage = 10;
-        const totalPages = Math.ceil(announcements.length / itemsPerPage);
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
+        // Pagination with 5 items per page
+        const totalPages = Math.ceil(announcements.length / ITEMS_PER_PAGE);
+
+        // Ensure current page is valid
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
         const pageItems = announcements.slice(start, end);
 
         // Update results count
@@ -2331,43 +2248,43 @@
                         </div>
                     </div>
                     <div class="row-actions">
-    <button class="row-action-btn edit" onclick="openEditModal(${a.id})">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17.25V21h3.75l9.06-9.06-3.75-3.75L3 17.25z"/>
-        </svg>
-        Edit
-    </button>
-    <div class="action-sep"></div>
-    <button class="row-action-btn preview-btn" onclick="openPreviewModal(${a.id})">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-        </svg>
-        Preview
-    </button>
-    <div class="action-sep"></div>
-    ${a.status === 'published' 
-        ? `<button class="row-action-btn unpublish" onclick="toggleStatus(${a.id})">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
-            </svg>
-            Unpublish
-        </button>`
-        : `<button class="row-action-btn publish" onclick="toggleStatus(${a.id})">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            Publish
-        </button>`
-    }
-    <div class="action-sep"></div>
-    <button class="row-action-btn delete" onclick="openDeleteModal(${a.id}, '${escapeHtml(a.title)}')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-        </svg>
-        Delete
-    </button>
-</div>
+                        <button class="row-action-btn edit" onclick="openEditModal(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17.25V21h3.75l9.06-9.06-3.75-3.75L3 17.25z"/>
+                            </svg>
+                            Edit
+                        </button>
+                        <div class="action-sep"></div>
+                        <button class="row-action-btn preview-btn" onclick="openPreviewModal(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            Preview
+                        </button>
+                        <div class="action-sep"></div>
+                        ${a.status === 'published' 
+                            ? `<button class="row-action-btn unpublish" onclick="toggleStatus(${a.id})">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                </svg>
+                                Unpublish
+                            </button>`
+                            : `<button class="row-action-btn publish" onclick="toggleStatus(${a.id})">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Publish
+                            </button>`
+                        }
+                        <div class="action-sep"></div>
+                        <button class="row-action-btn delete" onclick="openDeleteModal(${a.id}, '${escapeHtml(a.title)}')">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Delete
+                        </button>
+                    </div>
                 </td>
                 <td class="cell-pad">
                     <div class="date-main">${dateObj.getDate()} ${getMonthName(dateObj.getMonth())}</div>
@@ -2379,10 +2296,10 @@
         });
 
         // Render pagination
-        renderPagination(currentPage, totalPages);
+        renderPagination(currentPage, totalPages, announcements.length);
     }
 
-    function renderPagination(current, total) {
+    function renderPagination(current, total, totalItems) {
         const container = document.getElementById('paginationBtns');
         container.innerHTML = '';
 
@@ -2399,9 +2316,28 @@
         };
         container.appendChild(prevBtn);
 
-        // Page numbers
+        // Page numbers - show limited pages
         const startPage = Math.max(1, current - 2);
         const endPage = Math.min(total, current + 2);
+
+        if (startPage > 1) {
+            const firstBtn = document.createElement('button');
+            firstBtn.className = 'pag-btn';
+            firstBtn.textContent = '1';
+            firstBtn.onclick = () => {
+                currentPage = 1;
+                applyFilters();
+            };
+            container.appendChild(firstBtn);
+
+            if (startPage > 2) {
+                const dots = document.createElement('span');
+                dots.className = 'pag-btn';
+                dots.textContent = '...';
+                dots.style.cursor = 'default';
+                container.appendChild(dots);
+            }
+        }
 
         for (let i = startPage; i <= endPage; i++) {
             const pageBtn = document.createElement('button');
@@ -2413,6 +2349,25 @@
                 applyFilters();
             };
             container.appendChild(pageBtn);
+        }
+
+        if (endPage < total) {
+            if (endPage < total - 1) {
+                const dots = document.createElement('span');
+                dots.className = 'pag-btn';
+                dots.textContent = '...';
+                dots.style.cursor = 'default';
+                container.appendChild(dots);
+            }
+
+            const lastBtn = document.createElement('button');
+            lastBtn.className = 'pag-btn';
+            lastBtn.textContent = total;
+            lastBtn.onclick = () => {
+                currentPage = total;
+                applyFilters();
+            };
+            container.appendChild(lastBtn);
         }
 
         // Next button
@@ -2429,7 +2384,9 @@
         container.appendChild(nextBtn);
 
         // Update pagination info
-        document.getElementById('paginationInfo').innerHTML = `Page ${current} of ${total}`;
+        const startItem = (current - 1) * ITEMS_PER_PAGE + 1;
+        const endItem = Math.min(current * ITEMS_PER_PAGE, totalItems);
+        document.getElementById('paginationInfo').innerHTML = `Showing ${startItem} to ${endItem} of ${totalItems} entries`;
     }
 
     function updateFilterPills() {
@@ -2525,12 +2482,12 @@
         applyFilters();
     }
 
-    function debounceFilter() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
+    function handleSearchInput() {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
             currentPage = 1;
             applyFilters();
-        }, 500);
+        }, 300);
     }
 
     // Modal functions
@@ -2558,7 +2515,7 @@
     }
 
     async function openEditModal(id) {
-        showLoading();
+        showTableLoading();
         try {
             const response = await fetch(`/editor/announcements/${id}`, {
                 headers: {
@@ -2575,12 +2532,11 @@
                 document.getElementById('fAuthor').value = result.data.author;
                 document.getElementById('fStatus').value = result.data.status;
 
-                // Handle schedule date - check multiple possible field names
+                // Handle schedule date
                 let scheduleDate = result.data.scheduled_at || result.data.scheduled_date || result.data.publish_date;
                 if (scheduleDate) {
                     const date = new Date(scheduleDate);
                     if (!isNaN(date.getTime())) {
-                        // Format as YYYY-MM-DDThh:mm for datetime-local input
                         const formattedDate = date.toISOString().slice(0, 16);
                         document.getElementById('fSchedule').value = formattedDate;
                     }
@@ -2591,7 +2547,6 @@
                     const scheduleField = document.getElementById('scheduleField');
                     scheduleField.classList.add('show');
 
-                    // Set min date to tomorrow for editing
                     const tomorrow = new Date();
                     tomorrow.setDate(tomorrow.getDate() + 1);
                     tomorrow.setMinutes(0);
@@ -2617,7 +2572,7 @@
             console.error('Error loading announcement:', error);
             showToast('error', 'Failed to load announcement');
         } finally {
-            hideLoading();
+            hideTableLoading();
         }
     }
 
@@ -2641,7 +2596,6 @@
                 return;
             }
 
-            // Validate schedule date is in the future
             const scheduleDate = new Date(schedule);
             const now = new Date();
             if (scheduleDate <= now) {
@@ -2650,45 +2604,38 @@
             }
         }
 
-        showLoading();
+        showTableLoading();
 
-        // Create FormData
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
         formData.append('author', author);
         formData.append('status', status);
 
-        // IMPORTANT: Add the scheduled date with the correct field name
-        // Try both possible field names that your backend might expect
         if (status === 'scheduled' && schedule) {
-            formData.append('scheduled_date', schedule); // Try this first
-            formData.append('scheduled_at', schedule); // Also send as backup
-            formData.append('publish_date', schedule); // Another common name
+            formData.append('scheduled_date', schedule);
+            formData.append('scheduled_at', schedule);
+            formData.append('publish_date', schedule);
         }
 
-        // Handle image upload
         const imageFile = document.getElementById('fImage').files[0];
         if (imageFile) {
-            // Validate image size (5MB max)
             if (imageFile.size > 5 * 1024 * 1024) {
                 showToast('error', 'Image size must be less than 5MB');
-                hideLoading();
+                hideTableLoading();
                 return;
             }
 
-            // Validate image type
             const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
             if (!validTypes.includes(imageFile.type)) {
                 showToast('error', 'Please upload JPEG, PNG, or WEBP images only');
-                hideLoading();
+                hideTableLoading();
                 return;
             }
 
             formData.append('image', imageFile);
         }
 
-        // Add method spoofing for PUT request when editing
         if (editId) {
             formData.append('_method', 'PUT');
         }
@@ -2697,7 +2644,7 @@
 
         try {
             const response = await fetch(url, {
-                method: 'POST', // Always use POST, with _method for PUT
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': getCSRFToken(),
                     'X-Requested-With': 'XMLHttpRequest',
@@ -2713,7 +2660,6 @@
                 closeCreateModal();
                 await loadAnnouncements();
             } else {
-                // Handle validation errors
                 if (result.errors) {
                     const errorMessages = Object.values(result.errors).flat();
                     showToast('error', errorMessages[0] || 'Failed to save announcement');
@@ -2722,20 +2668,18 @@
                 } else {
                     showToast('error', 'Failed to save announcement');
                 }
-
-                // Log the full response for debugging
                 console.error('Save error response:', result);
             }
         } catch (error) {
             console.error('Save error:', error);
             showToast('error', 'Network error. Please try again.');
         } finally {
-            hideLoading();
+            hideTableLoading();
         }
     }
 
     async function toggleStatus(id) {
-        showLoading();
+        showTableLoading();
         try {
             const response = await fetch(`/editor/announcements/${id}/toggle-status`, {
                 method: 'PATCH',
@@ -2755,7 +2699,7 @@
         } catch (error) {
             showToast('error', 'Failed to toggle status');
         } finally {
-            hideLoading();
+            hideTableLoading();
         }
     }
 
@@ -2772,7 +2716,7 @@
 
     async function confirmDelete() {
         if (!deleteId) return;
-        showLoading();
+        showTableLoading();
         try {
             const response = await fetch(`/editor/announcements/${deleteId}`, {
                 method: 'DELETE',
@@ -2793,7 +2737,7 @@
         } catch (error) {
             showToast('error', 'Failed to delete');
         } finally {
-            hideLoading();
+            hideTableLoading();
             deleteId = null;
         }
     }
@@ -2834,7 +2778,6 @@
         const shell = document.getElementById('browserShell');
         shell.className = `browser-shell ${device}`;
 
-        // Update active state
         document.querySelectorAll('.device-btn').forEach(btn => {
             btn.classList.remove('active');
             if (btn.textContent.toLowerCase().includes(device)) {
@@ -2877,13 +2820,8 @@
 
     function closePreviewAndPublish() {
         closePreviewModal();
-        if (editId) {
-            document.getElementById('fStatus').value = 'published';
-            saveAnnouncement();
-        } else {
-            document.getElementById('fStatus').value = 'published';
-            saveAnnouncement();
-        }
+        document.getElementById('fStatus').value = 'published';
+        saveAnnouncement();
     }
 
     function onStatusChange() {
@@ -2894,21 +2832,18 @@
         if (status === 'scheduled') {
             scheduleField.classList.add('show');
 
-            // Set minimum date to tomorrow at current hour
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             tomorrow.setMinutes(0);
             const minDateTime = tomorrow.toISOString().slice(0, 16);
             scheduleInput.min = minDateTime;
 
-            // If no value set, suggest tomorrow at 9 AM
             if (!scheduleInput.value) {
                 tomorrow.setHours(9, 0, 0);
                 scheduleInput.value = tomorrow.toISOString().slice(0, 16);
             }
         } else {
             scheduleField.classList.remove('show');
-            // Don't clear the value, just hide it - preserve in case they switch back
         }
     }
 
@@ -2947,19 +2882,10 @@
         showToast('info', 'Export feature will be available soon');
     }
 
-    function openHelpModal() {
-        showModal('helpModalBg');
-    }
-
-    function closeHelpModal() {
-        hideModal('helpModalBg');
-    }
-
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         loadAnnouncements();
 
-        // Initialize sort icon
         const th = document.getElementById('thDate');
         th.classList.add('sort-desc');
     });

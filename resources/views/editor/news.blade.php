@@ -221,6 +221,20 @@
         display: flex;
         align-items: center;
         gap: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(192, 32, 47, 0.1);
+        border-color: var(--red);
+    }
+
+    .stat-card.active {
+        border-color: var(--red);
+        background: var(--red-pale);
+        box-shadow: 0 0 0 2px rgba(192, 32, 47, 0.1);
     }
 
     .stat-icon {
@@ -310,6 +324,7 @@
     tbody tr {
         border-bottom: 1px solid #FFF4F5;
         transition: background 0.1s;
+        position: relative;
     }
 
     tbody tr:hover {
@@ -363,19 +378,9 @@
         align-items: center;
         padding: 3px 10px;
         border-radius: 20px;
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 600;
         white-space: nowrap;
-    }
-
-    .badge-news {
-        background: #EFF6FF;
-        color: #1E40AF;
-    }
-
-    .badge-accomplishment {
-        background: #FFF7ED;
-        color: #9A3412;
     }
 
     .badge-published {
@@ -393,11 +398,21 @@
         color: #5B21B6;
     }
 
+    /* Action buttons - hidden by default, show on hover */
     .action-btns {
         display: flex;
         align-items: center;
-        gap: 4px;
-        flex-wrap: wrap;
+        gap: 6px;
+        opacity: 0;
+        transform: translateY(-5px);
+        transition: opacity 0.2s, transform 0.2s;
+        pointer-events: none;
+    }
+
+    tbody tr:hover .action-btns {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
     }
 
     .act-btn {
@@ -408,7 +423,7 @@
         border: none;
         cursor: pointer;
         font-family: 'DM Sans', sans-serif;
-        transition: background 0.12s;
+        transition: all 0.12s;
         white-space: nowrap;
     }
 
@@ -419,6 +434,7 @@
 
     .act-btn-edit:hover {
         background: var(--red-pale2);
+        transform: scale(1.02);
     }
 
     .act-btn-preview {
@@ -428,6 +444,7 @@
 
     .act-btn-preview:hover {
         background: #DBEAFE;
+        transform: scale(1.02);
     }
 
     .more-menu-wrap {
@@ -446,6 +463,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.12s;
     }
 
     .more-btn:hover {
@@ -505,12 +523,6 @@
 
     .more-dropdown button.danger {
         color: var(--red);
-    }
-
-    .more-dropdown .sep {
-        height: 1px;
-        background: var(--red-border);
-        margin: 4px 0;
     }
 
     .pagination-bar {
@@ -1153,7 +1165,7 @@
     </div>
 
     <div class="stats-row">
-        <div class="stat-card">
+        <div class="stat-card" data-filter="all" onclick="filterByStat('all')">
             <div class="stat-icon" style="background:#FEF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
                 </svg></div>
@@ -1162,7 +1174,7 @@
                 <div class="stat-lbl">Total Articles</div>
             </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" data-filter="published" onclick="filterByStat('published')">
             <div class="stat-icon" style="background:#F0FDF4"><svg fill="none" stroke="#166534" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg></div>
@@ -1171,16 +1183,16 @@
                 <div class="stat-lbl">Published</div>
             </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" data-filter="draft" onclick="filterByStat('draft')">
             <div class="stat-icon" style="background:#FFF9C4"><svg fill="none" stroke="#854D0E" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin" round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg></div>
             <div>
                 <div class="stat-val" id="statDraft">0</div>
                 <div class="stat-lbl">Drafts</div>
             </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" data-filter="scheduled" onclick="filterByStat('scheduled')">
             <div class="stat-icon" style="background:#F5F3FF"><svg fill="none" stroke="#5B21B6" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg></div>
@@ -1198,7 +1210,7 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" id="searchInput" class="filter-input" placeholder="Search articles…" oninput="triggerFilter()">
+                <input type="text" id="searchInput" class="filter-input" placeholder="Search articles…" oninput="handleSearchInput()">
                 <button class="search-clear" id="searchClear" onclick="clearSearch()"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                     </svg></button>
@@ -1222,10 +1234,6 @@
             <div class="select-wrap">
                 <select id="filterYear" class="filter-select" onchange="applyFilters()">
                     <option value="">All Years</option>
-                    <option value="2026">2026</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
                 </select>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -1247,7 +1255,7 @@
             <div class="result-count" id="resultCount"></div>
         </div>
         <div class="table-responsive">
-            <table>
+            <table id="articlesTable">
                 <thead>
                     <tr>
                         <th>Thumbnail</th>
@@ -1259,13 +1267,14 @@
                     </tr>
                 </thead>
                 <tbody id="articlesBody"></tbody>
-                <table>
-                    <div class="empty-state" id="emptyState" style="display:none"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                        </svg>
-                        <h3>No articles found</h3>
-                        <p>Try adjusting your search or filter criteria.</p>
-                    </div>
+            </table>
+            <div class="empty-state" id="emptyState" style="display:none">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                </svg>
+                <h3>No articles found</h3>
+                <p>Try adjusting your search or filter criteria.</p>
+            </div>
         </div>
         <div class="pagination-bar">
             <div class="page-info" id="pageInfo"></div>
@@ -1338,13 +1347,15 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Featured Image</label>
-                <img id="mainImgPreview" class="img-preview-main" src="">
-                <div class="upload-zone" id="mainUploadZone" onclick="document.getElementById('mainImageFile').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleImageDrop(event, 'main')">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <p><strong>Click to upload</strong> or drag & drop</p>
-                    <p style="font-size:11px;margin-top:4px">PNG, JPG, WEBP up to 5MB (Recommended: 1200x630)</p>
+                <div id="mainImageContainer">
+                    <img id="mainImgPreview" class="img-preview-main" src="" style="display:none">
+                    <div class="upload-zone" id="mainUploadZone" onclick="document.getElementById('mainImageFile').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleImageDrop(event)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <p><strong>Click to upload</strong> or drag & drop</p>
+                        <p style="font-size:11px;margin-top:4px">PNG, JPG, WEBP up to 5MB (Recommended: 1200x630)</p>
+                    </div>
                 </div>
                 <input type="file" id="mainImageFile" accept="image/*" style="display:none" onchange="previewMainImage(event)">
             </div>
@@ -1396,7 +1407,7 @@
 <div class="modal-backdrop" id="confirmModal">
     <div class="modal modal-sm">
         <div class="confirm-body">
-            <div class="confirm-icon danger"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="confirm-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg></div>
             <h3 id="confirmTitle">Are you sure?</h3>
@@ -1405,7 +1416,7 @@
         <div class="modal-sep" style="margin-top:16px"></div>
         <div class="modal-footer">
             <button class="btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
-            <button class="btn-danger" id="confirmOkBtn">Confirm</button>
+            <button class="btn-primary" id="confirmOkBtn">Confirm</button>
         </div>
     </div>
 </div>
@@ -1421,6 +1432,8 @@
     let formTags = [];
     let galleryImages = [];
     let featuredImage = null;
+    let currentStatusFilter = 'all';
+    let searchDebounceTimer;
     const suggestedTags = ['Housing', 'Policy', 'Community', 'Development', 'Update', 'Accomplishment', 'Project', 'Success', 'Annual', 'Report', 'Compliance'];
 
     async function fetchArticles() {
@@ -1435,6 +1448,7 @@
             if (result.success) {
                 articles = result.data;
                 updateStats(result.stats);
+                populateYearFilter();
                 applyFilters();
             }
         } catch (error) {
@@ -1445,6 +1459,15 @@
         }
     }
 
+    function populateYearFilter() {
+        const yearSelect = document.getElementById('filterYear');
+        const years = [...new Set(articles.map(a => a.year).filter(y => y))].sort((a, b) => b - a);
+        yearSelect.innerHTML = '<option value="">All Years</option>';
+        years.forEach(year => {
+            yearSelect.innerHTML += `<option value="${year}">${year}</option>`;
+        });
+    }
+
     function updateStats(stats) {
         document.getElementById('statTotal').textContent = stats.total || 0;
         document.getElementById('statPublished').textContent = stats.published || 0;
@@ -1452,81 +1475,124 @@
         document.getElementById('statScheduled').textContent = stats.scheduled || 0;
     }
 
+    function filterByStat(status) {
+        currentStatusFilter = status;
+
+        // Update active state on stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        const activeCard = document.querySelector(`.stat-card[data-filter="${status}"]`);
+        if (activeCard) activeCard.classList.add('active');
+
+        // Reset to first page
+        currentPage = 1;
+        applyFilters();
+    }
+
     function renderTable() {
         const body = document.getElementById('articlesBody');
         const empty = document.getElementById('emptyState');
+        const table = document.getElementById('articlesTable');
 
         if (filteredArticles.length === 0) {
             body.innerHTML = '';
             empty.style.display = 'block';
-            document.getElementById('resultCount').innerHTML = 'No results found';
+            table.style.display = 'none';
+            document.getElementById('resultCount').innerHTML = 'Showing 0 of 0 articles';
             document.getElementById('pageInfo').innerHTML = '';
             document.getElementById('pageBtns').innerHTML = '';
             return;
         }
 
         empty.style.display = 'none';
+        table.style.display = '';
+
         const total = filteredArticles.length;
         const totalPages = Math.ceil(total / perPage);
-        if (currentPage > totalPages) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
         const start = (currentPage - 1) * perPage;
         const end = Math.min(start + perPage, total);
-        const page = filteredArticles.slice(start, end);
+        const pageArticles = filteredArticles.slice(start, end);
 
+        // Update result count
         document.getElementById('resultCount').innerHTML = `Showing <strong>${start+1}–${end}</strong> of <strong>${total}</strong> articles`;
-        document.getElementById('pageInfo').innerHTML = `Showing <strong>${start+1}</strong> to <strong>${end}</strong> of <strong>${total}</strong> results`;
+        document.getElementById('pageInfo').innerHTML = `Page ${currentPage} of ${totalPages}`;
 
-        body.innerHTML = page.map(a => {
+        body.innerHTML = pageArticles.map(a => {
             const tags = (a.tags ? (Array.isArray(a.tags) ? a.tags : JSON.parse(a.tags)) : []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('');
-            const categoryBadge = a.category === 'news' ? '<span class="badge badge-news">News</span>' : '<span class="badge badge-accomplishment">Accomplishment</span>';
+
+            // Status badge
             let statusBadge = '';
             if (a.status === 'published') statusBadge = '<span class="badge badge-published">Published</span>';
             else if (a.status === 'draft') statusBadge = '<span class="badge badge-draft">Draft</span>';
             else if (a.status === 'scheduled') statusBadge = '<span class="badge badge-scheduled">Scheduled</span>';
-            else statusBadge = '<span class="badge badge-draft">Draft</span>';
 
-            const scheduledHtml = a.scheduledAt ? `<div class="scheduled-time"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>${a.scheduledAt}</div>` : '';
+            const scheduledHtml = a.scheduledAt ? `<div style="font-size:10px;color:var(--text-muted);margin-top:4px;">📅 ${a.scheduledAt}</div>` : '';
 
             return `<tr>
                 <td><img src="${a.img || 'https://via.placeholder.com/80x52?text=No+Image'}" class="thumb" onerror="this.src='https://via.placeholder.com/80x52?text=IMG'"></td>
-                <td><div class="art-title">${escapeHtml(a.title)}</div><div class="art-desc">${escapeHtml(a.desc)}</div><div>${tags}</div>${scheduledHtml}</td>
-                <td class="hide-sm">${categoryBadge}</td>
+                <td>
+                    <div class="art-title">${escapeHtml(a.title)}</div>
+                    <div class="art-desc">${escapeHtml(a.desc)}</div>
+                    <div>${tags}</div>
+                    ${scheduledHtml}
+                </td>
+                <td class="hide-sm"><span class="badge" style="${a.category === 'news' ? 'background:#EFF6FF;color:#1E40AF' : 'background:#FFF7ED;color:#9A3412'}">${a.category === 'news' ? 'News' : 'Accomplishment'}</span></td>
                 <td class="hide-sm"><div style="font-size:12.5px;font-weight:500">${a.date}</div></td>
                 <td>${statusBadge}</td>
-                <td><div class="action-btns">
-                    <button class="act-btn act-btn-edit" onclick="openEditModal(${a.id})">Edit</button>
-                    <button class="act-btn act-btn-preview" onclick="openPreview(${a.id})">Preview</button>
-                    <div class="more-menu-wrap">
-                        <button class="more-btn" onclick="toggleMoreMenu(event, 'more_${a.id}')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button>
-                        <div class="more-dropdown" id="more_${a.id}"><button onclick="confirmDelete(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button></div></div>
-                </div></td>
+                <td>
+                    <div class="action-btns">
+                        <button class="act-btn act-btn-edit" onclick="openEditModal(${a.id})">Edit</button>
+                        <button class="act-btn act-btn-preview" onclick="openPreview(${a.id})">Preview</button>
+                        <div class="more-menu-wrap">
+                            <button class="more-btn" onclick="toggleMoreMenu(event, 'more_${a.id}')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button>
+                            <div class="more-dropdown" id="more_${a.id}"><button onclick="confirmDelete(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button></div>
+                        </div>
+                    </div>
+                </td>
             </tr>`;
         }).join('');
-        renderPagination(total, totalPages);
+
+        renderPagination(totalPages);
     }
 
-    function renderPagination(total, totalPages) {
+    function renderPagination(totalPages) {
         const wrap = document.getElementById('pageBtns');
         if (totalPages <= 1) {
             wrap.innerHTML = '';
             return;
         }
-        let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7 7-7-7"/></svg></button>`;
-        for (let i = 1; i <= totalPages; i++) {
-            if (totalPages > 7 && i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1) {
-                if (i === 3 || i === totalPages - 2) html += `<button class="page-btn" disabled style="border:none">…</button>`;
-                continue;
-            }
-            html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+
+        let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1 ? 'disabled' : ''}>←</button>`;
+
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, currentPage + 2);
+
+        if (startPage > 1) {
+            html += `<button class="page-btn" onclick="goPage(1)">1</button>`;
+            if (startPage > 2) html += `<button class="page-btn" disabled style="border:none">...</button>`;
         }
-        html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg></button>`;
+
+        for (let i = startPage; i <= endPage; i++) {
+            html += `<button class="page-btn ${i===currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+        }
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) html += `<button class="page-btn" disabled style="border:none">...</button>`;
+            html += `<button class="page-btn" onclick="goPage(${totalPages})">${totalPages}</button>`;
+        }
+
+        html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages ? 'disabled' : ''}>→</button>`;
         wrap.innerHTML = html;
     }
 
-    function goPage(p) {
+    function goPage(page) {
         const totalPages = Math.ceil(filteredArticles.length / perPage);
-        if (p < 1 || p > totalPages) return;
-        currentPage = p;
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
         renderTable();
     }
 
@@ -1536,13 +1602,39 @@
         const year = document.getElementById('filterYear').value;
 
         filteredArticles = articles.filter(a => {
+            // Status filter from stat cards
+            if (currentStatusFilter !== 'all' && a.status !== currentStatusFilter) return false;
+
+            // Search filter
             const matchSearch = !searchTerm || a.title.toLowerCase().includes(searchTerm) || a.desc.toLowerCase().includes(searchTerm);
+
+            // Category filter
             const matchCategory = !category || a.category === category;
+
+            // Year filter
             const matchYear = !year || String(a.year) === year;
+
             return matchSearch && matchCategory && matchYear;
         });
+
         currentPage = 1;
         renderTable();
+    }
+
+    function handleSearchInput() {
+        const clearBtn = document.getElementById('searchClear');
+        clearBtn.style.display = document.getElementById('searchInput').value ? 'block' : 'none';
+
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+            applyFilters();
+        }, 300);
+    }
+
+    function clearSearch() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('searchClear').style.display = 'none';
+        applyFilters();
     }
 
     function clearFilters() {
@@ -1550,18 +1642,13 @@
         document.getElementById('filterType').value = '';
         document.getElementById('filterYear').value = '';
         document.getElementById('searchClear').style.display = 'none';
-        applyFilters();
-    }
+        currentStatusFilter = 'all';
 
-    function triggerFilter() {
-        const clearBtn = document.getElementById('searchClear');
-        clearBtn.style.display = document.getElementById('searchInput').value ? 'block' : 'none';
-        applyFilters();
-    }
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        document.querySelector('.stat-card[data-filter="all"]').classList.add('active');
 
-    function clearSearch() {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('searchClear').style.display = 'none';
         applyFilters();
     }
 
@@ -1578,6 +1665,10 @@
         const scheduleField = document.getElementById('scheduleField');
         if (status === 'scheduled') {
             scheduleField.classList.add('show');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setMinutes(0);
+            document.getElementById('fSchedule').min = tomorrow.toISOString().slice(0, 16);
         } else {
             scheduleField.classList.remove('show');
         }
@@ -1596,7 +1687,7 @@
         document.getElementById('fSchedule').value = '';
         document.getElementById('mainImgPreview').style.display = 'none';
         document.getElementById('mainImgPreview').src = '';
-        document.getElementById('mainUploadZone').style.display = '';
+        document.getElementById('mainUploadZone').style.display = 'block';
         document.getElementById('galleryGrid').innerHTML = '';
         document.getElementById('scheduleField').classList.remove('show');
         renderFormTags();
@@ -1616,15 +1707,19 @@
         document.getElementById('fCategory').value = a.category;
         document.getElementById('fStatus').value = a.status || 'published';
         document.getElementById('fContent').value = a.content;
+
         if (a.img) {
             document.getElementById('mainImgPreview').src = a.img;
-            document.getElementById('mainImgPreview').style.display = '';
+            document.getElementById('mainImgPreview').style.display = 'block';
             document.getElementById('mainUploadZone').style.display = 'none';
+        } else {
+            document.getElementById('mainImgPreview').style.display = 'none';
+            document.getElementById('mainUploadZone').style.display = 'block';
         }
+
         renderGalleryGrid();
         toggleScheduleField();
         if (a.scheduledAt) {
-            // Parse scheduled date for input
             const date = new Date(a.scheduledAt);
             if (!isNaN(date)) {
                 const formatted = date.toISOString().slice(0, 16);
@@ -1642,7 +1737,7 @@
         galleryImages.forEach((img, idx) => {
             const div = document.createElement('div');
             div.className = 'gallery-item';
-            div.innerHTML = `<img src="${img}" alt="Gallery image"><button type="button" onclick="removeGalleryImage(${idx})"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+            div.innerHTML = `<img src="${img}" alt="Gallery image"><button type="button" onclick="removeGalleryImage(${idx})">✕</button>`;
             grid.appendChild(div);
         });
     }
@@ -1666,7 +1761,7 @@
         event.target.value = '';
     }
 
-    function handleImageDrop(event, type) {
+    function handleImageDrop(event) {
         event.preventDefault();
         const zone = document.getElementById('mainUploadZone');
         zone.classList.remove('drag-over');
@@ -1676,7 +1771,7 @@
             reader.onload = (e) => {
                 featuredImage = e.target.result;
                 document.getElementById('mainImgPreview').src = featuredImage;
-                document.getElementById('mainImgPreview').style.display = '';
+                document.getElementById('mainImgPreview').style.display = 'block';
                 document.getElementById('mainUploadZone').style.display = 'none';
             };
             reader.readAsDataURL(file);
@@ -1690,7 +1785,7 @@
             reader.onload = (e) => {
                 featuredImage = e.target.result;
                 document.getElementById('mainImgPreview').src = featuredImage;
-                document.getElementById('mainImgPreview').style.display = '';
+                document.getElementById('mainImgPreview').style.display = 'block';
                 document.getElementById('mainUploadZone').style.display = 'none';
             };
             reader.readAsDataURL(file);
@@ -1764,6 +1859,7 @@
         document.getElementById('confirmText').textContent = 'This will be permanently deleted.';
         document.getElementById('confirmOkBtn').onclick = async () => {
             closeModal('confirmModal');
+            showTableLoader();
             try {
                 const response = await fetch(`/editor/news/${id}`, {
                     method: 'DELETE',
@@ -1775,9 +1871,13 @@
                 if (result.success) {
                     showToast('success', 'Deleted', result.message);
                     fetchArticles();
+                } else {
+                    showToast('error', 'Error', 'Failed to delete');
                 }
             } catch (error) {
                 showToast('error', 'Error', 'Failed to delete');
+            } finally {
+                hideTableLoader();
             }
         };
         openModal('confirmModal');
@@ -1790,7 +1890,7 @@
             document.getElementById('prevBody').innerHTML = a.content;
             if (a.img) {
                 document.getElementById('prevHeroImg').src = a.img;
-                document.getElementById('prevHeroImg').style.display = '';
+                document.getElementById('prevHeroImg').style.display = 'block';
             } else {
                 document.getElementById('prevHeroImg').style.display = 'none';
             }
@@ -1813,7 +1913,7 @@
         const imgSrc = document.getElementById('mainImgPreview').src;
         if (imgSrc) {
             document.getElementById('prevHeroImg').src = imgSrc;
-            document.getElementById('prevHeroImg').style.display = '';
+            document.getElementById('prevHeroImg').style.display = 'block';
         } else {
             document.getElementById('prevHeroImg').style.display = 'none';
         }
@@ -1864,7 +1964,7 @@
         formTags.forEach((t, i) => {
             const chip = document.createElement('span');
             chip.className = 'tag-chip';
-            chip.innerHTML = `${escapeHtml(t)}<button type="button" onclick="removeFormTag(${i})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="10" height="10"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg></button>`;
+            chip.innerHTML = `${escapeHtml(t)}<button type="button" onclick="removeFormTag(${i})">✕</button>`;
             container.appendChild(chip);
         });
         container.appendChild(input);
@@ -1928,11 +2028,13 @@
         el.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-msg"><strong>${title}</strong><span>${msg}</span></div>`;
         container.appendChild(el);
         setTimeout(() => {
-            el.classList.add('toast-out');
-            setTimeout(() => el.remove(), 220);
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(100%)';
+            setTimeout(() => el.remove(), 300);
         }, 3500);
     }
 
+    // Event Listeners
     document.querySelectorAll('.modal-backdrop').forEach(bd => {
         bd.addEventListener('click', e => {
             if (e.target === bd) closeModal(bd.id);
@@ -1941,8 +2043,7 @@
     document.addEventListener('click', () => closeAllMoreMenus());
     document.getElementById('addArticleBtn').addEventListener('click', openCreateModal);
 
+    // Initialize
     fetchArticles();
 </script>
 @endsection
-
-<!--Later--->
