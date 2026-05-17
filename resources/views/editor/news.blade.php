@@ -377,11 +377,17 @@
     .badge {
         display: inline-flex;
         align-items: center;
+        gap: 6px;
         padding: 4px 12px;
         border-radius: 20px;
         font-size: 11px;
         font-weight: 600;
         white-space: nowrap;
+    }
+
+    .badge svg {
+        width: 12px;
+        height: 12px;
     }
 
     .badge-published {
@@ -390,24 +396,10 @@
         border: 1px solid #BBF7D0;
     }
 
-    .badge-published::before {
-        content: "●";
-        margin-right: 4px;
-        font-size: 8px;
-        color: #22C55E;
-    }
-
     .badge-draft {
         background: #FFF9C4;
         color: #854D0E;
         border: 1px solid #FDE68A;
-    }
-
-    .badge-draft::before {
-        content: "●";
-        margin-right: 4px;
-        font-size: 8px;
-        color: #F59E0B;
     }
 
     .badge-scheduled {
@@ -416,14 +408,6 @@
         border: 1px solid #DDD6FE;
     }
 
-    .badge-scheduled::before {
-        content: "●";
-        margin-right: 4px;
-        font-size: 8px;
-        color: #8B5CF6;
-    }
-
-    /* Type Badge Styles */
     .badge-news {
         background: #EFF6FF;
         color: #1E40AF;
@@ -436,16 +420,12 @@
         border: 1px solid #FED7AA;
     }
 
-    /* Action buttons container - appears on hover inside the article cell */
-    .article-cell {
-        position: relative;
-    }
-
+    /* Action buttons container */
     .action-btns {
         display: flex;
         align-items: center;
         gap: 6px;
-        margin-top: 6px;
+        margin-top: 8px;
         opacity: 0;
         transform: translateY(-5px);
         transition: opacity 0.2s, transform 0.2s;
@@ -459,6 +439,9 @@
     }
 
     .act-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         padding: 5px 10px;
         border-radius: 7px;
         font-size: 12px;
@@ -468,6 +451,11 @@
         font-family: 'DM Sans', sans-serif;
         transition: all 0.12s;
         white-space: nowrap;
+    }
+
+    .act-btn svg {
+        width: 12px;
+        height: 12px;
     }
 
     .act-btn-edit {
@@ -613,6 +601,7 @@
         }
     }
 
+    /* Modal Styles */
     .modal-backdrop {
         position: fixed;
         inset: 0;
@@ -771,100 +760,13 @@
         pointer-events: none;
     }
 
-    .tags-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 8px;
-        border: 1.5px solid var(--border);
-        border-radius: 9px;
-        min-height: 42px;
-        cursor: text;
-        transition: border-color 0.15s;
-        background: #fff;
-    }
-
-    .tags-container:focus-within {
-        border-color: var(--red);
-        box-shadow: 0 0 0 3px rgba(192, 32, 47, 0.09);
-    }
-
-    .tag-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        background: var(--red-pale2);
-        color: var(--red);
-    }
-
-    .tag-chip button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--red);
-        padding: 0;
-        line-height: 1;
-        opacity: 0.6;
-    }
-
-    .tag-chip button:hover {
-        opacity: 1;
-    }
-
-    .tag-chip button svg {
-        width: 10px;
-        height: 10px;
-        display: block;
-    }
-
-    .tag-input-inline {
-        border: none;
-        outline: none;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 13px;
-        color: var(--text-primary);
-        background: transparent;
-        min-width: 80px;
-        flex: 1;
-        padding: 3px 4px;
-    }
-
-    .tag-suggestions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 8px;
-    }
-
-    .tag-sug-btn {
-        padding: 3px 10px;
-        border-radius: 20px;
-        border: 1.5px solid var(--border);
-        background: #fff;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 11.5px;
-        font-weight: 600;
-        color: var(--text-secondary);
-        cursor: pointer;
-    }
-
-    .tag-sug-btn:hover {
-        border-color: var(--red);
-        color: var(--red);
-        background: var(--red-pale);
-    }
-
     .upload-zone {
         border: 2px dashed var(--red-border);
         border-radius: 10px;
         padding: 20px;
         text-align: center;
         cursor: pointer;
-        transition: border-color 0.15s;
+        transition: all 0.15s;
         background: var(--bg);
     }
 
@@ -883,12 +785,39 @@
 
     .img-preview-main {
         width: 100%;
-        max-height: 160px;
+        max-height: 200px;
         object-fit: cover;
         border-radius: 9px;
         border: 1px solid var(--border);
-        margin-bottom: 8px;
-        display: none;
+        margin-bottom: 12px;
+    }
+
+    .image-preview-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .remove-image-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .remove-image-btn:hover {
+        background: var(--red);
+        transform: scale(1.05);
     }
 
     .schedule-field {
@@ -1123,6 +1052,88 @@
         margin-right: 6px;
         vertical-align: middle;
     }
+
+    /* Tag input styles */
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px;
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        min-height: 42px;
+        cursor: text;
+        transition: border-color 0.15s;
+        background: #fff;
+    }
+
+    .tags-container:focus-within {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px rgba(192, 32, 47, 0.09);
+    }
+
+    .tag-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: var(--red-pale2);
+        color: var(--red);
+    }
+
+    .tag-chip button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--red);
+        padding: 0;
+        line-height: 1;
+        opacity: 0.6;
+    }
+
+    .tag-chip button:hover {
+        opacity: 1;
+    }
+
+    .tag-input-inline {
+        border: none;
+        outline: none;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 13px;
+        color: var(--text-primary);
+        background: transparent;
+        min-width: 80px;
+        flex: 1;
+        padding: 3px 4px;
+    }
+
+    .tag-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+    }
+
+    .tag-sug-btn {
+        padding: 3px 10px;
+        border-radius: 20px;
+        border: 1.5px solid var(--border);
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        cursor: pointer;
+    }
+
+    .tag-sug-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+        background: var(--red-pale);
+    }
 </style>
 
 <div class="page-wrap">
@@ -1141,36 +1152,44 @@
 
     <div class="stats-row">
         <div class="stat-card" data-filter="all" onclick="filterByStat('all')">
-            <div class="stat-icon" style="background:#FEF0F1"><svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
+            <div class="stat-icon" style="background:#FEF0F1">
+                <svg fill="none" stroke="#C0202F" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z" />
-                </svg></div>
+                </svg>
+            </div>
             <div>
                 <div class="stat-val" id="statTotal">0</div>
                 <div class="stat-lbl">Total Articles</div>
             </div>
         </div>
         <div class="stat-card" data-filter="published" onclick="filterByStat('published')">
-            <div class="stat-icon" style="background:#F0FDF4"><svg fill="none" stroke="#166534" viewBox="0 0 24 24">
+            <div class="stat-icon" style="background:#F0FDF4">
+                <svg fill="none" stroke="#166534" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg></div>
+                </svg>
+            </div>
             <div>
                 <div class="stat-val" id="statPublished">0</div>
                 <div class="stat-lbl">Published</div>
             </div>
         </div>
         <div class="stat-card" data-filter="draft" onclick="filterByStat('draft')">
-            <div class="stat-icon" style="background:#FFF9C4"><svg fill="none" stroke="#854D0E" viewBox="0 0 24 24">
+            <div class="stat-icon" style="background:#FFF9C4">
+                <svg fill="none" stroke="#854D0E" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg></div>
+                </svg>
+            </div>
             <div>
                 <div class="stat-val" id="statDraft">0</div>
                 <div class="stat-lbl">Drafts</div>
             </div>
         </div>
         <div class="stat-card" data-filter="scheduled" onclick="filterByStat('scheduled')">
-            <div class="stat-icon" style="background:#F5F3FF"><svg fill="none" stroke="#5B21B6" viewBox="0 0 24 24">
+            <div class="stat-icon" style="background:#F5F3FF">
+                <svg fill="none" stroke="#5B21B6" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg></div>
+                </svg>
+            </div>
             <div>
                 <div class="stat-val" id="statScheduled">0</div>
                 <div class="stat-lbl">Scheduled</div>
@@ -1186,9 +1205,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <input type="text" id="searchInput" class="filter-input" placeholder="Search articles…" oninput="handleSearchInput()">
-                <button class="search-clear" id="searchClear" onclick="clearSearch()"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button class="search-clear" id="searchClear" onclick="clearSearch()">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                    </svg></button>
+                    </svg>
+                </button>
             </div>
         </div>
         <div class="filter-group">
@@ -1262,9 +1283,11 @@
     <div class="modal">
         <div class="modal-header">
             <div class="modal-title" id="modalTitle">Add Article</div>
-            <button class="modal-close" onclick="closeArticleModal()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="modal-close" onclick="closeArticleModal()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                </svg></button>
+                </svg>
+            </button>
         </div>
         <div class="modal-body">
             <div class="form-group">
@@ -1321,8 +1344,15 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Featured Image</label>
-                <div id="mainImageContainer">
-                    <img id="mainImgPreview" class="img-preview-main" src="" style="display:none">
+                <div id="featuredImageContainer">
+                    <div id="featuredPreviewContainer" style="display:none; position:relative;">
+                        <img id="mainImgPreview" class="img-preview-main" src="">
+                        <button type="button" class="remove-image-btn" onclick="removeFeaturedImage()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                     <div class="upload-zone" id="mainUploadZone" onclick="document.getElementById('mainImageFile').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleImageDrop(event)">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1359,9 +1389,11 @@
     <div class="modal">
         <div class="modal-header">
             <div class="modal-title">Article Preview</div>
-            <button class="modal-close" onclick="closePreview()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="modal-close" onclick="closePreview()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                </svg></button>
+                </svg>
+            </button>
         </div>
         <div class="modal-body">
             <img id="prevHeroImg" class="preview-hero" src="" style="display:none">
@@ -1381,9 +1413,11 @@
 <div class="modal-backdrop" id="confirmModal">
     <div class="modal modal-sm">
         <div class="confirm-body">
-            <div class="confirm-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="confirm-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg></div>
+                </svg>
+            </div>
             <h3 id="confirmTitle">Are you sure?</h3>
             <p id="confirmText">This action cannot be undone.</p>
         </div>
@@ -1495,20 +1529,18 @@
 
             let statusBadge = '';
             if (a.status === 'published') {
-                statusBadge = '<span class="badge badge-published">Published</span>';
+                statusBadge = '<span class="badge badge-published"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Published</span>';
             } else if (a.status === 'draft') {
-                statusBadge = '<span class="badge badge-draft">Draft</span>';
+                statusBadge = '<span class="badge badge-draft"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Draft</span>';
             } else if (a.status === 'scheduled') {
-                statusBadge = '<span class="badge badge-scheduled">Scheduled</span>';
-            } else {
-                statusBadge = '<span class="badge badge-draft">Draft</span>';
+                statusBadge = '<span class="badge badge-scheduled"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Scheduled</span>';
             }
 
             let typeBadge = '';
             if (a.category === 'news') {
-                typeBadge = '<span class="badge badge-news">News</span>';
+                typeBadge = '<span class="badge badge-news"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h8v4H7v-4z"/></svg>News</span>';
             } else {
-                typeBadge = '<span class="badge badge-accomplishment">Accomplishment</span>';
+                typeBadge = '<span class="badge badge-accomplishment"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Accomplishment</span>';
             }
 
             const scheduledHtml = a.scheduledAt ? `<div style="font-size:10px;color:var(--text-muted);margin-top:4px;">📅 Scheduled: ${a.scheduledAt}</div>` : '';
@@ -1521,9 +1553,18 @@
                     <div>${tags}</div>
                     ${scheduledHtml}
                     <div class="action-btns">
-                        <button class="act-btn act-btn-edit" onclick="openEditModal(${a.id})">✏️ Edit</button>
-                        <button class="act-btn act-btn-preview" onclick="openPreview(${a.id})">👁️ Preview</button>
-                        <button class="act-btn act-btn-delete" onclick="confirmDelete(${a.id})">🗑️ Delete</button>
+                        <button class="act-btn act-btn-edit" onclick="openEditModal(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6 6M3 17.25V21h3.75l9.06-9.06-3.75-3.75L3 17.25z"/></svg>
+                            Edit
+                        </button>
+                        <button class="act-btn act-btn-preview" onclick="openPreview(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            Preview
+                        </button>
+                        <button class="act-btn act-btn-delete" onclick="confirmDelete(${a.id})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            Delete
+                        </button>
                     </div>
                 </td>
                 <td class="hide-sm">${typeBadge}</td>
@@ -1639,6 +1680,27 @@
         }
     }
 
+    function displayFeaturedImage(imageUrl) {
+        const previewContainer = document.getElementById('featuredPreviewContainer');
+        const uploadZone = document.getElementById('mainUploadZone');
+        const img = document.getElementById('mainImgPreview');
+
+        if (imageUrl) {
+            img.src = imageUrl;
+            previewContainer.style.display = 'block';
+            uploadZone.style.display = 'none';
+        } else {
+            previewContainer.style.display = 'none';
+            uploadZone.style.display = 'block';
+        }
+    }
+
+    function removeFeaturedImage() {
+        featuredImage = null;
+        displayFeaturedImage(null);
+        document.getElementById('mainImageFile').value = '';
+    }
+
     function openCreateModal() {
         editingId = null;
         formTags = [];
@@ -1650,9 +1712,7 @@
         document.getElementById('fStatus').value = 'published';
         document.getElementById('fContent').value = '';
         document.getElementById('fSchedule').value = '';
-        document.getElementById('mainImgPreview').style.display = 'none';
-        document.getElementById('mainImgPreview').src = '';
-        document.getElementById('mainUploadZone').style.display = 'block';
+        displayFeaturedImage(null);
         document.getElementById('galleryGrid').innerHTML = '';
         document.getElementById('scheduleField').classList.remove('show');
         renderFormTags();
@@ -1674,12 +1734,9 @@
         document.getElementById('fContent').value = a.content;
 
         if (a.img) {
-            document.getElementById('mainImgPreview').src = a.img;
-            document.getElementById('mainImgPreview').style.display = 'block';
-            document.getElementById('mainUploadZone').style.display = 'none';
+            displayFeaturedImage(a.img);
         } else {
-            document.getElementById('mainImgPreview').style.display = 'none';
-            document.getElementById('mainUploadZone').style.display = 'block';
+            displayFeaturedImage(null);
         }
 
         renderGalleryGrid();
@@ -1735,9 +1792,7 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 featuredImage = e.target.result;
-                document.getElementById('mainImgPreview').src = featuredImage;
-                document.getElementById('mainImgPreview').style.display = 'block';
-                document.getElementById('mainUploadZone').style.display = 'none';
+                displayFeaturedImage(featuredImage);
             };
             reader.readAsDataURL(file);
         }
@@ -1749,9 +1804,7 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 featuredImage = e.target.result;
-                document.getElementById('mainImgPreview').src = featuredImage;
-                document.getElementById('mainImgPreview').style.display = 'block';
-                document.getElementById('mainUploadZone').style.display = 'none';
+                displayFeaturedImage(featuredImage);
             };
             reader.readAsDataURL(file);
         }
