@@ -436,11 +436,16 @@
         border: 1px solid #FED7AA;
     }
 
-    /* Action buttons - hidden by default, show on hover */
+    /* Action buttons container - appears on hover inside the article cell */
+    .article-cell {
+        position: relative;
+    }
+
     .action-btns {
         display: flex;
         align-items: center;
         gap: 6px;
+        margin-top: 6px;
         opacity: 0;
         transform: translateY(-5px);
         transition: opacity 0.2s, transform 0.2s;
@@ -485,82 +490,14 @@
         transform: scale(1.02);
     }
 
-    .more-menu-wrap {
-        position: relative;
-        display: inline-block;
+    .act-btn-delete {
+        background: #FEE2E2;
+        color: #DC2626;
     }
 
-    .more-btn {
-        width: 28px;
-        height: 28px;
-        border-radius: 7px;
-        border: none;
-        background: var(--bg);
-        color: var(--text-muted);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.12s;
-    }
-
-    .more-btn:hover {
-        background: var(--red-pale);
-        color: var(--red);
-    }
-
-    .more-btn svg {
-        width: 15px;
-        height: 15px;
-    }
-
-    .more-dropdown {
-        position: absolute;
-        right: 0;
-        top: calc(100% + 6px);
-        background: #fff;
-        border: 1px solid var(--red-border);
-        border-radius: 10px;
-        box-shadow: 0 8px 30px rgba(192, 32, 47, 0.12);
-        z-index: 50;
-        min-width: 160px;
-        display: none;
-        overflow: hidden;
-    }
-
-    .more-dropdown.open {
-        display: block;
-    }
-
-    .more-dropdown button {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        width: 100%;
-        padding: 9px 14px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--text-secondary);
-        border: none;
-        background: none;
-        cursor: pointer;
-        text-align: left;
-        transition: background 0.1s;
-    }
-
-    .more-dropdown button:hover {
-        background: var(--red-pale);
-        color: var(--red);
-    }
-
-    .more-dropdown button svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    .more-dropdown button.danger {
-        color: var(--red);
+    .act-btn-delete:hover {
+        background: #FECACA;
+        transform: scale(1.02);
     }
 
     .pagination-bar {
@@ -1301,7 +1238,6 @@
                         <th class="hide-sm">Type</th>
                         <th class="hide-sm">Date</th>
                         <th>Status</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="articlesBody"></tbody>
@@ -1515,15 +1451,11 @@
 
     function filterByStat(status) {
         currentStatusFilter = status;
-
-        // Update active state on stat cards
         document.querySelectorAll('.stat-card').forEach(card => {
             card.classList.remove('active');
         });
         const activeCard = document.querySelector(`.stat-card[data-filter="${status}"]`);
         if (activeCard) activeCard.classList.add('active');
-
-        // Reset to first page
         currentPage = 1;
         applyFilters();
     }
@@ -1555,14 +1487,12 @@
         const end = Math.min(start + perPage, total);
         const pageArticles = filteredArticles.slice(start, end);
 
-        // Update result count
         document.getElementById('resultCount').innerHTML = `Showing <strong>${start+1}–${end}</strong> of <strong>${total}</strong> articles`;
         document.getElementById('pageInfo').innerHTML = `Page ${currentPage} of ${totalPages}`;
 
         body.innerHTML = pageArticles.map(a => {
             const tags = (a.tags ? (Array.isArray(a.tags) ? a.tags : JSON.parse(a.tags)) : []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('');
 
-            // Status badge - shows published, draft, or scheduled
             let statusBadge = '';
             if (a.status === 'published') {
                 statusBadge = '<span class="badge badge-published">Published</span>';
@@ -1574,7 +1504,6 @@
                 statusBadge = '<span class="badge badge-draft">Draft</span>';
             }
 
-            // Type badge
             let typeBadge = '';
             if (a.category === 'news') {
                 typeBadge = '<span class="badge badge-news">News</span>';
@@ -1586,25 +1515,20 @@
 
             return `<tr>
                 <td><img src="${a.img || 'https://via.placeholder.com/80x52?text=No+Image'}" class="thumb" onerror="this.src='https://via.placeholder.com/80x52?text=IMG'"></td>
-                <td>
+                <td class="article-cell">
                     <div class="art-title">${escapeHtml(a.title)}</div>
                     <div class="art-desc">${escapeHtml(a.desc)}</div>
                     <div>${tags}</div>
                     ${scheduledHtml}
+                    <div class="action-btns">
+                        <button class="act-btn act-btn-edit" onclick="openEditModal(${a.id})">✏️ Edit</button>
+                        <button class="act-btn act-btn-preview" onclick="openPreview(${a.id})">👁️ Preview</button>
+                        <button class="act-btn act-btn-delete" onclick="confirmDelete(${a.id})">🗑️ Delete</button>
+                    </div>
                 </td>
                 <td class="hide-sm">${typeBadge}</td>
                 <td class="hide-sm"><div style="font-size:12.5px;font-weight:500">${a.date}</div></td>
                 <td>${statusBadge}</td>
-                <td>
-                    <div class="action-btns">
-                        <button class="act-btn act-btn-edit" onclick="openEditModal(${a.id})">Edit</button>
-                        <button class="act-btn act-btn-preview" onclick="openPreview(${a.id})">Preview</button>
-                        <div class="more-menu-wrap">
-                            <button class="more-btn" onclick="toggleMoreMenu(event, 'more_${a.id}')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button>
-                            <div class="more-dropdown" id="more_${a.id}"><button onclick="confirmDelete(${a.id})"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button></div>
-                        </div>
-                    </div>
-                </td>
             </tr>`;
         }).join('');
 
@@ -1654,18 +1578,10 @@
         const year = document.getElementById('filterYear').value;
 
         filteredArticles = articles.filter(a => {
-            // Status filter from stat cards
             if (currentStatusFilter !== 'all' && a.status !== currentStatusFilter) return false;
-
-            // Search filter
             const matchSearch = !searchTerm || a.title.toLowerCase().includes(searchTerm) || a.desc.toLowerCase().includes(searchTerm);
-
-            // Category filter
             const matchCategory = !category || a.category === category;
-
-            // Year filter
             const matchYear = !year || String(a.year) === year;
-
             return matchSearch && matchCategory && matchYear;
         });
 
@@ -1676,7 +1592,6 @@
     function handleSearchInput() {
         const clearBtn = document.getElementById('searchClear');
         clearBtn.style.display = document.getElementById('searchInput').value ? 'block' : 'none';
-
         clearTimeout(searchDebounceTimer);
         searchDebounceTimer = setTimeout(() => {
             applyFilters();
@@ -1695,12 +1610,10 @@
         document.getElementById('filterYear').value = '';
         document.getElementById('searchClear').style.display = 'none';
         currentStatusFilter = 'all';
-
         document.querySelectorAll('.stat-card').forEach(card => {
             card.classList.remove('active');
         });
         document.querySelector('.stat-card[data-filter="all"]').classList.add('active');
-
         applyFilters();
     }
 
@@ -1906,7 +1819,6 @@
     }
 
     async function confirmDelete(id) {
-        closeAllMoreMenus();
         document.getElementById('confirmTitle').textContent = 'Delete Article?';
         document.getElementById('confirmText').textContent = 'This will be permanently deleted.';
         document.getElementById('confirmOkBtn').onclick = async () => {
@@ -1997,18 +1909,6 @@
         document.body.style.overflow = '';
     }
 
-    function toggleMoreMenu(e, menuId) {
-        e.stopPropagation();
-        const menu = document.getElementById(menuId);
-        const wasOpen = menu.classList.contains('open');
-        closeAllMoreMenus();
-        if (!wasOpen) menu.classList.add('open');
-    }
-
-    function closeAllMoreMenus() {
-        document.querySelectorAll('.more-dropdown.open').forEach(m => m.classList.remove('open'));
-    }
-
     function renderFormTags() {
         const container = document.getElementById('tagsContainer');
         const input = document.getElementById('tagInputInline');
@@ -2086,16 +1986,13 @@
         }, 3500);
     }
 
-    // Event Listeners
     document.querySelectorAll('.modal-backdrop').forEach(bd => {
         bd.addEventListener('click', e => {
             if (e.target === bd) closeModal(bd.id);
         });
     });
-    document.addEventListener('click', () => closeAllMoreMenus());
     document.getElementById('addArticleBtn').addEventListener('click', openCreateModal);
 
-    // Initialize
     fetchArticles();
 </script>
 @endsection
