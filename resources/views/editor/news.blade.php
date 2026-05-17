@@ -373,10 +373,11 @@
         color: var(--red);
     }
 
+    /* Status Badge Styles */
     .badge {
         display: inline-flex;
         align-items: center;
-        padding: 3px 10px;
+        padding: 4px 12px;
         border-radius: 20px;
         font-size: 11px;
         font-weight: 600;
@@ -386,16 +387,53 @@
     .badge-published {
         background: #F0FDF4;
         color: #166534;
+        border: 1px solid #BBF7D0;
+    }
+
+    .badge-published::before {
+        content: "●";
+        margin-right: 4px;
+        font-size: 8px;
+        color: #22C55E;
     }
 
     .badge-draft {
         background: #FFF9C4;
         color: #854D0E;
+        border: 1px solid #FDE68A;
+    }
+
+    .badge-draft::before {
+        content: "●";
+        margin-right: 4px;
+        font-size: 8px;
+        color: #F59E0B;
     }
 
     .badge-scheduled {
         background: #F5F3FF;
         color: #5B21B6;
+        border: 1px solid #DDD6FE;
+    }
+
+    .badge-scheduled::before {
+        content: "●";
+        margin-right: 4px;
+        font-size: 8px;
+        color: #8B5CF6;
+    }
+
+    /* Type Badge Styles */
+    .badge-news {
+        background: #EFF6FF;
+        color: #1E40AF;
+        border: 1px solid #BFDBFE;
+    }
+
+    .badge-accomplishment {
+        background: #FFF7ED;
+        color: #9A3412;
+        border: 1px solid #FED7AA;
     }
 
     /* Action buttons - hidden by default, show on hover */
@@ -1524,13 +1562,27 @@
         body.innerHTML = pageArticles.map(a => {
             const tags = (a.tags ? (Array.isArray(a.tags) ? a.tags : JSON.parse(a.tags)) : []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('');
 
-            // Status badge
+            // Status badge - shows published, draft, or scheduled
             let statusBadge = '';
-            if (a.status === 'published') statusBadge = '<span class="badge badge-published">Published</span>';
-            else if (a.status === 'draft') statusBadge = '<span class="badge badge-draft">Draft</span>';
-            else if (a.status === 'scheduled') statusBadge = '<span class="badge badge-scheduled">Scheduled</span>';
+            if (a.status === 'published') {
+                statusBadge = '<span class="badge badge-published">Published</span>';
+            } else if (a.status === 'draft') {
+                statusBadge = '<span class="badge badge-draft">Draft</span>';
+            } else if (a.status === 'scheduled') {
+                statusBadge = '<span class="badge badge-scheduled">Scheduled</span>';
+            } else {
+                statusBadge = '<span class="badge badge-draft">Draft</span>';
+            }
 
-            const scheduledHtml = a.scheduledAt ? `<div style="font-size:10px;color:var(--text-muted);margin-top:4px;">📅 ${a.scheduledAt}</div>` : '';
+            // Type badge
+            let typeBadge = '';
+            if (a.category === 'news') {
+                typeBadge = '<span class="badge badge-news">News</span>';
+            } else {
+                typeBadge = '<span class="badge badge-accomplishment">Accomplishment</span>';
+            }
+
+            const scheduledHtml = a.scheduledAt ? `<div style="font-size:10px;color:var(--text-muted);margin-top:4px;">📅 Scheduled: ${a.scheduledAt}</div>` : '';
 
             return `<tr>
                 <td><img src="${a.img || 'https://via.placeholder.com/80x52?text=No+Image'}" class="thumb" onerror="this.src='https://via.placeholder.com/80x52?text=IMG'"></td>
@@ -1540,7 +1592,7 @@
                     <div>${tags}</div>
                     ${scheduledHtml}
                 </td>
-                <td class="hide-sm"><span class="badge" style="${a.category === 'news' ? 'background:#EFF6FF;color:#1E40AF' : 'background:#FFF7ED;color:#9A3412'}">${a.category === 'news' ? 'News' : 'Accomplishment'}</span></td>
+                <td class="hide-sm">${typeBadge}</td>
                 <td class="hide-sm"><div style="font-size:12.5px;font-weight:500">${a.date}</div></td>
                 <td>${statusBadge}</td>
                 <td>
