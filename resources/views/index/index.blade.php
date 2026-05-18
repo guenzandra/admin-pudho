@@ -5,10 +5,7 @@
 @section('content')
 
 {{-- =====================================================================
-     LAGUNA PUDHO — REDESIGNED HOMEPAGE
-     Aesthetic: Editorial Government — structured authority meets
-     warm civic trust. Deep navy + crimson + warm cream.
-     Font: Arial (headings + body)
+     LAGUNA PUDHO HOMEPAGE — FULLY RESPONSIVE FRONTEND WITH HERO SLIDER, TICKER, STATS, ANNOUNCEMENTS, AND ABOUT STRIP
      ===================================================================== --}}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
