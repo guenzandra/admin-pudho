@@ -40,10 +40,6 @@
             overflow: hidden;
             background: #fff;
         }
-
-        /* ═══════════════════════════════════
-           ANIMATED BACKGROUND
-        ═══════════════════════════════════ */
         .bg-canvas {
             position: fixed;
             inset: 0;

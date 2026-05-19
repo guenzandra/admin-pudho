@@ -7,7 +7,6 @@
   <title>@yield('title', 'Provincial Capitol of Laguna')</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <!-- Added Tailwind CDN for preview/development if app.css is not yet compiled -->
   <script src="https://cdn.tailwindcss.com"></script>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   @stack('styles')
