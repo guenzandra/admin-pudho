@@ -1027,7 +1027,6 @@
                 <a href="{{ route('admin.security') }}" class="sub-item {{ request()->routeIs('admin.security') ? 'active' : '' }}">Security</a>
                 <a href="{{ route('admin.notifications') }}" class="sub-item {{ request()->routeIs('admin.notifications') ? 'active' : '' }}">Notifications</a>
                 <a href="{{ route('admin.logs') }}" class="sub-item {{ request()->routeIs('admin.logs') ? 'active' : '' }}">Audit Logs</a>
-                <a href="{{ route('admin.help') }}" class="sub-item {{ request()->routeIs('admin.help') ? 'active' : '' }}">Help</a>
             </div>
 
         </nav>
